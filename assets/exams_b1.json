@@ -1,0 +1,12 @@
+[
+  {
+    "id": "b1-exam-1",
+    "name": "Đề số 1",
+    "quizIds": ["b1-q1", "b1-q2"]
+  },
+  {
+    "id": "b1-exam-2",
+    "name": "Đề số 2",
+    "quizIds": ["b1-q2", "b1-q1"]
+  }
+] 

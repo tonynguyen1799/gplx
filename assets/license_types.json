@@ -1,0 +1,32 @@
+[
+  {
+    "code": "A1",
+    "name": "Xe máy dưới 175cc",
+    "description": "Bằng lái xe máy phổ thông cho xe dưới 175cc.",
+    "isDefault": false
+  },
+  {
+    "code": "A2",
+    "name": "Xe mô tô trên 175cc",
+    "description": "Bằng lái xe mô tô phân khối lớn trên 175cc.",
+    "isDefault": false
+  },
+  {
+    "code": "B1",
+    "name": "Ô tô số tự động",
+    "description": "Bằng lái xe ô tô số tự động đến 9 chỗ.",
+    "isDefault": true
+  },
+  {
+    "code": "B2",
+    "name": "Ô tô số sàn",
+    "description": "Bằng lái xe ô tô số sàn đến 9 chỗ.",
+    "isDefault": false
+  },
+  {
+    "code": "C",
+    "name": "Xe tải trên 3.5 tấn",
+    "description": "Bằng lái xe tải trên 3.5 tấn.",
+    "isDefault": false
+  }
+] 

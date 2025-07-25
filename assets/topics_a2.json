@@ -1,0 +1,5 @@
+[
+  {"id": "a2-fatal", "name": "Câu hỏi điểm liệt", "description": "Các câu hỏi điểm liệt bắt buộc phải đúng.", "icon": "warning_amber_rounded", "color": "#FF5252"},
+  {"id": "a2-t1", "name": "Biển báo", "description": "Các câu hỏi về biển báo giao thông.", "icon": "traffic_rounded", "color": "#1976D2"},
+  {"id": "a2-t2", "name": "Quy tắc giao thông", "description": "Các câu hỏi về quy tắc giao thông đường bộ.", "icon": "rule_rounded", "color": "#FFA000"}
+] 

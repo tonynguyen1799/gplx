@@ -1,0 +1,28 @@
+[
+  {
+    "id": "e-q1",
+    "licenseTypeCode": "E",
+    "topicIds": ["e-fatal", "e-t2"],
+    "text": "Biển nào là biển báo dành cho xe khách trên 30 chỗ?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 1,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Biển 2 là biển báo dành cho xe khách trên 30 chỗ."
+  },
+  {
+    "id": "e-q2",
+    "licenseTypeCode": "E",
+    "topicIds": ["e-t2"],
+    "text": "Xe khách trên 30 chỗ phải nhường đường cho xe nào?",
+    "answers": ["Xe máy", "Xe tải", "Xe buýt", "Xe cứu thương"],
+    "correctIndex": 3,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe khách trên 30 chỗ phải nhường đường cho xe cứu thương."
+  }
+] 

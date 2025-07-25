@@ -1,0 +1,28 @@
+[
+  {
+    "id": "a2-q1",
+    "licenseTypeCode": "A2",
+    "topicIds": ["a2-fatal", "a2-t2"],
+    "text": "Biển nào là biển báo nguy hiểm?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 2,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Cả hai biển đều là biển báo nguy hiểm."
+  },
+  {
+    "id": "a2-q2",
+    "licenseTypeCode": "A2",
+    "topicIds": ["a2-t2"],
+    "text": "Xe nào được ưu tiên?",
+    "answers": ["Xe cứu thương", "Xe tải", "Xe buýt", "Xe khách"],
+    "correctIndex": 0,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe cứu thương được ưu tiên."
+  }
+] 

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "a1-q1",
+    "licenseTypeCode": "A1",
+    "topicIds": ["a1-fatal", "a1-t2"],
+    "text": "Biển nào là biển báo cấm?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 0,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Biển 1 là biển báo cấm."
+  },
+  {
+    "id": "a1-q2",
+    "licenseTypeCode": "A1",
+    "topicIds": ["a1-t2"],
+    "text": "Xe nào phải nhường đường?",
+    "answers": ["Xe máy", "Xe tải", "Xe buýt", "Xe khách"],
+    "correctIndex": 1,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe tải phải nhường đường."
+  }
+] 
