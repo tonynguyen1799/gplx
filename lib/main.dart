@@ -70,6 +70,10 @@ class GPLXApp extends ConsumerWidget {
             elevation: 0,
           ),
         ),
+        dialogTheme: DialogThemeData(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          backgroundColor: Colors.white,
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -101,6 +105,9 @@ class GPLXApp extends ConsumerWidget {
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             elevation: 0,
           ),
+        ),
+        dialogTheme: DialogThemeData(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       themeMode: themeMode,

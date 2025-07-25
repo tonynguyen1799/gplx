@@ -229,7 +229,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
           },
         ),
             title: reviewMode
-                ? Text('Xem lại bài làm', style: TextStyle(fontSize: 18, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null))
+                ? Text('Xem lại bài làm', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null))
                 : ExamTimer(
                     durationSeconds: durationMinutes * 60,
                     onTimeout: () async {

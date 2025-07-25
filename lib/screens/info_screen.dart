@@ -7,7 +7,7 @@ class InfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Thông tin'),
+        title: const Text('Thông tin', style: TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
         foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
         elevation: 0,

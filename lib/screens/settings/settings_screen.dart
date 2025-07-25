@@ -95,7 +95,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cài đặt'),
+        title: const Text('Cài đặt', style: TextStyle(fontWeight: FontWeight.w600)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
