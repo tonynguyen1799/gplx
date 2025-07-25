@@ -44,7 +44,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         appBar: AppBar(
           title: Text(
             'Biển báo giao thông',
-            style: TextStyle(fontSize: 18, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null),
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -135,11 +135,9 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(sign.id, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
-                    const SizedBox(height: 2),
-                    Text(sign.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                    Text('${sign.id} ${sign.name}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                     const SizedBox(height: 4),
-                    Text(sign.shortDescription, style: TextStyle(fontSize: 14, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black)),
+                    Text(sign.shortDescription, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black)),
                     const SizedBox(height: 2),
                     Text(sign.description, style: TextStyle(fontSize: 14, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey, fontWeight: FontWeight.w600)),
                   ],

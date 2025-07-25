@@ -61,12 +61,12 @@ class HomeScreen extends ConsumerWidget {
                   data: (code) {
                     if (code != null && licenseTypes.any((lt) => lt.code == code)) {
                       final type = licenseTypes.firstWhere((lt) => lt.code == code);
-                      return Text('${type.name} - ${type.code}', style: const TextStyle(fontSize: 18));
+                      return Text('${type.name} - ${type.code}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600));
                     }
-                    return const Text('Trang chủ', style: TextStyle(fontSize: 18));
+                    return const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600));
                   },
-                  loading: () => const Text('Trang chủ', style: TextStyle(fontSize: 18)),
-                  error: (_, __) => const Text('Trang chủ', style: TextStyle(fontSize: 18)),
+                  loading: () => const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  error: (_, __) => const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 );
               },
             ),

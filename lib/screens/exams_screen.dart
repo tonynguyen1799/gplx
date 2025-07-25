@@ -36,7 +36,7 @@ class ExamsScreen extends ConsumerWidget {
                   Navigator.of(context).pop();
                 },
               ),
-              title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18)),
+              title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
             body: const Center(child: Text('Không có đề thi nào.')),
           );
@@ -51,7 +51,7 @@ class ExamsScreen extends ConsumerWidget {
                 Navigator.of(context).pop();
               },
             ),
-            title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18)),
+            title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           ),
           body: Consumer(
             builder: (context, ref, _) {

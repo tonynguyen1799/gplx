@@ -76,7 +76,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         final bool isPassed = allFatalCorrect && correctCount >= minCorrect;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kết quả bài thi'),
+        title: const Text('Kết quả bài thi', style: TextStyle(fontWeight: FontWeight.w600)),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
@@ -169,6 +169,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                   return QuizShortcut(
                     quiz: quiz,
                     index: originalIndex,
+                    originalIndex: originalIndex,
                     selected: false,
                     onTap: () {
                       context.push('/exam-quiz', extra: {
@@ -182,6 +183,8 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                     },
                     contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     tileColor: tileColor,
+                    totalQuizzes: widget.quizzes.length,
+                    practiced: selected != null,
                   );
                 },
               ),

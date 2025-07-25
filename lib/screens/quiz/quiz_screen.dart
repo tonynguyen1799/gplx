@@ -419,6 +419,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                   : licenseType.name),
                         style: TextStyle(
                           fontSize: 18,
+                          fontWeight: FontWeight.w600,
                           color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
                         ),
                       ),
@@ -449,7 +450,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                                  // No border radius for flat edge
                                 ),
                                 child: SingleChildScrollView(
                                   child: Column(
@@ -462,7 +463,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         child: Text(
                                           'Lọc câu hỏi',
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
                                           ),
@@ -493,7 +494,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -504,7 +505,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -512,10 +513,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                               'not_done',
                                               isSelected:
                                                   _currentFilter == 'not_done',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
                                             ),
                                           ],
                                         ),
@@ -541,7 +538,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -574,7 +571,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -585,7 +582,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -790,7 +787,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                     child: Text(
                                                       'Chọn câu hỏi',
                                                       style: TextStyle(
-                                                        fontSize: 18,
+                                                        fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
@@ -814,8 +811,11 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                         return QuizShortcut(
                                                           quiz: q,
                                                           index: idx,
+                                                          originalIndex: quizzes.indexWhere((quiz) => quiz.id == q.id),
                                                           selected: idx == currentIndex,
                                                           onTap: () => Navigator.pop(context, idx),
+                                                          totalQuizzes: quizzes.length,
+                                                          practiced: statusMap[q.id]?.practiced == true,
                                                         );
                                                       },
                                                     ),

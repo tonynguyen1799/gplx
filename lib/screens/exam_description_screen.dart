@@ -48,7 +48,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
             }
           },
         ),
-        title: Text(widget.exam.name, style: TextStyle(fontSize: 18, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+        title: Text(widget.exam.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
         elevation: 0,
         backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
         foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
@@ -88,11 +88,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Số câu hỏi', textAlign: TextAlign.left, style: TextStyle(fontSize: 16, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                              child: Text('Số câu hỏi', textAlign: TextAlign.left, style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('${widget.exam.quizIds.length}', textAlign: TextAlign.right, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                              child: Text('${widget.exam.quizIds.length}', textAlign: TextAlign.right, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                             ),
                           ],
                         ),
@@ -103,11 +103,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Số câu đúng tối thiểu để đạt', textAlign: TextAlign.left, style: const TextStyle(fontSize: 16)),
+                              child: Text('Số câu đúng tối thiểu để đạt', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('$minCorrect/$numQuizzes', textAlign: TextAlign.right, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                              child: Text('$minCorrect/$numQuizzes', textAlign: TextAlign.right, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
@@ -118,11 +118,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Thời gian làm bài', textAlign: TextAlign.left, style: const TextStyle(fontSize: 16)),
+                              child: Text('Thời gian làm bài', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('$duration phút', textAlign: TextAlign.right, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                              child: Text('$duration phút', textAlign: TextAlign.right, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
@@ -133,7 +133,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Học viên trả lời sai câu hỏi điểm liệt sẽ bị trượt bài thi', textAlign: TextAlign.left, style: const TextStyle(fontSize: 16)),
+                              child: Text('Học viên trả lời sai câu hỏi điểm liệt sẽ bị trượt bài thi', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
                             ),
                           ],
                         ),
@@ -198,7 +198,7 @@ class _ExamModeSelector extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text('Chấm điểm sau khi nộp bài', style: TextStyle(fontSize: 16, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                title: Text('Chấm điểm sau khi nộp bài', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                 onTap: () => onModeChanged(0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 trailing: selectedMode == 0 ? Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.black) : null,
@@ -207,7 +207,7 @@ class _ExamModeSelector extends StatelessWidget {
               ),
               Divider(height: 1, thickness: 1, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[300], indent: 16, endIndent: 16),
               ListTile(
-                title: Text('Chấm điểm nhanh khi chọn đáp án', style: TextStyle(fontSize: 16, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                title: Text('Chấm điểm nhanh khi chọn đáp án', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                 onTap: () => onModeChanged(1),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 trailing: selectedMode == 1 ? Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.black) : null,

@@ -8,6 +8,9 @@ class QuizShortcut extends StatelessWidget {
   final VoidCallback onTap;
   final EdgeInsetsGeometry contentPadding;
   final Color tileColor;
+  final int totalQuizzes;
+  final int originalIndex;
+  final bool practiced;
 
   const QuizShortcut({
     Key? key,
@@ -15,6 +18,9 @@ class QuizShortcut extends StatelessWidget {
     required this.index,
     required this.selected,
     required this.onTap,
+    required this.totalQuizzes,
+    required this.originalIndex,
+    required this.practiced,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     this.tileColor = Colors.white,
   }) : super(key: key);
@@ -25,12 +31,40 @@ class QuizShortcut extends StatelessWidget {
       onTap: onTap,
       contentPadding: contentPadding,
       tileColor: tileColor,
-      title: Text(
-        'Câu ${index + 1}',
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
+      title: Row(
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Câu ${index + 1} | ',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black,
+                  ),
+                ),
+                TextSpan(
+                  text: '(${originalIndex + 1}/$totalQuizzes)',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (practiced) ...[
+            const SizedBox(width: 4),
+            const Text(
+              '| đã học',
+              style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(width: 2),
+            Icon(Icons.check_circle, color: Colors.green, size: 18),
+          ],
+        ],
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
