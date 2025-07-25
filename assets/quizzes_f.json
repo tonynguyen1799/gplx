@@ -1,0 +1,28 @@
+[
+  {
+    "id": "f-q1",
+    "licenseTypeCode": "F",
+    "topicIds": ["f-fatal", "f-t2"],
+    "text": "Biển nào là biển báo dành cho xe kéo rơ-moóc?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 0,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Biển 1 là biển báo dành cho xe kéo rơ-moóc."
+  },
+  {
+    "id": "f-q2",
+    "licenseTypeCode": "F",
+    "topicIds": ["f-t2"],
+    "text": "Xe kéo rơ-moóc phải nhường đường cho xe nào?",
+    "answers": ["Xe máy", "Xe tải", "Xe buýt", "Xe cứu thương"],
+    "correctIndex": 3,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe kéo rơ-moóc phải nhường đường cho xe cứu thương."
+  }
+] 
