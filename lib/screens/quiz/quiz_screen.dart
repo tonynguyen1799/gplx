@@ -395,9 +395,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                           padding: const EdgeInsets.only(left: 4),
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back, size: 24),
-                            onPressed: () async {
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                            },
+                                      onPressed: () async {
+            context.pop();
+          },
                           ),
                         ),
                       ],
@@ -782,7 +782,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.symmetric(
-                                                      vertical: 16,
+                                                      vertical: 8,
                                                     ),
                                                     child: Text(
                                                       'Chọn câu hỏi',
@@ -814,7 +814,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                           originalIndex: quizzes.indexWhere((quiz) => quiz.id == q.id),
                                                           selected: idx == currentIndex,
                                                           onTap: () => Navigator.pop(context, idx),
-                                                          totalQuizzes: quizzes.length,
+                                                          totalQuizzes: _currentFilteredQuizzes.length,
                                                           practiced: statusMap[q.id]?.practiced == true,
                                                         );
                                                       },

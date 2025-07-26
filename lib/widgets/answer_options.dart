@@ -52,7 +52,7 @@ class AnswerOptions extends StatelessWidget {
                                 : (Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null))
                         : (selectedIndex == i ? (Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.grey.shade300) : (Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null)))
                     : (Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

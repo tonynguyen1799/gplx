@@ -32,9 +32,9 @@ class ExamsScreen extends ConsumerWidget {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: 'Về trang chủ',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                            onPressed: () {
+              Navigator.of(context).pop();
+            },
               ),
               title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
@@ -48,7 +48,7 @@ class ExamsScreen extends ConsumerWidget {
               icon: const Icon(Icons.arrow_back),
               tooltip: 'Về trang chủ',
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
             title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
@@ -75,14 +75,10 @@ class ExamsScreen extends ConsumerWidget {
                     final incorrect = progress?.incorrectCount ?? 0;
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => ExamDescriptionScreen(
-                              exam: exam,
-                              licenseTypeCode: licenseTypeCode,
-                            ),
-                          ),
-                        );
+                        context.push('/exam-description', extra: {
+                          'exam': exam,
+                          'licenseTypeCode': licenseTypeCode,
+                        });
                       },
                       child: Container(
                         decoration: BoxDecoration(

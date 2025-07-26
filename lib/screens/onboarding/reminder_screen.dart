@@ -80,7 +80,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                     setState(() {
                       selectedTime = TimeOfDay(hour: tempTime.hour, minute: tempTime.minute);
                     });
-                    Navigator.of(context).pop();
+                    context.pop();
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -112,6 +112,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
             const Padding(
@@ -122,11 +123,13 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                   Text(
                     'Bật nhắc nhở học tập',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 24),
                   Text(
                     'Ứng dụng sẽ gửi thông báo nhắc nhở bạn học tập mỗi ngày.',
                     style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.left,
                   ),
                 ],
               ),

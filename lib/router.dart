@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 import 'package:gplx_vn/screens/home/home_screen.dart';
 import 'package:gplx_vn/screens/onboarding/get_started_screen.dart';
 import 'package:gplx_vn/screens/onboarding/onboarding_finish_screen.dart';
@@ -12,15 +13,14 @@ import 'package:gplx_vn/screens/quiz/exam_summary_screen.dart';
 import 'package:gplx_vn/screens/traffic_signs_screen.dart';
 import 'package:gplx_vn/screens/settings/settings_screen.dart';
 import 'package:gplx_vn/screens/info_screen.dart';
-
+import 'package:gplx_vn/screens/exam_description_screen.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
+
   routes: [
     GoRoute(
       path: '/',
       builder: (context, state) => const SplashScreen(),
-      // builder: (context, state) => const QuizScreen()
-      // builder: (context, state) => const HomeScreen()
     ),
     GoRoute(
       path: '/onboarding/get-started',
@@ -39,22 +39,37 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/info',
+      builder: (context, state) => const InfoScreen(),
+    ),
+    GoRoute(
       path: '/quiz',
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>?;
-        // Only allow practice/training mode here
         return QuizScreen(key: state.pageKey, extra: state.extra);
       },
     ),
     GoRoute(
       path: '/exam-quiz',
-      builder: (context, state) {
-          return ExamQuizScreen(key: state.pageKey, extra: state.extra);
-      },
+      builder: (context, state) => ExamQuizScreen(key: state.pageKey, extra: state.extra),
     ),
     GoRoute(
       path: '/exams',
       builder: (context, state) => const ExamsScreen(),
+    ),
+    GoRoute(
+      path: '/exam-description',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return ExamDescriptionScreen(
+          exam: extra?['exam'],
+          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
+        );
+      },
     ),
     GoRoute(
       path: '/exam-summary',
@@ -71,14 +86,6 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/traffic-signs',
       builder: (context, state) => const TrafficSignsScreen(),
-    ),
-    GoRoute(
-      path: '/settings',
-      builder: (context, state) => const SettingsScreen(),
-    ),
-    GoRoute(
-      path: '/info',
-      builder: (context, state) => const InfoScreen(),
     ),
   ],
 );

@@ -186,7 +186,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
           icon: const Icon(Icons.close, size: 24),
           onPressed: () async {
                 if (reviewMode) {
-                  Navigator.of(context).pop();
+                  context.pop();
                 } else {
             final shouldClose = await showDialog<bool>(
               context: context,
@@ -198,7 +198,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                       ),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
+                    onPressed: () => context.pop(false),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -209,7 +209,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
+                    onPressed: () => context.pop(true),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -249,7 +249,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                           content: Text('Bài thi đã hết thời gian. Bài làm sẽ được nộp tự động.', style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
         actions: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: () => context.pop(),
                               child: const Text('Đồng ý'),
                             ),
                           ],
@@ -276,7 +276,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                               ),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
+                        onPressed: () => context.pop(false),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -287,7 +287,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
+                        onPressed: () => context.pop(true),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

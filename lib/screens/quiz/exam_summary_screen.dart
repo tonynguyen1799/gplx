@@ -80,7 +80,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            context.go('/home');
           },
         ),
         backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,

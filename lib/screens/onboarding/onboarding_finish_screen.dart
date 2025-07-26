@@ -16,6 +16,7 @@ class OnboardingFinishScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
             const Padding(

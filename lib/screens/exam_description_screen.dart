@@ -41,11 +41,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
         leading: IconButton(
           icon: const Icon(Icons.close, size: 24),
           onPressed: () {
-            if (Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            } else {
-              context.push('/exams');
-            }
+            context.pop();
           },
         ),
         title: Text(widget.exam.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),

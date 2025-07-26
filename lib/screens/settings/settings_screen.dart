@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/hive_service.dart';
 import 'package:hive/hive.dart';
+import '../../widgets/bottom_navigation_bar.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -94,12 +95,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       );
     }
     return Scaffold(
-      appBar: AppBar(
+        bottomNavigationBar: const AppBottomNavigationBar(),
+        appBar: AppBar(
         title: const Text('Cài đặt', style: TextStyle(fontWeight: FontWeight.w600)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
