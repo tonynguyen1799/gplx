@@ -19,7 +19,7 @@ import 'package:gplx_vn/models/topic.dart';
 import 'package:gplx_vn/models/quiz_practice_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/learning_progress.provider.dart';
-import 'package:gplx_vn/widgets/home_bottom_bar.dart';
+import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
 
 ShortcutGridViewModel buildShortcutGridViewModel({required int saved, required int difficult, required int wrong}) {
   return ShortcutGridViewModel(saved: saved, difficult: difficult, wrong: wrong);
@@ -76,6 +76,7 @@ class HomeScreen extends ConsumerWidget {
           foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
           elevation: 0,
         ),
+        bottomNavigationBar: const AppBottomNavigationBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: FutureBuilder<String?>(
@@ -212,7 +213,10 @@ class HomeScreen extends ConsumerWidget {
                             context.go('/');
                           }
                         },
-                        label: const Text('Đặt lại tất cả dữ liệu & bắt đầu lại onboarding', style: TextStyle(fontWeight: FontWeight.bold)),
+                        label: const Text(
+                          'Đặt lại tất cả dữ liệu & bắt đầu lại onboarding',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   );
@@ -221,7 +225,6 @@ class HomeScreen extends ConsumerWidget {
             },
           ),
         ),
-        bottomNavigationBar: const HomeBottomBar(),
       );
   }
-}
+} 

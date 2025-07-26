@@ -27,17 +27,21 @@ class QuizShortcut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      contentPadding: contentPadding,
-      tileColor: tileColor,
+    return Container(
+      decoration: selected ? BoxDecoration(
+        color: Colors.blue.shade100,
+      ) : null,
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: contentPadding,
+        tileColor: selected ? Colors.transparent : tileColor,
       title: Row(
         children: [
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: 'Câu ${index + 1} | ',
+                  text: 'Câu ${index + 1}/${totalQuizzes} ',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -45,23 +49,36 @@ class QuizShortcut extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '(${originalIndex + 1}/$totalQuizzes)',
+                  text: '[${quiz.licenseTypeCode}.${originalIndex + 1}]',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.grey,
                   ),
                 ),
+                if (practiced) ...[
+                  TextSpan(
+                    text: ' | ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'đã học',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
           if (practiced) ...[
-            const SizedBox(width: 4),
-            const Text(
-              '| đã học',
-              style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(width: 2),
+            SizedBox(width: 4),
             Icon(Icons.check_circle, color: Colors.green, size: 18),
           ],
         ],
@@ -87,7 +104,7 @@ class QuizShortcut extends StatelessWidget {
               const SizedBox(width: 8),
               if (quiz.imageUrl != null && quiz.imageUrl!.isNotEmpty)
                 SizedBox(
-                  height: 48,
+                  height: 60,
                   child: Image.asset(
                     'assets/images/' + quiz.imageUrl!,
                     fit: BoxFit.fitHeight, // Height is fixed, width scales with aspect ratio
@@ -110,7 +127,8 @@ class QuizShortcut extends StatelessWidget {
       ),
       trailing: null,
       selected: selected,
-      selectedTileColor: Colors.blue.shade50,
+      selectedTileColor: Colors.blue,
+      ),
     );
   }
 } 

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "d-q1",
+    "licenseTypeCode": "D",
+    "topicIds": ["d-fatal", "d-t2"],
+    "text": "Biển nào là biển báo dành cho xe khách?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 2,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Cả hai biển đều dành cho xe khách."
+  },
+  {
+    "id": "d-q2",
+    "licenseTypeCode": "D",
+    "topicIds": ["d-t2"],
+    "text": "Xe khách phải nhường đường cho xe nào?",
+    "answers": ["Xe máy", "Xe tải", "Xe buýt", "Xe cứu thương"],
+    "correctIndex": 3,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe khách phải nhường đường cho xe cứu thương."
+  }
+] 

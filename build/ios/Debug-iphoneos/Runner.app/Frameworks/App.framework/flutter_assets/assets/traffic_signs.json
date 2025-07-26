@@ -1,0 +1,812 @@
+{
+    "prohibitory_signs": {
+      "name": "Biển báo cấm",
+      "signs": [
+        {
+          "code": "P101",
+          "filename": "/images/signs/P101.png",
+          "name": "Đường cấm",
+          "shortDescription": "Cấm tất cả các loại phương tiện.",
+          "description": "Báo hiệu đường cấm tất cả các loại phương tiện cơ giới và thô sơ đi lại, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P102",
+          "filename": "/images/signs/P102.png",
+          "name": "Cấm đi ngược chiều",
+          "shortDescription": "Cấm đi vào theo chiều đặt biển.",
+          "description": "Báo hiệu đường cấm các loại xe (cơ giới và thô sơ) đi vào theo chiều đặt biển, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P103a",
+          "filename": "/images/signs/P103a.png",
+          "name": "Cấm xe ô tô",
+          "shortDescription": "Cấm tất cả các loại xe ô tô.",
+          "description": "Báo hiệu đường cấm tất cả các loại xe cơ giới 3 bánh trở lên, trừ xe máy 2 bánh, xe gắn máy và các xe được ưu tiên."
+        },
+        {
+          "code": "P103b",
+          "filename": "/images/signs/P103b.png",
+          "name": "Cấm xe ô tô rẽ phải",
+          "shortDescription": "Cấm ô tô rẽ phải.",
+          "description": "Báo hiệu cấm xe ô tô rẽ phải ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P103c",
+          "filename": "/images/signs/P103c.png",
+          "name": "Cấm xe ô tô rẽ trái",
+          "shortDescription": "Cấm ô tô rẽ trái.",
+          "description": "Báo hiệu cấm xe ô tô rẽ trái ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P104",
+          "filename": "/images/signs/P104.png",
+          "name": "Cấm xe mô tô",
+          "shortDescription": "Cấm xe mô tô 2-3 bánh.",
+          "description": "Báo hiệu đường cấm các loại xe mô tô, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P105",
+          "filename": "/images/signs/P105.png",
+          "name": "Cấm xe ô tô và xe mô tô",
+          "shortDescription": "Cấm cả ô tô và mô tô.",
+          "description": "Báo hiệu đường cấm các loại xe ô tô và xe mô tô, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P106a",
+          "filename": "/images/signs/P106a.png",
+          "name": "Cấm xe ô tô tải",
+          "shortDescription": "Cấm ô tô tải.",
+          "description": "Báo hiệu đường cấm các loại xe ô tô tải, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P106b",
+          "filename": "/images/signs/P106b.png",
+          "name": "Cấm xe ô tô tải có khối lượng chuyên chở lớn hơn X tấn",
+          "shortDescription": "Cấm xe tải trên một tải trọng nhất định.",
+          "description": "Báo hiệu đường cấm các loại xe ô tô tải có khối lượng chuyên chở (theo giấy đăng ký) lớn hơn giá trị ghi trên biển."
+        },
+        {
+          "code": "P106c",
+          "filename": "/images/signs/P106c.png",
+          "name": "Cấm xe chở hàng nguy hiểm",
+          "shortDescription": "Cấm xe chở hàng hóa nguy hiểm.",
+          "description": "Báo hiệu đường cấm các xe chở hàng nguy hiểm."
+        },
+        {
+          "code": "P107",
+          "filename": "/images/signs/P107.png",
+          "name": "Cấm xe ô tô khách và xe ô tô tải",
+          "shortDescription": "Cấm ô tô khách và ô tô tải.",
+          "description": "Báo hiệu đường cấm xe ô tô chở khách và các loại xe ô tô tải, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P107a",
+          "filename": "/images/signs/P107a.png",
+          "name": "Cấm xe ô tô khách",
+          "shortDescription": "Cấm ô tô khách.",
+          "description": "Báo hiệu đường cấm ô tô chở khách đi qua, trừ các xe ưu tiên theo quy định."
+        },
+        {
+          "code": "P107b",
+          "filename": "/images/signs/P107b.png",
+          "name": "Cấm xe taxi",
+          "shortDescription": "Cấm xe taxi.",
+          "description": "Báo hiệu đường cấm xe taxi. Biển này thường được đặt kèm biển phụ để chỉ rõ."
+        },
+        {
+          "code": "P108",
+          "filename": "/images/signs/P108.png",
+          "name": "Cấm xe kéo rơ moóc",
+          "shortDescription": "Cấm xe kéo rơ moóc.",
+          "description": "Báo hiệu cấm các loại xe cơ giới kéo theo rơ moóc, trừ mô tô, máy kéo và xe khách kéo rơ moóc."
+        },
+        {
+          "code": "P108a",
+          "filename": "/images/signs/P108a.png",
+          "name": "Cấm xe sơ mi rơ moóc",
+          "shortDescription": "Cấm xe đầu kéo sơ mi rơ moóc.",
+          "description": "Báo hiệu cấm các loại xe sơ mi rơ moóc và xe khách kéo theo rơ moóc."
+        },
+        {
+          "code": "P109",
+          "filename": "/images/signs/P109.png",
+          "name": "Cấm máy kéo",
+          "shortDescription": "Cấm máy kéo.",
+          "description": "Báo hiệu đường cấm các loại máy kéo, bao gồm cả máy kéo bánh hơi và bánh xích."
+        },
+        {
+          "code": "P110a",
+          "filename": "/images/signs/P110a.png",
+          "name": "Cấm xe đạp",
+          "shortDescription": "Cấm xe đạp.",
+          "description": "Báo hiệu đường cấm xe đạp đi qua."
+        },
+        {
+          "code": "P110b",
+          "filename": "/images/signs/P110b.png",
+          "name": "Cấm xe đạp thồ",
+          "shortDescription": "Cấm xe đạp thồ.",
+          "description": "Báo hiệu đường cấm xe đạp thồ đi qua. Biển này không cấm người dắt xe đạp."
+        },
+        {
+          "code": "P111a",
+          "filename": "/images/signs/P111a.png",
+          "name": "Cấm xe gắn máy",
+          "shortDescription": "Cấm xe gắn máy (dưới 50cc).",
+          "description": "Báo hiệu đường cấm xe gắn máy đi qua. Biển không có giá trị đối với xe đạp."
+        },
+        {
+          "code": "P111b",
+          "filename": "/images/signs/P111b.png",
+          "name": "Cấm xe ba bánh loại có động cơ (xe lam)",
+          "shortDescription": "Cấm xe lam.",
+          "description": "Báo hiệu đường cấm xe ba bánh loại có động cơ như xe lam, xích lô máy."
+        },
+        {
+          "code": "P111c",
+          "filename": "/images/signs/P111c.png",
+          "name": "Cấm xe ba bánh loại có động cơ (xích lô máy)",
+          "shortDescription": "Cấm xích lô máy.",
+          "description": "Báo hiệu đường cấm xe ba bánh loại có động cơ như xích lô máy."
+        },
+        {
+          "code": "P111d",
+          "filename": "/images/signs/P111d.png",
+          "name": "Cấm xe máy chuyên dùng",
+          "shortDescription": "Cấm xe máy chuyên dùng.",
+          "description": "Báo hiệu đường cấm các loại xe máy chuyên dùng tự hành đi qua."
+        },
+        {
+          "code": "P112",
+          "filename": "/images/signs/P112.png",
+          "name": "Cấm người đi bộ",
+          "shortDescription": "Cấm người đi bộ.",
+          "description": "Báo hiệu đường cấm người đi bộ qua lại."
+        },
+        {
+          "code": "P113",
+          "filename": "/images/signs/P113.png",
+          "name": "Cấm xe người kéo, đẩy",
+          "shortDescription": "Cấm xe thô sơ kéo, đẩy.",
+          "description": "Báo hiệu đường cấm các loại xe thô sơ do người kéo hoặc đẩy đi qua."
+        },
+        {
+          "code": "P114",
+          "filename": "/images/signs/P114.png",
+          "name": "Cấm xe súc vật kéo",
+          "shortDescription": "Cấm xe do súc vật kéo.",
+          "description": "Báo hiệu đường cấm súc vật vận tải hàng hóa hoặc hành khách dù kéo xe hay chở trên lưng đi qua."
+        },
+        {
+          "code": "P115",
+          "filename": "/images/signs/P115.png",
+          "name": "Hạn chế trọng lượng xe",
+          "shortDescription": "Cấm xe có tổng trọng lượng vượt quá giới hạn.",
+          "description": "Báo hiệu cấm các loại xe (cơ giới và thô sơ) có trọng lượng toàn bộ (cả xe và hàng) vượt quá trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P116",
+          "filename": "/images/signs/P116.png",
+          "name": "Hạn chế trọng lượng trên trục xe",
+          "shortDescription": "Cấm xe có tải trọng trục vượt quá giới hạn.",
+          "description": "Báo hiệu cấm các loại xe (cơ giới và thô sơ) có trọng lượng phân bổ trên bất kỳ một trục nào của xe vượt quá trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P117",
+          "filename": "/images/signs/P117.png",
+          "name": "Hạn chế chiều cao",
+          "shortDescription": "Hạn chế chiều cao của xe và hàng.",
+          "description": "Báo hiệu cấm các xe (cơ giới và thô sơ) có chiều cao (tính từ mặt đường đến điểm cao nhất của xe hoặc hàng) vượt quá trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P118",
+          "filename": "/images/signs/P118.png",
+          "name": "Hạn chế chiều ngang xe",
+          "shortDescription": "Hạn chế chiều ngang của xe và hàng.",
+          "description": "Báo hiệu cấm các xe (cơ giới và thô sơ) có chiều ngang (kể cả hàng hóa) vượt quá trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P119",
+          "filename": "/images/signs/P119.png",
+          "name": "Hạn chế chiều dài xe",
+          "shortDescription": "Hạn chế chiều dài của xe.",
+          "description": "Báo hiệu cấm các xe (cơ giới và thô sơ) có chiều dài toàn bộ (kể cả hàng hóa) lớn hơn trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P120",
+          "filename": "/images/signs/P120.png",
+          "name": "Hạn chế chiều dài xe ô tô kéo rơ moóc",
+          "shortDescription": "Hạn chế chiều dài xe kéo rơ moóc.",
+          "description": "Báo hiệu cấm các loại xe cơ giới kéo theo rơ moóc có chiều dài toàn bộ (kể cả hàng hóa) lớn hơn trị số ghi trên biển đi qua."
+        },
+        {
+          "code": "P121",
+          "filename": "/images/signs/P121.png",
+          "name": "Cự ly tối thiểu giữa hai xe",
+          "shortDescription": "Giữ khoảng cách tối thiểu với xe trước.",
+          "description": "Báo hiệu yêu cầu các xe ô tô phải đi cách nhau một khoảng tối thiểu bằng trị số ghi trên biển."
+        },
+        {
+          "code": "P123a",
+          "filename": "/images/signs/P123a.png",
+          "name": "Cấm rẽ trái",
+          "shortDescription": "Cấm rẽ trái.",
+          "description": "Báo hiệu cấm các loại xe (cơ giới và thô sơ) rẽ sang phía trái ở những vị trí đường giao nhau, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P123b",
+          "filename": "/images/signs/P123b.png",
+          "name": "Cấm rẽ phải",
+          "shortDescription": "Cấm rẽ phải.",
+          "description": "Báo hiệu cấm các loại xe (cơ giới và thô sơ) rẽ sang phía phải ở những vị trí đường giao nhau, trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P124a1",
+          "filename": "/images/signs/P124a1.png",
+          "name": "Cấm quay đầu xe",
+          "shortDescription": "Cấm quay đầu xe.",
+          "description": "Báo hiệu cấm các loại xe quay đầu (theo kiểu chữ U), trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P124a2",
+          "filename": "/images/signs/P124a2.png",
+          "name": "Cấm quay đầu xe",
+          "shortDescription": "Cấm quay đầu xe.",
+          "description": "Báo hiệu cấm các loại xe quay đầu (theo kiểu chữ U), trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P124b1",
+          "filename": "/images/signs/P124b1.png",
+          "name": "Cấm ô tô quay đầu xe",
+          "shortDescription": "Cấm xe ô tô quay đầu.",
+          "description": "Báo hiệu cấm xe ô tô quay đầu (theo kiểu chữ U), trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P124b2",
+          "filename": "/images/signs/P124b2.png",
+          "name": "Cấm ô tô quay đầu xe",
+          "shortDescription": "Cấm xe ô tô quay đầu.",
+          "description": "Báo hiệu cấm xe ô tô quay đầu (theo kiểu chữ U), trừ các xe được ưu tiên theo quy định."
+        },
+        {
+          "code": "P124c",
+          "filename": "/images/signs/P124c.png",
+          "name": "Cấm rẽ trái và quay đầu xe",
+          "shortDescription": "Cấm rẽ trái và quay đầu.",
+          "description": "Báo hiệu cấm các loại xe rẽ trái và đồng thời cấm quay đầu."
+        },
+        {
+          "code": "P124d",
+          "filename": "/images/signs/P124d.png",
+          "name": "Cấm rẽ phải và quay đầu xe",
+          "shortDescription": "Cấm rẽ phải và quay đầu.",
+          "description": "Báo hiệu cấm các loại xe rẽ phải và đồng thời cấm quay đầu."
+        },
+        {
+          "code": "P124e",
+          "filename": "/images/signs/P124e.png",
+          "name": "Cấm ô tô rẽ trái và quay đầu xe",
+          "shortDescription": "Cấm ô tô rẽ trái và quay đầu.",
+          "description": "Báo hiệu cấm xe ô tô rẽ trái và đồng thời cấm quay đầu."
+        },
+        {
+          "code": "P124f",
+          "filename": "/images/signs/P124f.png",
+          "name": "Cấm ô tô rẽ phải và quay đầu xe",
+          "shortDescription": "Cấm ô tô rẽ phải và quay đầu.",
+          "description": "Báo hiệu cấm xe ô tô rẽ phải và đồng thời cấm quay đầu."
+        },
+        {
+          "code": "P125",
+          "filename": "/images/signs/P125.png",
+          "name": "Cấm vượt",
+          "shortDescription": "Cấm các loại xe cơ giới vượt nhau.",
+          "description": "Báo hiệu cấm các loại xe cơ giới vượt nhau trên đoạn đường có cắm biển này."
+        },
+        {
+          "code": "P126",
+          "filename": "/images/signs/P126.png",
+          "name": "Cấm xe ô tô tải vượt",
+          "shortDescription": "Cấm xe tải vượt.",
+          "description": "Báo hiệu cấm các loại ô tô tải có khối lượng chuyên chở lớn hơn 3.5 tấn vượt xe cơ giới khác."
+        },
+        {
+          "code": "P127-20",
+          "filename": "/images/signs/P127-20.png",
+          "name": "Tốc độ tối đa cho phép 20 km/h",
+          "shortDescription": "Tốc độ tối đa 20 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 20 km/h."
+        },
+        {
+          "code": "P127-30",
+          "filename": "/images/signs/P127-30.png",
+          "name": "Tốc độ tối đa cho phép 30 km/h",
+          "shortDescription": "Tốc độ tối đa 30 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 30 km/h."
+        },
+        {
+          "code": "P127-40",
+          "filename": "/images/signs/P127-40.png",
+          "name": "Tốc độ tối đa cho phép 40 km/h",
+          "shortDescription": "Tốc độ tối đa 40 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 40 km/h."
+        },
+        {
+          "code": "P127-50",
+          "filename": "/images/signs/P127-50.png",
+          "name": "Tốc độ tối đa cho phép 50 km/h",
+          "shortDescription": "Tốc độ tối đa 50 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 50 km/h."
+        },
+        {
+          "code": "P127-60",
+          "filename": "/images/signs/P127-60.png",
+          "name": "Tốc độ tối đa cho phép 60 km/h",
+          "shortDescription": "Tốc độ tối đa 60 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 60 km/h."
+        },
+        {
+          "code": "P127-70",
+          "filename": "/images/signs/P127-70.png",
+          "name": "Tốc độ tối đa cho phép 70 km/h",
+          "shortDescription": "Tốc độ tối đa 70 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 70 km/h."
+        },
+        {
+          "code": "P127-80",
+          "filename": "/images/signs/P127-80.png",
+          "name": "Tốc độ tối đa cho phép 80 km/h",
+          "shortDescription": "Tốc độ tối đa 80 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 80 km/h."
+        },
+        {
+          "code": "P127-90",
+          "filename": "/images/signs/P127-90.png",
+          "name": "Tốc độ tối đa cho phép 90 km/h",
+          "shortDescription": "Tốc độ tối đa 90 km/h.",
+          "description": "Báo hiệu cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá 90 km/h."
+        },
+        {
+          "code": "P127a",
+          "filename": "/images/signs/P127a.png",
+          "name": "Tốc độ tối đa cho phép trên từng làn đường",
+          "shortDescription": "Tốc độ tối đa trên mỗi làn.",
+          "description": "Quy định tốc độ tối đa cho phép trên từng làn đường theo chiều xe chạy."
+        },
+        {
+          "code": "P127b",
+          "filename": "/images/signs/P127b.png",
+          "name": "Tốc độ tối đa cho phép theo phương tiện trên từng làn đường",
+          "shortDescription": "Tốc độ tối đa theo xe và làn.",
+          "description": "Quy định tốc độ tối đa cho phép theo từng loại phương tiện trên từng làn đường."
+        },
+        {
+          "code": "P127c",
+          "filename": "/images/signs/P127c.png",
+          "name": "Biển ghép tốc độ tối đa cho phép trên từng làn đường",
+          "shortDescription": "Biển ghép tốc độ tối đa trên làn.",
+          "description": "Quy định tốc độ tối đa cho phép trên các làn đường, thường được treo trên cao."
+        },
+        {
+          "code": "P128",
+          "filename": "/images/signs/P128.png",
+          "name": "Cấm sử dụng còi",
+          "shortDescription": "Cấm bóp còi.",
+          "description": "Báo hiệu cấm các loại xe sử dụng còi tại đoạn đường có cắm biển này."
+        },
+        {
+          "code": "P129",
+          "filename": "/images/signs/P129.png",
+          "name": "Kiểm tra",
+          "shortDescription": "Dừng lại để kiểm tra.",
+          "description": "Báo hiệu có trạm kiểm tra; các phương tiện phải dừng lại để làm thủ tục kiểm tra, kiểm soát theo quy định."
+        },
+        {
+          "code": "P130",
+          "filename": "/images/signs/P130.png",
+          "name": "Cấm dừng xe và đỗ xe",
+          "shortDescription": "Cấm dừng và đỗ xe.",
+          "description": "Báo hiệu cấm các loại xe dừng và đỗ ở đoạn đường có cắm biển này."
+        },
+        {
+          "code": "P131a",
+          "filename": "/images/signs/P131a.png",
+          "name": "Cấm đỗ xe",
+          "shortDescription": "Cấm đỗ xe.",
+          "description": "Báo hiệu cấm các loại xe đỗ ở đoạn đường có cắm biển này, nhưng được phép dừng xe."
+        },
+        {
+          "code": "P131b",
+          "filename": "/images/signs/P131b.png",
+          "name": "Cấm đỗ xe ngày lẻ",
+          "shortDescription": "Cấm đỗ xe vào các ngày lẻ.",
+          "description": "Báo hiệu cấm các loại xe đỗ ở đoạn đường này vào các ngày lẻ (1, 3, 5...) trong tháng."
+        },
+        {
+          "code": "P131c",
+          "filename": "/images/signs/P131c.png",
+          "name": "Cấm đỗ xe ngày chẵn",
+          "shortDescription": "Cấm đỗ xe vào các ngày chẵn.",
+          "description": "Báo hiệu cấm các loại xe đỗ ở đoạn đường này vào các ngày chẵn (2, 4, 6...) trong tháng."
+        },
+        {
+          "code": "P133",
+          "filename": "/images/signs/P133.png",
+          "name": "Hết cấm vượt",
+          "shortDescription": "Hết đoạn đường cấm vượt.",
+          "description": "Báo hiệu đã hết đoạn đường cấm vượt đối với các loại xe cơ giới."
+        },
+        {
+          "code": "P134",
+          "filename": "/images/signs/P134.png",
+          "name": "Hết tốc độ tối đa cho phép",
+          "shortDescription": "Hết giới hạn tốc độ tối đa.",
+          "description": "Báo hiệu đã hết đoạn đường giới hạn tốc độ tối đa."
+        },
+        {
+          "code": "P135",
+          "filename": "/images/signs/P135.png",
+          "name": "Hết tất cả các lệnh cấm",
+          "shortDescription": "Hết mọi lệnh cấm.",
+          "description": "Báo hiệu đã hết hiệu lực của tất cả các biển báo cấm đã được đặt trước đó trên đoạn đường."
+        },
+        {
+          "code": "P136",
+          "filename": "/images/signs/P136.png",
+          "name": "Cấm đi thẳng",
+          "shortDescription": "Cấm đi thẳng.",
+          "description": "Báo hiệu cấm tất cả các loại xe đi thẳng ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P137",
+          "filename": "/images/signs/P137.png",
+          "name": "Cấm rẽ trái và rẽ phải",
+          "shortDescription": "Cấm rẽ trái và phải.",
+          "description": "Báo hiệu cấm các loại xe rẽ trái và rẽ phải ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P138",
+          "filename": "/images/signs/P138.png",
+          "name": "Cấm đi thẳng và rẽ trái",
+          "shortDescription": "Cấm đi thẳng và rẽ trái.",
+          "description": "Báo hiệu cấm các loại xe đi thẳng và rẽ trái ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P139",
+          "filename": "/images/signs/P139.png",
+          "name": "Cấm đi thẳng và rẽ phải",
+          "shortDescription": "Cấm đi thẳng và rẽ phải.",
+          "description": "Báo hiệu cấm các loại xe đi thẳng và rẽ phải ở ngã rẽ tiếp theo."
+        },
+        {
+          "code": "P140",
+          "filename": "/images/signs/P140.png",
+          "name": "Cấm xe công nông và các loại xe tương tự",
+          "shortDescription": "Cấm xe công nông.",
+          "description": "Báo hiệu đường cấm xe công nông và các loại xe cơ giới tương tự."
+        },
+        {
+          "code": "DP127a",
+          "filename": "/images/signs/DP127a.png",
+          "name": "Hết tốc độ tối đa cho phép theo biển ghép",
+          "shortDescription": "Hết giới hạn tốc độ tối đa theo biển ghép.",
+          "description": "Báo hiệu hết đoạn đường có tốc độ tối đa cho phép theo biển ghép."
+        },
+        {
+          "code": "DP127b",
+          "filename": "/images/signs/DP127b.png",
+          "name": "Hết tốc độ tối đa cho phép về ban đêm",
+          "shortDescription": "Hết giới hạn tốc độ tối đa vào ban đêm.",
+          "description": "Báo hiệu hết đoạn đường có tốc độ tối đa cho phép về ban đêm."
+        },
+        {
+          "code": "DP127c",
+          "filename": "/images/signs/DP127c.png",
+          "name": "Hết tốc độ tối đa cho phép trong khu vực",
+          "shortDescription": "Hết khu vực giới hạn tốc độ tối đa.",
+          "description": "Báo hiệu hết khu vực có giới hạn tốc độ tối đa cho phép."
+        }
+      ]
+    },
+    "warning_signs": {
+      "name": "Biển báo nguy hiểm",
+      "signs": [
+        { "code": "W201a", "filename": "/images/signs/W201a.png", "name": "Chỗ ngoặt nguy hiểm vòng bên trái", "shortDescription": "Báo trước sắp đến chỗ ngoặt nguy hiểm.", "description": "Báo trước sắp đến một chỗ ngoặt nguy hiểm vòng sang bên trái. Người lái xe cần giảm tốc độ và đi sát vào phần đường bên phải." },
+        { "code": "W201b", "filename": "/images/signs/W201b.png", "name": "Chỗ ngoặt nguy hiểm vòng bên phải", "shortDescription": "Báo trước sắp đến chỗ ngoặt nguy hiểm.", "description": "Báo trước sắp đến một chỗ ngoặt nguy hiểm vòng sang bên phải. Người lái xe cần giảm tốc độ và đi sát vào phần đường bên trái." },
+        { "code": "W201c", "filename": "/images/signs/W201c.png", "name": "Chỗ ngoặt nguy hiểm có nguy cơ lật xe bên phải", "shortDescription": "Nguy cơ lật xe khi rẽ trái.", "description": "Cảnh báo chỗ ngoặt nguy hiểm, đường cong vòng sang trái có nguy cơ lật xe về bên phải. Cần giảm tốc độ." },
+        { "code": "W201d", "filename": "/images/signs/W201d.png", "name": "Chỗ ngoặt nguy hiểm có nguy cơ lật xe bên trái", "shortDescription": "Nguy cơ lật xe khi rẽ phải.", "description": "Cảnh báo chỗ ngoặt nguy hiểm, đường cong vòng sang phải có nguy cơ lật xe về bên trái. Cần giảm tốc độ." },
+        { "code": "W202a", "filename": "/images/signs/W202a.png", "name": "Nhiều chỗ ngoặt nguy hiểm liên tiếp, ngoặt đầu tiên bên trái", "shortDescription": "Nhiều chỗ ngoặt liên tiếp.", "description": "Báo trước sắp đến nhiều chỗ ngoặt nguy hiểm liên tiếp, trong đó chỗ ngoặt đầu tiên hướng sang trái." },
+        { "code": "W202b", "filename": "/images/signs/W202b.png", "name": "Nhiều chỗ ngoặt nguy hiểm liên tiếp, ngoặt đầu tiên bên phải", "shortDescription": "Nhiều chỗ ngoặt liên tiếp.", "description": "Báo trước sắp đến nhiều chỗ ngoặt nguy hiểm liên tiếp, trong đó chỗ ngoặt đầu tiên hướng sang phải." },
+        { "code": "W203a", "filename": "/images/signs/W203a.png", "name": "Đường bị hẹp cả hai bên", "shortDescription": "Đường hẹp cả hai bên.", "description": "Báo trước sắp đến đoạn đường bị hẹp lại ở cả hai phía." },
+        { "code": "W203b", "filename": "/images/signs/W203b.png", "name": "Đường bị hẹp về phía trái", "shortDescription": "Đường hẹp bên trái.", "description": "Báo trước sắp đến đoạn đường bị hẹp lại ở phía bên trái." },
+        { "code": "W203c", "filename": "/images/signs/W203c.png", "name": "Đường bị hẹp về phía phải", "shortDescription": "Đường hẹp bên phải.", "description": "Báo trước sắp đến đoạn đường bị hẹp lại ở phía bên phải." },
+        { "code": "W204", "filename": "/images/signs/W204.png", "name": "Đường hai chiều", "shortDescription": "Bắt đầu đường hai chiều.", "description": "Báo trước sắp đến đoạn đường do sửa chữa hoặc có trở ngại ở một phía nên phải tổ chức đi lại trên phần đường còn lại hoặc sắp đến đoạn đường đôi tạm thời." },
+        { "code": "W205a", "filename": "/images/signs/W205a.png", "name": "Đường giao nhau cùng cấp", "shortDescription": "Giao nhau với đường cùng cấp.", "description": "Báo trước sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường ưu tiên)." },
+        { "code": "W205b", "filename": "/images/signs/W205b.png", "name": "Đường giao nhau cùng cấp", "shortDescription": "Giao nhau với đường cùng cấp.", "description": "Báo trước sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường ưu tiên)." },
+        { "code": "W205c", "filename": "/images/signs/W205c.png", "name": "Đường giao nhau cùng cấp", "shortDescription": "Giao nhau với đường cùng cấp.", "description": "Báo trước sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường ưu tiên)." },
+        { "code": "W205d", "filename": "/images/signs/W205d.png", "name": "Đường giao nhau cùng cấp", "shortDescription": "Giao nhau với đường cùng cấp.", "description": "Báo trước sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường ưu tiên)." },
+        { "code": "W205e", "filename": "/images/signs/W205e.png", "name": "Đường giao nhau cùng cấp", "shortDescription": "Giao nhau với đường cùng cấp.", "description": "Báo trước sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường ưu tiên)." },
+        { "code": "W206", "filename": "/images/signs/W206.png", "name": "Giao nhau chạy theo vòng xuyến", "shortDescription": "Giao nhau có vòng xuyến.", "description": "Báo trước nơi giao nhau có bố trí đảo an toàn ở giữa, các loại xe qua nút giao phải đi vòng xuyến theo chiều mũi tên." },
+        { "code": "W207a", "filename": "/images/signs/W207a.png", "name": "Giao nhau với đường không ưu tiên", "shortDescription": "Giao nhau với đường không ưu tiên.", "description": "Báo trước sắp đến nơi giao nhau với đường không ưu tiên. Xe đi trên đường có biển này được quyền ưu tiên qua nơi giao nhau." },
+        { "code": "W207b", "filename": "/images/signs/W207b.png", "name": "Giao nhau với đường không ưu tiên", "shortDescription": "Nhánh không ưu tiên bên phải.", "description": "Báo trước sắp đến nơi giao nhau với đường không ưu tiên ở phía bên phải." },
+        { "code": "W207c", "filename": "/images/signs/W207c.png", "name": "Giao nhau với đường không ưu tiên", "shortDescription": "Nhánh không ưu tiên bên trái.", "description": "Báo trước sắp đến nơi giao nhau với đường không ưu tiên ở phía bên trái." },
+        { "code": "W208", "filename": "/images/signs/W208.png", "name": "Giao nhau với đường ưu tiên", "shortDescription": "Giao nhau với đường ưu tiên.", "description": "Báo trước sắp đến nơi giao nhau với đường ưu tiên. Xe đi trên đường có biển này phải nhường đường." },
+        { "code": "W209", "filename": "/images/signs/W209.png", "name": "Giao nhau có tín hiệu đèn", "shortDescription": "Giao nhau có đèn tín hiệu.", "description": "Báo trước nơi giao nhau có sự điều khiển giao thông bằng tín hiệu đèn." },
+        { "code": "W210", "filename": "/images/signs/W210.png", "name": "Giao nhau với đường sắt có rào chắn", "shortDescription": "Giao nhau với đường sắt có rào chắn.", "description": "Báo trước sắp đến chỗ giao nhau giữa đường bộ và đường sắt có rào chắn kín hay rào chắn nửa kín và có nhân viên ngành đường sắt điều khiển giao thông." },
+        { "code": "W211a", "filename": "/images/signs/W211a.png", "name": "Giao nhau với đường sắt không có rào chắn", "shortDescription": "Giao nhau với đường sắt không có rào chắn.", "description": "Báo trước sắp đến chỗ giao nhau giữa đường bộ và đường sắt không có rào chắn, không có người điều khiển giao thông." },
+        { "code": "W211b", "filename": "/images/signs/W211b.png", "name": "Giao nhau với đường tàu điện", "shortDescription": "Giao nhau với đường tàu điện.", "description": "Báo trước sắp đến nơi giao nhau với đường tàu điện." },
+        { "code": "W212", "filename": "/images/signs/W212.png", "name": "Cầu hẹp", "shortDescription": "Cầu hẹp.", "description": "Báo hiệu phía trước là cây cầu có chiều rộng phần xe chạy nhỏ hơn hoặc bằng 4,5 mét." },
+        { "code": "W213", "filename": "/images/signs/W213.png", "name": "Cầu tạm", "shortDescription": "Cầu tạm.", "description": "Báo hiệu phía trước là cây cầu được làm tạm thời, thường có tải trọng yếu và không bền vững." },
+        { "code": "W214", "filename": "/images/signs/W214.png", "name": "Cầu quay - cầu cất", "shortDescription": "Cầu quay hoặc cầu cất.", "description": "Báo hiệu phía trước là loại cầu có thể quay hoặc nâng lên cho tàu thuyền lớn qua lại." },
+        { "code": "W215a", "filename": "/images/signs/W215a.png", "name": "Kè, vực sâu phía trước", "shortDescription": "Phía trước là kè, vực sâu.", "description": "Báo trước sắp đến một vị trí có kè chắn hoặc vực sâu, bờ sông, ao hồ ngay sát mép đường." },
+        { "code": "W215b", "filename": "/images/signs/W215b.png", "name": "Kè, vực sâu bên đường phía phải", "shortDescription": "Kè, vực sâu bên phải.", "description": "Cảnh báo đoạn đường đi sát với kè, vực sâu hoặc bờ sông, ao hồ ở phía bên phải." },
+        { "code": "W215c", "filename": "/images/signs/W215c.png", "name": "Kè, vực sâu bên đường phía trái", "shortDescription": "Kè, vực sâu bên trái.", "description": "Cảnh báo đoạn đường đi sát với kè, vực sâu hoặc bờ sông, ao hồ ở phía bên trái." },
+        { "code": "W216a", "filename": "/images/signs/W216a.png", "name": "Đường ngầm", "shortDescription": "Đường ngầm, tràn.", "description": "Báo trước vị trí có đường ngầm, là đoạn đường bộ cắt qua dòng nước, thường không có cầu." },
+        { "code": "W216b", "filename": "/images/signs/W216b.png", "name": "Đường ngầm có nguy cơ lũ quét", "shortDescription": "Đường ngầm có nguy cơ lũ quét.", "description": "Cảnh báo đường ngầm thường có lũ quét đột ngột, nguy hiểm." },
+        { "code": "W217", "filename": "/images/signs/W217.png", "name": "Bến phà", "shortDescription": "Sắp đến bến phà.", "description": "Báo trước sắp đến bến phà, nơi phương tiện phải di chuyển qua sông bằng phà." },
+        { "code": "W218", "filename": "/images/signs/W218.png", "name": "Cửa chui", "shortDescription": "Phía trước có cửa chui.", "description": "Báo trước sắp đến một đường hầm, cổng hoặc cấu trúc có giới hạn chiều cao." },
+        { "code": "W219", "filename": "/images/signs/W219.png", "name": "Dốc xuống nguy hiểm", "shortDescription": "Dốc xuống nguy hiểm.", "description": "Báo trước sắp đến đoạn đường dốc xuống. Con số trên biển chỉ độ dốc (%)." },
+        { "code": "W220", "filename": "/images/signs/W220.png", "name": "Dốc lên nguy hiểm", "shortDescription": "Dốc lên nguy hiểm.", "description": "Báo trước sắp đến đoạn đường dốc lên. Con số trên biển chỉ độ dốc (%)." },
+        { "code": "W221a", "filename": "/images/signs/W221a.png", "name": "Đường có ổ gà, lồi lõm", "shortDescription": "Đường không bằng phẳng.", "description": "Báo trước đoạn đường có mặt đường không bằng phẳng, lồi lõm, có ổ gà." },
+        { "code": "W221b", "filename": "/images/signs/W221b.png", "name": "Đường có gồ giảm tốc", "shortDescription": "Có gồ giảm tốc.", "description": "Báo trước sắp đến đoạn đường có gồ giảm tốc hoặc gờ giảm tốc nhân tạo." },
+        { "code": "W222a", "filename": "/images/signs/W222a.png", "name": "Đường trơn", "shortDescription": "Đường trơn trượt.", "description": "Báo trước đoạn đường có thể bị trơn trượt khi thời tiết xấu hoặc do các nguyên nhân khác." },
+        { "code": "W222b", "filename": "/images/signs/W222b.png", "name": "Đường có băng tuyết", "shortDescription": "Đường có băng tuyết.", "description": "Cảnh báo đoạn đường có thể có băng tuyết, gây trơn trượt nguy hiểm." },
+        { "code": "W223a", "filename": "/images/signs/W223a.png", "name": "Vách núi nguy hiểm bên trái", "shortDescription": "Vách núi nguy hiểm bên trái.", "description": "Cảnh báo có vách núi nguy hiểm ở phía bên trái của đường." },
+        { "code": "W223b", "filename": "/images/signs/W223b.png", "name": "Vách núi nguy hiểm bên phải", "shortDescription": "Vách núi nguy hiểm bên phải.", "description": "Cảnh báo có vách núi nguy hiểm ở phía bên phải của đường." },
+        { "code": "W224", "filename": "/images/signs/W224.png", "name": "Đường người đi bộ cắt ngang", "shortDescription": "Người đi bộ cắt ngang.", "description": "Báo trước sắp đến phần đường dành cho người đi bộ sang đường. Các phương tiện phải giảm tốc độ và nhường đường." },
+        { "code": "W225", "filename": "/images/signs/W225.png", "name": "Trẻ em", "shortDescription": "Khu vực có trẻ em.", "description": "Báo trước gần đến đoạn đường thường có trẻ em đi ngang qua hoặc tụ tập trên đường như ở gần trường học, khu vui chơi." },
+        { "code": "W226", "filename": "/images/signs/W226.png", "name": "Đường người đi xe đạp cắt ngang", "shortDescription": "Xe đạp cắt ngang.", "description": "Báo trước gần đến vị trí thường có người đi xe đạp cắt ngang qua đường." },
+        { "code": "W227", "filename": "/images/signs/W227.png", "name": "Công trường", "shortDescription": "Phía trước có công trường.", "description": "Báo trước gần đến đoạn đường đang tiến hành thi công, sửa chữa." },
+        { "code": "W228a", "filename": "/images/signs/W228a.png", "name": "Đá lở (ta-luy dương bên trái)", "shortDescription": "Nguy cơ đá lở.", "description": "Báo trước gần đến đoạn đường có thể có đất đá sụt lở bất ngờ từ ta-luy dương bên trái." },
+        { "code": "W228b", "filename": "/images/signs/W228b.png", "name": "Đá lở (ta-luy dương bên phải)", "shortDescription": "Nguy cơ đá lở.", "description": "Báo trước gần đến đoạn đường có thể có đất đá sụt lở bất ngờ từ ta-luy dương bên phải." },
+        { "code": "W228c", "filename": "/images/signs/W228c.png", "name": "Sỏi đá bắn lên", "shortDescription": "Đường có sỏi đá bắn lên.", "description": "Báo trước nơi có kết cấu mặt đường rời rạc, khi xe đi qua có thể làm các viên đá, sỏi văng lên gây nguy hiểm." },
+        { "code": "W228d", "filename": "/images/signs/W228d.png", "name": "Nền đường yếu", "shortDescription": "Nền đường yếu.", "description": "Cảnh báo đoạn đường có nền đường yếu, việc vận hành xe ở tốc độ cao có thể gây nguy hiểm." },
+        { "code": "W229", "filename": "/images/signs/W229.png", "name": "Dải máy bay lên xuống", "shortDescription": "Đường băng máy bay cắt ngang.", "description": "Báo trước gần đến vị trí đường bộ cắt ngang đường băng của sân bay." },
+        { "code": "W230", "filename": "/images/signs/W230.png", "name": "Gia súc", "shortDescription": "Khu vực có gia súc.", "description": "Báo trước gần đến đoạn đường thường có gia súc đi qua hoặc được chăn thả gần đường." },
+        { "code": "W231", "filename": "/images/signs/W231.png", "name": "Thú rừng vượt qua đường", "shortDescription": "Thú rừng qua đường.", "description": "Báo trước gần đến đoạn đường thường có thú rừng qua đường." },
+        { "code": "W232", "filename": "/images/signs/W232.png", "name": "Gió ngang", "shortDescription": "Cảnh báo gió ngang mạnh.", "description": "Báo trước gần đến đoạn đường thường có gió ngang thổi mạnh, gây nguy hiểm cho phương tiện." },
+        { "code": "W233", "filename": "/images/signs/W233.png", "name": "Nguy hiểm khác", "shortDescription": "Cảnh báo nguy hiểm khác.", "description": "Báo hiệu có một mối nguy hiểm không thể diễn tả bằng các biển báo khác. Thường có biển phụ đi kèm để chỉ rõ nguy hiểm." },
+        { "code": "W234", "filename": "/images/signs/W234.png", "name": "Giao nhau với đường hai chiều", "shortDescription": "Giao nhau với đường hai chiều.", "description": "Báo trước sắp đến nơi giao nhau với đường hai chiều, dùng trên đường một chiều." },
+        { "code": "W235", "filename": "/images/signs/W235.png", "name": "Đường đôi", "shortDescription": "Bắt đầu đường đôi.", "description": "Báo hiệu phía trước sắp đến đoạn đường có dải phân cách chia hai chiều xe chạy riêng biệt." },
+        { "code": "W236", "filename": "/images/signs/W236.png", "name": "Kết thúc đường đôi", "shortDescription": "Kết thúc đường đôi.", "description": "Báo hiệu phía trước sắp kết thúc đoạn đường có dải phân cách chia hai chiều xe chạy riêng biệt." },
+        { "code": "W237", "filename": "/images/signs/W237.png", "name": "Cầu vồng", "shortDescription": "Phía trước có cầu vồng.", "description": "Báo hiệu sắp đến cây cầu có độ vồng lớn, ảnh hưởng đến tầm nhìn." },
+        { "code": "W238", "filename": "/images/signs/W238.png", "name": "Đường cao tốc phía trước", "shortDescription": "Sắp vào đường cao tốc.", "description": "Báo hiệu sắp đến đường dẫn vào đường cao tốc." },
+        { "code": "W239a", "filename": "/images/signs/W239a.png", "name": "Đường cáp điện ở phía trên", "shortDescription": "Có đường dây điện phía trên.", "description": "Báo hiệu có đường dây điện cắt ngang phía trên tuyến đường." },
+        { "code": "W239b", "filename": "/images/signs/W239b.png", "name": "Chiều cao tĩnh không thực tế", "shortDescription": "Chiều cao an toàn thực tế.", "description": "Biển báo xác định chiều cao an toàn thực tế của đường dây điện phía trên." },
+        { "code": "W240", "filename": "/images/signs/W240.png", "name": "Đường hầm", "shortDescription": "Phía trước có đường hầm.", "description": "Báo hiệu sắp đến công trình hầm đường bộ." },
+        { "code": "W241", "filename": "/images/signs/W241.png", "name": "Ùn tắc giao thông", "shortDescription": "Đoạn đường hay ùn tắc.", "description": "Báo trước đoạn đường thường xuyên xảy ra ùn tắc giao thông." },
+        { "code": "W242a", "filename": "/images/signs/W242a.png", "name": "Nơi đường sắt giao vuông góc với đường bộ", "shortDescription": "Đường sắt giao vuông góc.", "description": "Đặt tại vị trí đường sắt giao vuông góc với đường bộ, không có rào chắn và không có người gác." },
+        { "code": "W242b", "filename": "/images/signs/W242b.png", "name": "Nơi đường sắt giao vuông góc với đường bộ", "shortDescription": "Đường sắt giao vuông góc.", "description": "Đặt tại vị trí đường sắt (từ 2 tuyến trở lên) giao vuông góc với đường bộ, không có rào chắn và không có người gác." },
+        { "code": "W243a", "filename": "/images/signs/W243a.png", "name": "Nơi đường sắt giao không vuông góc với đường bộ", "shortDescription": "Đường sắt giao không vuông góc.", "description": "Báo trước sắp đến vị trí giao cắt với đường sắt không vuông góc, cách 50m." },
+        { "code": "W243b", "filename": "/images/signs/W243b.png", "name": "Nơi đường sắt giao không vuông góc với đường bộ", "shortDescription": "Đường sắt giao không vuông góc.", "description": "Báo trước sắp đến vị trí giao cắt với đường sắt không vuông góc, cách 100m." },
+        { "code": "W243c", "filename": "/images/signs/W243c.png", "name": "Nơi đường sắt giao không vuông góc với đường bộ", "shortDescription": "Đường sắt giao không vuông góc.", "description": "Báo trước sắp đến vị trí giao cắt với đường sắt không vuông góc, cách 150m." },
+        { "code": "W244", "filename": "/images/signs/W244.png", "name": "Đoạn đường hay xảy ra tai nạn", "shortDescription": "Đoạn đường hay xảy ra tai nạn.", "description": "Cảnh báo nguy hiểm đoạn đường phía trước thường xảy ra tai nạn." },
+        { "code": "W245a", "filename": "/images/signs/W245a.png", "name": "Đi chậm", "shortDescription": "Đi chậm.", "description": "Nhắc nhở người lái xe giảm tốc độ để đi chậm." },
+        { "code": "W245b", "filename": "/images/signs/W245b.png", "name": "Đi chậm", "shortDescription": "Đi chậm.", "description": "Nhắc nhở người lái xe giảm tốc độ để đi chậm (phiên bản chữ). " },
+        { "code": "W246a", "filename": "/images/signs/W246a.png", "name": "Chú ý chướng ngại vật - Vòng tránh sang trái", "shortDescription": "Chướng ngại vật, vòng sang trái.", "description": "Báo hiệu có chướng ngại vật phía trước, xe cần đi vòng sang bên trái để tránh." },
+        { "code": "W246b", "filename": "/images/signs/W246b.png", "name": "Chú ý chướng ngại vật - Vòng tránh sang phải", "shortDescription": "Chướng ngại vật, vòng sang phải.", "description": "Báo hiệu có chướng ngại vật phía trước, xe cần đi vòng sang bên phải để tránh." },
+        { "code": "W246c", "filename": "/images/signs/W246c.png", "name": "Chú ý chướng ngại vật - Vòng tránh hai bên", "shortDescription": "Chướng ngại vật, vòng tránh hai bên.", "description": "Báo hiệu có chướng ngại vật ở giữa, xe có thể đi vòng sang cả hai bên để tránh." },
+        { "code": "W247", "filename": "/images/signs/W247.png", "name": "Chú ý xe đỗ", "shortDescription": "Chú ý xe đỗ.", "description": "Cảnh báo có các phương tiện đang đỗ chiếm một phần đường xe chạy." }
+      ]
+    },
+    "mandatory_signs": {
+      "name": "Biển hiệu lệnh",
+      "signs": [
+        { "code": "R301a", "filename": "/images/signs/R301a.png", "name": "Hướng đi thẳng phải theo", "shortDescription": "Bắt buộc đi thẳng.", "description": "Báo hiệu các xe chỉ được đi thẳng." },
+        { "code": "R301b", "filename": "/images/signs/R301b.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc rẽ phải.", "description": "Báo hiệu các xe chỉ được rẽ phải." },
+        { "code": "R301c", "filename": "/images/signs/R301c.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc rẽ trái.", "description": "Báo hiệu các xe chỉ được rẽ trái." },
+        { "code": "R301d", "filename": "/images/signs/R301d.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc rẽ phải hoặc đi thẳng.", "description": "Báo hiệu các xe được phép đi thẳng hoặc rẽ phải." },
+        { "code": "R301e", "filename": "/images/signs/R301e.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc rẽ trái hoặc đi thẳng.", "description": "Báo hiệu các xe được phép đi thẳng hoặc rẽ trái." },
+        { "code": "R301f", "filename": "/images/signs/R301f.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc rẽ trái hoặc rẽ phải.", "description": "Báo hiệu các xe được phép rẽ trái hoặc rẽ phải." },
+        { "code": "R301g", "filename": "/images/signs/R301g.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc đi thẳng hoặc rẽ trái.", "description": "Báo hiệu các xe được phép đi thẳng hoặc rẽ trái." },
+        { "code": "R301i", "filename": "/images/signs/R301i.png", "name": "Hướng đi phải theo", "shortDescription": "Bắt buộc đi thẳng hoặc rẽ phải.", "description": "Báo hiệu các xe được phép đi thẳng hoặc rẽ phải." },
+        { "code": "R302a", "filename": "/images/signs/R302a.png", "name": "Hướng phải đi vòng chướng ngại vật", "shortDescription": "Vòng chướng ngại vật sang trái.", "description": "Báo hiệu các loại xe phải đi vòng chướng ngại vật sang bên trái." },
+        { "code": "R302b", "filename": "/images/signs/R302b.png", "name": "Hướng phải đi vòng chướng ngại vật", "shortDescription": "Vòng chướng ngại vật sang phải.", "description": "Báo hiệu các loại xe phải đi vòng chướng ngại vật sang bên phải." },
+        { "code": "R302c", "filename": "/images/signs/R302c.png", "name": "Hướng phải đi vòng chướng ngại vật", "shortDescription": "Vòng chướng ngại vật hai bên.", "description": "Báo hiệu các loại xe có thể đi vòng chướng ngại vật sang cả hai bên." },
+        { "code": "R303", "filename": "/images/signs/R303.png", "name": "Nơi giao nhau chạy theo vòng xuyến", "shortDescription": "Đi theo vòng xuyến.", "description": "Báo hiệu các xe phải chạy vòng theo đảo an toàn ở nơi giao nhau." },
+        { "code": "R304", "filename": "/images/signs/R304.png", "name": "Đường dành cho xe thô sơ", "shortDescription": "Đường dành cho xe thô sơ.", "description": "Báo hiệu đường dành riêng cho xe thô sơ (kể cả xe của người khuyết tật) và người đi bộ." },
+        { "code": "R305", "filename": "/images/signs/R305.png", "name": "Đường dành cho người đi bộ", "shortDescription": "Đường dành cho người đi bộ.", "description": "Báo hiệu đường dành riêng cho người đi bộ, các loại xe khác không được đi vào." },
+        { "code": "R306", "filename": "/images/signs/R306.png", "name": "Tốc độ tối thiểu", "shortDescription": "Tốc độ tối thiểu.", "description": "Báo hiệu tốc độ tối thiểu bắt buộc cho các xe cơ giới." },
+        { "code": "R307", "filename": "/images/signs/R307.png", "name": "Hết tốc độ tối thiểu", "shortDescription": "Hết tốc độ tối thiểu.", "description": "Báo hiệu hết đoạn đường quy định tốc độ tối thiểu." },
+        { "code": "R308a", "filename": "/images/signs/R308a.png", "name": "Tuyến đường cầu vượt cắt qua", "shortDescription": "Tuyến đường cầu vượt cắt qua.", "description": "Chỉ dẫn các loại xe được phép đi trên tuyến đường có cầu vượt cắt qua." },
+        { "code": "R308b", "filename": "/images/signs/R308b.png", "name": "Tuyến đường hầm chui cắt qua", "shortDescription": "Tuyến đường hầm chui cắt qua.", "description": "Chỉ dẫn các loại xe được phép đi trên tuyến đường có hầm chui cắt qua." },
+        { "code": "R309", "filename": "/images/signs/R309.png", "name": "Ấn còi", "shortDescription": "Bắt buộc bấm còi.", "description": "Báo hiệu các loại xe phải sử dụng còi." },
+        { "code": "R310a", "filename": "/images/signs/R310a.png", "name": "Hướng đi phải theo cho xe chở hàng nguy hiểm", "shortDescription": "Hướng đi cho xe hàng nguy hiểm.", "description": "Báo hiệu hướng đi bắt buộc đối với xe chở hàng nguy hiểm." },
+        { "code": "R310b", "filename": "/images/signs/R310b.png", "name": "Hướng đi phải theo cho xe chở hàng nguy hiểm", "shortDescription": "Hướng đi cho xe hàng nguy hiểm.", "description": "Báo hiệu hướng đi bắt buộc đối với xe chở hàng nguy hiểm." },
+        { "code": "R310c", "filename": "/images/signs/R310c.png", "name": "Hướng đi phải theo cho xe chở hàng nguy hiểm", "shortDescription": "Hướng đi cho xe hàng nguy hiểm.", "description": "Báo hiệu hướng đi bắt buộc đối với xe chở hàng nguy hiểm." },
+        { "code": "R403a", "filename": "/images/signs/R403a.png", "name": "Đường dành cho xe ô tô", "shortDescription": "Đường dành cho ô tô.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho các loại xe ô tô." },
+        { "code": "R403b", "filename": "/images/signs/R403b.png", "name": "Đường dành cho xe mô tô", "shortDescription": "Đường dành cho mô tô.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho xe mô tô." },
+        { "code": "R403c", "filename": "/images/signs/R403c.png", "name": "Đường dành cho xe ô tô và mô tô", "shortDescription": "Đường dành cho ô tô và mô tô.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho xe ô tô và xe mô tô." },
+        { "code": "R403d", "filename": "/images/signs/R403d.png", "name": "Đường dành cho xe buýt", "shortDescription": "Đường dành cho xe buýt.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho xe buýt." },
+        { "code": "R403e", "filename": "/images/signs/R403e.png", "name": "Đường dành cho xe ô tô con", "shortDescription": "Đường dành cho ô tô con.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho xe ô tô con." },
+        { "code": "R403f", "filename": "/images/signs/R403f.png", "name": "Đường dành cho xe mô tô và xe đạp", "shortDescription": "Đường dành cho mô tô và xe đạp.", "description": "Báo hiệu bắt đầu đoạn đường dành riêng cho xe mô tô và xe đạp." },
+        { "code": "R404a", "filename": "/images/signs/R404a.png", "name": "Hết đường dành cho xe ô tô", "shortDescription": "Hết đường dành cho ô tô.", "description": "Báo hiệu hết đoạn đường dành riêng cho xe ô tô." },
+        { "code": "R404b", "filename": "/images/signs/R404b.png", "name": "Hết đường dành cho xe mô tô", "shortDescription": "Hết đường dành cho mô tô.", "description": "Báo hiệu hết đoạn đường dành riêng cho xe mô tô." },
+        { "code": "R411", "filename": "/images/signs/R411.png", "name": "Hướng đi trên mỗi làn đường phải theo", "shortDescription": "Hướng đi trên mỗi làn.", "description": "Báo hiệu cho người lái xe biết số lượng làn đường và hướng đi bắt buộc trên mỗi làn." },
+        { "code": "R415a", "filename": "/images/signs/R415a.png", "name": "Gộp làn đường theo hướng bên trái", "shortDescription": "Gộp làn bên trái.", "description": "Chỉ dẫn sắp đến vị trí nhập làn xe theo hướng bên trái." },
+        { "code": "R415b", "filename": "/images/signs/R415b.png", "name": "Gộp làn đường theo hướng bên phải", "shortDescription": "Gộp làn bên phải.", "description": "Chỉ dẫn sắp đến vị trí nhập làn xe theo hướng bên phải." },
+        { "code": "R420", "filename": "/images/signs/R420.png", "name": "Bắt đầu khu đông dân cư", "shortDescription": "Bắt đầu khu đông dân cư.", "description": "Báo hiệu bắt đầu khu vực đông dân cư, các phương tiện phải tuân thủ quy định giao thông trong khu vực này." },
+        { "code": "R421", "filename": "/images/signs/R421.png", "name": "Hết khu đông dân cư", "shortDescription": "Hết khu đông dân cư.", "description": "Báo hiệu kết thúc khu vực đông dân cư." },
+        { "code": "RE10a", "filename": "/images/signs/RE10a.png", "name": "Hết đường dành cho xe ô tô khách", "shortDescription": "Hết đường dành cho xe khách.", "description": "Báo hiệu hết đoạn đường dành riêng cho xe ô tô khách." },
+        { "code": "RE11a", "filename": "/images/signs/RE11a.png", "name": "Hết đường dành cho xe tải", "shortDescription": "Hết đường dành cho xe tải.", "description": "Báo hiệu hết đoạn đường dành riêng cho xe tải." },
+        { "code": "RE11b", "filename": "/images/signs/RE11b.png", "name": "Hết đường dành cho xe máy kéo", "shortDescription": "Hết đường dành cho máy kéo.", "description": "Báo hiệu hết đoạn đường dành riêng cho máy kéo." },
+        { "code": "RE9a", "filename": "/images/signs/RE9a.png", "name": "Hết đường dành cho ô tô, mô tô", "shortDescription": "Hết đường dành cho ô tô, mô tô.", "description": "Báo hiệu hết đoạn đường dành riêng cho ô tô và mô tô." }
+      ]
+    },
+    "information_signs": {
+      "name": "Biển chỉ dẫn",
+      "signs": [
+        { "code": "I401", "filename": "/images/signs/I401.png", "name": "Bắt đầu đường ưu tiên", "shortDescription": "Bắt đầu đường ưu tiên.", "description": "Báo hiệu bắt đầu đoạn đường được ưu tiên qua nơi giao nhau." },
+        { "code": "I402", "filename": "/images/signs/I402.png", "name": "Hết đoạn đường ưu tiên", "shortDescription": "Hết đường ưu tiên.", "description": "Báo hiệu kết thúc đoạn đường được ưu tiên." },
+        { "code": "I405a", "filename": "/images/signs/I405a.png", "name": "Đường cụt", "shortDescription": "Phía trước là đường cụt.", "description": "Chỉ dẫn rằng đường phía trước là đường cụt, không có lối thoát." },
+        { "code": "I405b", "filename": "/images/signs/I405b.png", "name": "Đường cụt bên phải", "shortDescription": "Đường cụt bên phải.", "description": "Chỉ dẫn rẽ phải sẽ vào đường cụt." },
+        { "code": "I405c", "filename": "/images/signs/I405c.png", "name": "Đường cụt bên trái", "shortDescription": "Đường cụt bên trái.", "description": "Chỉ dẫn rẽ trái sẽ vào đường cụt." },
+        { "code": "I406", "filename": "/images/signs/I406.png", "name": "Được ưu tiên qua đường hẹp", "shortDescription": "Ưu tiên qua đường hẹp.", "description": "Chỉ dẫn cho người lái xe biết mình được quyền ưu tiên đi trước trên đoạn đường hẹp." },
+        { "code": "I407a", "filename": "/images/signs/I407a.png", "name": "Đường một chiều", "shortDescription": "Đường một chiều.", "description": "Báo hiệu bắt đầu đoạn đường chỉ cho phép xe chạy theo một chiều." },
+        { "code": "I407b", "filename": "/images/signs/I407b.png", "name": "Đường một chiều", "shortDescription": "Đường một chiều.", "description": "Báo hiệu bắt đầu đoạn đường chỉ cho phép xe chạy theo một chiều." },
+        { "code": "I407c", "filename": "/images/signs/I407c.png", "name": "Đường một chiều", "shortDescription": "Đường một chiều.", "description": "Báo hiệu bắt đầu đoạn đường chỉ cho phép xe chạy theo một chiều." },
+        { "code": "I408", "filename": "/images/signs/I408.png", "name": "Nơi đỗ xe", "shortDescription": "Khu vực được phép đỗ xe.", "description": "Chỉ dẫn vị trí được phép đỗ xe." },
+        { "code": "I408a", "filename": "/images/signs/I408a.png", "name": "Nơi đỗ xe một phần trên hè phố", "shortDescription": "Đỗ xe một phần trên hè phố.", "description": "Chỉ dẫn vị trí đỗ xe mà một phần thân xe phải đỗ trên hè phố." },
+        { "code": "I409", "filename": "/images/signs/I409.png", "name": "Chỗ quay xe", "shortDescription": "Nơi được phép quay xe.", "description": "Chỉ dẫn vị trí được phép quay đầu xe." },
+        { "code": "I410", "filename": "/images/signs/I410.png", "name": "Lối đi ở những vị trí cấm rẽ", "shortDescription": "Lối đi khác khi cấm rẽ.", "description": "Chỉ dẫn lối đi cho các xe muốn rẽ khi có biển cấm rẽ ở ngã tư." },
+        { "code": "I413a", "filename": "/images/signs/I413a.png", "name": "Đường phía trước có làn đường dành cho ô tô khách", "shortDescription": "Có làn cho xe khách phía trước.", "description": "Chỉ dẫn sắp đến đoạn đường có làn đường riêng dành cho ô tô khách." },
+        { "code": "I413b", "filename": "/images/signs/I413b.png", "name": "Rẽ ra đường có làn đường dành cho ô tô khách", "shortDescription": "Rẽ ra đường có làn xe khách.", "description": "Chỉ dẫn rẽ ra một con đường có làn đường dành riêng cho ô tô khách." },
+        { "code": "I413c", "filename": "/images/signs/I413c.png", "name": "Rẽ ra đường có làn đường dành cho ô tô khách", "shortDescription": "Rẽ ra đường có làn xe khách.", "description": "Chỉ dẫn rẽ ra một con đường có làn đường dành riêng cho ô tô khách." },
+        { "code": "I414a", "filename": "/images/signs/I414a.png", "name": "Chỉ hướng đường", "shortDescription": "Chỉ dẫn hướng đi đến địa danh.", "description": "Chỉ dẫn hướng đi đến một địa danh hoặc khu vực tiếp theo." },
+        { "code": "I414b", "filename": "/images/signs/I414b.png", "name": "Chỉ hướng đường", "shortDescription": "Chỉ dẫn hướng đi đến các địa danh.", "description": "Chỉ dẫn hướng đi đến các địa danh hoặc khu vực khác nhau tại nơi giao nhau." },
+        { "code": "I414c", "filename": "/images/signs/I414c.png", "name": "Chỉ hướng đường", "shortDescription": "Chỉ dẫn hướng đi đến các địa danh.", "description": "Chỉ dẫn hướng đi đến các địa danh hoặc khu vực khác nhau tại nơi giao nhau." },
+        { "code": "I414d", "filename": "/images/signs/I414d.png", "name": "Chỉ hướng đường", "shortDescription": "Chỉ dẫn hướng đi đến các địa danh.", "description": "Chỉ dẫn hướng đi đến các địa danh hoặc khu vực khác nhau tại nơi giao nhau." },
+        { "code": "I415", "filename": "/images/signs/I415.png", "name": "Mũi tên chỉ hướng đi", "shortDescription": "Biển chỉ hướng đi.", "description": "Xác nhận hướng đi đến một địa điểm và khoảng cách tới đó." },
+        { "code": "I416", "filename": "/images/signs/I416.png", "name": "Đường tránh", "shortDescription": "Chỉ dẫn đường tránh.", "description": "Chỉ dẫn lối đi của tuyến đường tránh hoặc đường vòng." },
+        { "code": "I417a", "filename": "/images/signs/I417a.png", "name": "Chỉ hướng đường đến một địa điểm", "shortDescription": "Hướng đi đến một địa điểm.", "description": "Chỉ dẫn hướng đi và khoảng cách đến một địa điểm cụ thể." },
+        { "code": "I417b", "filename": "/images/signs/I417b.png", "name": "Chỉ hướng đường đến nhiều địa điểm", "shortDescription": "Hướng đi đến nhiều địa điểm.", "description": "Chỉ dẫn hướng đi và khoảng cách đến nhiều địa điểm khác nhau trên cùng một tuyến đường." },
+        { "code": "I417c", "filename": "/images/signs/I417c.png", "name": "Chỉ hướng đường đến nhiều địa điểm", "shortDescription": "Hướng đi đến nhiều địa điểm.", "description": "Chỉ dẫn hướng đi và khoảng cách đến nhiều địa điểm khác nhau trên cùng một tuyến đường." },
+        { "code": "I418", "filename": "/images/signs/I418.png", "name": "Lối đi ở những vị trí cấm rẽ", "shortDescription": "Lối đi khác khi cấm rẽ.", "description": "Sơ đồ chỉ dẫn lối đi cho các xe muốn rẽ khi có biển cấm rẽ ở ngã tư." },
+        { "code": "I419a", "filename": "/images/signs/I419a.png", "name": "Chỉ dẫn địa giới", "shortDescription": "Chỉ dẫn địa giới hành chính.", "description": "Báo hiệu địa giới hành chính giữa các thành phố, tỉnh, huyện." },
+        { "code": "I419b", "filename": "/images/signs/I419b.png", "name": "Chỉ dẫn địa giới", "shortDescription": "Chỉ dẫn địa giới hành chính.", "description": "Báo hiệu địa giới hành chính giữa các thành phố, tỉnh, huyện." },
+        { "code": "I422a", "filename": "/images/signs/I422a.png", "name": "Làn thoát xe khẩn cấp", "shortDescription": "Làn thoát xe khẩn cấp.", "description": "Chỉ dẫn sắp đến làn đường cứu nạn hay làn thoát xe khẩn cấp." },
+        { "code": "I422b", "filename": "/images/signs/I422b.png", "name": "Làn thoát xe khẩn cấp", "shortDescription": "Làn thoát xe khẩn cấp.", "description": "Chỉ dẫn sắp đến làn đường cứu nạn hay làn thoát xe khẩn cấp." },
+        { "code": "I423a", "filename": "/images/signs/I423a.png", "name": "Đường người đi bộ sang ngang", "shortDescription": "Đường cho người đi bộ.", "description": "Chỉ dẫn vị trí có vạch kẻ đường dành cho người đi bộ sang đường." },
+        { "code": "I423b", "filename": "/images/signs/I423b.png", "name": "Hầm chui cho người đi bộ", "shortDescription": "Hầm chui cho người đi bộ.", "description": "Chỉ dẫn vị trí có hầm chui cho người đi bộ qua đường." },
+        { "code": "I423c", "filename": "/images/signs/I423c.png", "name": "Cầu vượt cho người đi bộ", "shortDescription": "Cầu vượt cho người đi bộ.", "description": "Chỉ dẫn vị trí có cầu vượt cho người đi bộ qua đường." },
+        { "code": "I424a", "filename": "/images/signs/I424a.png", "name": "Bệnh viện", "shortDescription": "Chỉ dẫn đến bệnh viện.", "description": "Báo hiệu sắp đến cơ sở y tế, bệnh viện." },
+        { "code": "I424b", "filename": "/images/signs/I424b.png", "name": "Trạm cấp cứu", "shortDescription": "Chỉ dẫn đến trạm cấp cứu.", "description": "Báo hiệu sắp đến trạm cấp cứu y tế." },
+        { "code": "I424c", "filename": "/images/signs/I424c.png", "name": "Điện thoại", "shortDescription": "Nơi có điện thoại công cộng.", "description": "Chỉ dẫn nơi có thể sử dụng điện thoại." },
+        { "code": "I424d", "filename": "/images/signs/I424d.png", "name": "Trạm cảnh sát giao thông", "shortDescription": "Trạm cảnh sát giao thông.", "description": "Chỉ dẫn vị trí có trạm cảnh sát giao thông." },
+        { "code": "I425", "filename": "/images/signs/I425.png", "name": "Trạm sửa chữa", "shortDescription": "Nơi có dịch vụ sửa chữa xe.", "description": "Chỉ dẫn nơi có các dịch vụ sửa chữa, bảo dưỡng ô tô." },
+        { "code": "I426", "filename": "/images/signs/I426.png", "name": "Trạm xăng", "shortDescription": "Nơi có trạm cung cấp nhiên liệu.", "description": "Chỉ dẫn vị trí các trạm xăng dầu." },
+        { "code": "I427a", "filename": "/images/signs/I427a.png", "name": "Trạm dừng nghỉ", "shortDescription": "Trạm dừng nghỉ.", "description": "Chỉ dẫn nơi có trạm dừng nghỉ với các dịch vụ." },
+        { "code": "I427b", "filename": "/images/signs/I427b.png", "name": "Trạm dừng nghỉ", "shortDescription": "Trạm dừng nghỉ.", "description": "Chỉ dẫn nơi có trạm dừng nghỉ với các dịch vụ." },
+        { "code": "I428", "filename": "/images/signs/I428.png", "name": "Nơi rửa xe", "shortDescription": "Nơi có dịch vụ rửa xe.", "description": "Chỉ dẫn nơi có dịch vụ rửa xe." },
+        { "code": "I429", "filename": "/images/signs/I429.png", "name": "Nhà nghỉ", "shortDescription": "Nơi có khách sạn, nhà nghỉ.", "description": "Chỉ dẫn nơi có khách sạn hoặc nhà nghỉ." },
+        { "code": "I430", "filename": "/images/signs/I430.png", "name": "Nhà hàng ăn uống", "shortDescription": "Nơi có nhà hàng ăn uống.", "description": "Chỉ dẫn nơi có nhà hàng phục vụ ăn uống." },
+        { "code": "I431", "filename": "/images/signs/I431.png", "name": "Trạm thông tin", "shortDescription": "Nơi cung cấp thông tin.", "description": "Chỉ dẫn nơi có thể nhận được các thông tin du lịch, bản đồ..." },
+        { "code": "I432", "filename": "/images/signs/I432.png", "name": "Nhà vệ sinh", "shortDescription": "Nơi có nhà vệ sinh công cộng.", "description": "Chỉ dẫn nơi có nhà vệ sinh công cộng." },
+        { "code": "I433a", "filename": "/images/signs/I433a.png", "name": "Bãi cắm trại", "shortDescription": "Nơi có bãi cắm trại.", "description": "Chỉ dẫn địa điểm cắm trại." },
+        { "code": "I433b", "filename": "/images/signs/I433b.png", "name": "Nhà trọ", "shortDescription": "Nơi có nhà trọ.", "description": "Chỉ dẫn nơi có nhà trọ." },
+        { "code": "I433c", "filename": "/images/signs/I433c.png", "name": "Nhà trọ và bãi cắm trại", "shortDescription": "Nơi có nhà trọ và bãi cắm trại.", "description": "Chỉ dẫn nơi có cả nhà trọ và bãi cắm trại." },
+        { "code": "I433d", "filename": "/images/signs/I433d.png", "name": "Bãi đỗ xe dành cho xe kéo moóc", "shortDescription": "Bãi đỗ cho xe kéo moóc.", "description": "Chỉ dẫn bãi đỗ xe dành riêng cho xe kéo theo moóc cắm trại." },
+        { "code": "I433e", "filename": "/images/signs/I433e.png", "name": "Bãi đỗ xe và cắm trại cho xe kéo moóc", "shortDescription": "Bãi đỗ và cắm trại cho xe kéo moóc.", "description": "Chỉ dẫn bãi đỗ xe và cắm trại dành riêng cho xe kéo theo moóc." },
+        { "code": "I434a", "filename": "/images/signs/I434a.png", "name": "Bến xe buýt", "shortDescription": "Điểm dừng xe buýt.", "description": "Chỉ dẫn vị trí điểm dừng cho các tuyến xe buýt công cộng." },
+        { "code": "I434b", "filename": "/images/signs/I434b.png", "name": "Bến xe điện", "shortDescription": "Điểm dừng xe điện.", "description": "Chỉ dẫn vị trí điểm dừng cho các tuyến xe điện." },
+        { "code": "I435", "filename": "/images/signs/I435.png", "name": "Bến xe khách", "shortDescription": "Bến xe khách.", "description": "Chỉ dẫn vị trí bến xe khách liên tỉnh." },
+        { "code": "I436", "filename": "/images/signs/I436.png", "name": "Trạm kiểm tra tải trọng xe", "shortDescription": "Trạm kiểm tra tải trọng.", "description": "Chỉ dẫn nơi có đặt trạm kiểm tra tải trọng xe." },
+        { "code": "I437", "filename": "/images/signs/I437.png", "name": "Đường cao tốc", "shortDescription": "Bắt đầu đường cao tốc.", "description": "Chỉ dẫn bắt đầu tuyến đường cao tốc." },
+        { "code": "I439", "filename": "/images/signs/I439.png", "name": "Tên cầu", "shortDescription": "Biển báo tên cầu.", "description": "Chỉ dẫn tên của cây cầu mà tuyến đường đi qua." },
+        { "code": "I440", "filename": "/images/signs/I440.png", "name": "Hầm chui", "shortDescription": "Biển báo hầm chui.", "description": "Chỉ dẫn tên của hầm chui mà tuyến đường đi qua." },
+        { "code": "I441a", "filename": "/images/signs/I441a.png", "name": "Báo trước lối rẽ vào đường cao tốc", "shortDescription": "Báo trước lối rẽ vào cao tốc.", "description": "Chỉ dẫn báo trước sắp đến lối rẽ vào đường cao tốc." },
+        { "code": "I441b", "filename": "/images/signs/I441b.png", "name": "Báo trước lối rẽ vào đường cao tốc", "shortDescription": "Báo trước lối rẽ vào cao tốc.", "description": "Chỉ dẫn báo trước sắp đến lối rẽ vào đường cao tốc." },
+        { "code": "I441c", "filename": "/images/signs/I441c.png", "name": "Báo trước lối rẽ vào đường cao tốc", "shortDescription": "Báo trước lối rẽ vào cao tốc.", "description": "Chỉ dẫn báo trước sắp đến lối rẽ vào đường cao tốc." },
+        { "code": "I442", "filename": "/images/signs/I442.png", "name": "Chợ", "shortDescription": "Khu vực có chợ.", "description": "Chỉ dẫn sắp đến khu vực có chợ." },
+        { "code": "I443", "filename": "/images/signs/I443.png", "name": "Xe buýt nhanh", "shortDescription": "Làn đường xe buýt nhanh (BRT).", "description": "Chỉ dẫn làn đường dành riêng cho xe buýt nhanh (BRT)." },
+        { "code": "I444a", "filename": "/images/signs/I444a.png", "name": "Nơi quay xe", "shortDescription": "Vị trí quay xe.", "description": "Chỉ dẫn vị trí được phép quay đầu xe." },
+        { "code": "I444b", "filename": "/images/signs/I444b.png", "name": "Nơi quay xe", "shortDescription": "Vị trí quay xe.", "description": "Chỉ dẫn vị trí được phép quay đầu xe." },
+        { "code": "I444c", "filename": "/images/signs/I444c.png", "name": "Nơi quay xe", "shortDescription": "Vị trí quay xe.", "description": "Chỉ dẫn vị trí được phép quay đầu xe." },
+        { "code": "I444d", "filename": "/images/signs/I444d.png", "name": "Nơi quay xe", "shortDescription": "Vị trí quay xe.", "description": "Chỉ dẫn vị trí được phép quay đầu xe." },
+        { "code": "I444e", "filename": "/images/signs/I444e.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444f", "filename": "/images/signs/I444f.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444g", "filename": "/images/signs/I444g.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444h", "filename": "/images/signs/I444h.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444i", "filename": "/images/signs/I444i.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444j", "filename": "/images/signs/I444j.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444k", "filename": "/images/signs/I444k.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444l", "filename": "/images/signs/I444l.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I444m", "filename": "/images/signs/I444m.png", "name": "Lối rẽ vào bãi đỗ xe", "shortDescription": "Lối vào bãi đỗ xe.", "description": "Chỉ dẫn lối rẽ vào khu vực bãi đỗ xe." },
+        { "code": "I445a", "filename": "/images/signs/I445a.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445b", "filename": "/images/signs/I445b.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445c", "filename": "/images/signs/I445c.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445d", "filename": "/images/signs/I445d.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445e", "filename": "/images/signs/I445e.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445f", "filename": "/images/signs/I445f.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445g", "filename": "/images/signs/I445g.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I445h", "filename": "/images/signs/I445h.png", "name": "Biển báo số lượng làn và hướng đi", "shortDescription": "Số làn và hướng đi.", "description": "Biển báo mô tả số lượng làn đường và hướng di chuyển trên mỗi làn." },
+        { "code": "I446", "filename": "/images/signs/I446.png", "name": "Nơi đỗ xe dành cho người khuyết tật", "shortDescription": "Đỗ xe cho người khuyết tật.", "description": "Chỉ dẫn vị trí đỗ xe dành riêng cho người khuyết tật." },
+        { "code": "I447a", "filename": "/images/signs/I447a.png", "name": "Biển báo cầu vượt liên thông", "shortDescription": "Cầu vượt liên thông.", "description": "Sơ đồ chỉ dẫn nút giao có cầu vượt liên thông." },
+        { "code": "I447b", "filename": "/images/signs/I447b.png", "name": "Biển báo cầu vượt liên thông", "shortDescription": "Cầu vượt liên thông.", "description": "Sơ đồ chỉ dẫn nút giao có cầu vượt liên thông." },
+        { "code": "I447c", "filename": "/images/signs/I447c.png", "name": "Biển báo cầu vượt liên thông", "shortDescription": "Cầu vượt liên thông.", "description": "Sơ đồ chỉ dẫn nút giao có cầu vượt liên thông." },
+        { "code": "I447d", "filename": "/images/signs/I447d.png", "name": "Biển báo cầu vượt liên thông", "shortDescription": "Cầu vượt liên thông.", "description": "Sơ đồ chỉ dẫn nút giao có cầu vượt liên thông." },
+        { "code": "I448", "filename": "/images/signs/I448.png", "name": "Làn đường dành riêng cho từng loại xe", "shortDescription": "Làn đường riêng theo loại xe.", "description": "Chỉ dẫn làn đường dành riêng cho từng loại xe hoặc nhóm xe cụ thể." },
+        { "code": "I449", "filename": "/images/signs/I449.png", "name": "Biển tên đường", "shortDescription": "Biển tên đường.", "description": "Chỉ dẫn tên của con đường hiện tại." },
+        { "code": "P122", "filename": "/images/signs/P122.png", "name": "Dừng lại", "shortDescription": "Dừng lại.", "description": "Bắt buộc các xe, kể cả xe ưu tiên, phải dừng lại trước biển hoặc trước vạch dừng và chỉ được đi khi thấy các hướng khác đã an toàn." },
+        { "code": "P132", "filename": "/images/signs/P132.png", "name": "Nhường đường cho xe cơ giới đi ngược chiều qua đường hẹp", "shortDescription": "Nhường đường qua đường hẹp.", "description": "Báo hiệu các loại xe (cơ giới và thô sơ) phải nhường đường cho xe cơ giới đi ngược chiều khi đi qua các đoạn đường hẹp." }
+      ]
+    },
+    "highway_information_signs": {
+      "name": "Biển chỉ dẫn trên đường cao tốc",
+      "signs": [
+        { "code": "IE450a", "filename": "/images/signs/IE450a.png", "name": "Bắt đầu đường cao tốc", "shortDescription": "Bắt đầu đường cao tốc.", "description": "Chỉ dẫn bắt đầu tuyến đường cao tốc." },
+        { "code": "IE450b", "filename": "/images/signs/IE450b.png", "name": "Bắt đầu đường cao tốc", "shortDescription": "Bắt đầu đường cao tốc.", "description": "Chỉ dẫn bắt đầu tuyến đường cao tốc, có kèm thông tin tên và ký hiệu đường." },
+        { "code": "IE451a", "filename": "/images/signs/IE451a.png", "name": "Kết thúc đường cao tốc", "shortDescription": "Kết thúc đường cao tốc.", "description": "Chỉ dẫn kết thúc tuyến đường cao tốc." },
+        { "code": "IE451b", "filename": "/images/signs/IE451b.png", "name": "Kết thúc đường cao tốc", "shortDescription": "Kết thúc đường cao tốc.", "description": "Chỉ dẫn kết thúc tuyến đường cao tốc, có kèm thông tin tên và ký hiệu đường." },
+        { "code": "IE452", "filename": "/images/signs/IE452.png", "name": "Lối vào và tốc độ trên đường cao tốc", "shortDescription": "Thông tin lối vào cao tốc.", "description": "Cung cấp thông tin về tên, ký hiệu đường cao tốc và các giới hạn tốc độ khi bắt đầu vào đường." },
+        { "code": "IE453a", "filename": "/images/signs/IE453a.png", "name": "Khoảng cách đến lối ra", "shortDescription": "Khoảng cách đến lối ra.", "description": "Báo trước khoảng cách còn lại (ví dụ 2km) để đến lối ra tiếp theo." },
+        { "code": "IE453b", "filename": "/images/signs/IE453b.png", "name": "Khoảng cách đến lối ra", "shortDescription": "Khoảng cách đến lối ra.", "description": "Báo trước khoảng cách còn lại (ví dụ 1km) để đến lối ra tiếp theo." },
+        { "code": "IE454", "filename": "/images/signs/IE454.png", "name": "Lối ra phía trước", "shortDescription": "Chỉ dẫn lối ra.", "description": "Báo hiệu lối ra ngay phía trước, thường đặt ngay tại vị trí bắt đầu làn đường giảm tốc." },
+        { "code": "IE455", "filename": "/images/signs/IE455.png", "name": "Biển chỉ dẫn các lối ra tiếp theo", "shortDescription": "Các lối ra tiếp theo.", "description": "Cung cấp thông tin về hướng đi và khoảng cách đến hai hoặc ba lối ra tiếp theo." },
+        { "code": "IE456a", "filename": "/images/signs/IE456a.png", "name": "Nhập làn", "shortDescription": "Chuẩn bị nhập làn.", "description": "Báo trước sắp đến vị trí nhập làn, nơi các xe từ đường nhánh sẽ nhập vào đường cao tốc." },
+        { "code": "IE456b", "filename": "/images/signs/IE456b.png", "name": "Hết đường tăng tốc", "shortDescription": "Kết thúc làn tăng tốc.", "description": "Chỉ dẫn vị trí kết thúc làn đường tăng tốc." },
+        { "code": "IE456c", "filename": "/images/signs/IE456c.png", "name": "Lối ra", "shortDescription": "Lối ra.", "description": "Biển báo đặt trên giá long môn, chỉ dẫn hướng và làn xe để ra khỏi đường cao tốc." },
+        { "code": "IE457a", "filename": "/images/signs/IE457a.png", "name": "Biển báo trên giá long môn", "shortDescription": "Chỉ dẫn trên giá long môn.", "description": "Chỉ dẫn hướng đi, tên địa danh trên từng làn đường, đặt trên giá long môn." },
+        { "code": "IE457b", "filename": "/images/signs/IE457b.png", "name": "Biển báo trên giá long môn có lối ra", "shortDescription": "Chỉ dẫn trên giá long môn có lối ra.", "description": "Chỉ dẫn hướng đi và lối ra khỏi đường cao tốc, đặt trên giá long môn." },
+        { "code": "IE458", "filename": "/images/signs/IE458.png", "name": "Trạm dừng nghỉ", "shortDescription": "Trạm dừng nghỉ.", "description": "Chỉ dẫn khoảng cách đến trạm dừng nghỉ tiếp theo trên đường cao tốc." },
+        { "code": "IE459a", "filename": "/images/signs/IE459a.png", "name": "Biển báo hiệu lệnh trên đường cao tốc", "shortDescription": "Hiệu lệnh trên cao tốc.", "description": "Biển hiệu lệnh kết hợp chỉ dẫn, ví dụ như bắt buộc đi thẳng và giữ khoảng cách an toàn." },
+        { "code": "IE459b", "filename": "/images/signs/IE459b.png", "name": "Biển báo hiệu lệnh trên đường cao tốc", "shortDescription": "Hiệu lệnh trên cao tốc.", "description": "Biển hiệu lệnh kết hợp chỉ dẫn, ví dụ như bắt buộc đi thẳng và giữ khoảng cách an toàn." },
+        { "code": "IE460a", "filename": "/images/signs/IE460a.png", "name": "Chướng ngại vật - Hướng vòng tránh sang trái", "shortDescription": "Chướng ngại vật, tránh sang trái.", "description": "Báo hiệu có chướng ngại vật và chỉ dẫn hướng đi vòng sang bên trái để tránh." },
+        { "code": "IE460b", "filename": "/images/signs/IE460b.png", "name": "Chướng ngại vật - Hướng vòng tránh hai bên", "shortDescription": "Chướng ngại vật, tránh hai bên.", "description": "Báo hiệu có chướng ngại vật và chỉ dẫn có thể đi vòng sang cả hai bên để tránh." },
+        { "code": "IE460c", "filename": "/images/signs/IE460c.png", "name": "Chướng ngại vật - Hướng vòng tránh sang phải", "shortDescription": "Chướng ngại vật, tránh sang phải.", "description": "Báo hiệu có chướng ngại vật và chỉ dẫn hướng đi vòng sang bên phải để tránh." },
+        { "code": "IE461a", "filename": "/images/signs/IE461a.png", "name": "Chỉ hướng đường cong sang trái", "shortDescription": "Chỉ hướng đường cong.", "description": "Chỉ dẫn hướng của đoạn đường cong nguy hiểm sắp tới, vòng sang trái." },
+        { "code": "IE461b", "filename": "/images/signs/IE461b.png", "name": "Chỉ hướng đường cong sang phải", "shortDescription": "Chỉ hướng đường cong.", "description": "Chỉ dẫn hướng của đoạn đường cong nguy hiểm sắp tới, vòng sang phải." },
+        { "code": "IE461c", "filename": "/images/signs/IE461c.png", "name": "Chỉ hướng đường cong", "shortDescription": "Chỉ hướng đường cong.", "description": "Chỉ dẫn hướng của đoạn đường cong nguy hiểm sắp tới." },
+        { "code": "IE461d", "filename": "/images/signs/IE461d.png", "name": "Chỉ hướng đường cong", "shortDescription": "Chỉ hướng đường cong.", "description": "Chỉ dẫn hướng của đoạn đường cong nguy hiểm sắp tới." },
+        { "code": "IE462", "filename": "/images/signs/IE462.png", "name": "Lối ra trạm dừng nghỉ", "shortDescription": "Lối ra trạm dừng nghỉ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc để vào trạm dừng nghỉ." },
+        { "code": "IE463a", "filename": "/images/signs/IE463a.png", "name": "Khoảng cách an toàn giữa các xe", "shortDescription": "Biển báo khoảng cách an toàn.", "description": "Biển báo nhắc nhở người lái xe duy trì khoảng cách an toàn với xe phía trước." },
+        { "code": "IE463b", "filename": "/images/signs/IE463b.png", "name": "Khoảng cách an toàn giữa các xe", "shortDescription": "Biển báo khoảng cách an toàn.", "description": "Biển báo nhắc nhở người lái xe duy trì khoảng cách an toàn với xe phía trước." },
+        { "code": "IE463c", "filename": "/images/signs/IE463c.png", "name": "Khoảng cách an toàn giữa các xe", "shortDescription": "Biển báo khoảng cách an toàn.", "description": "Biển báo nhắc nhở người lái xe duy trì khoảng cách an toàn với xe phía trước." },
+        { "code": "IE464a", "filename": "/images/signs/IE464a.png", "name": "Kết thúc đường cao tốc", "shortDescription": "Kết thúc đường cao tốc.", "description": "Chỉ dẫn kết thúc tuyến đường cao tốc." },
+        { "code": "IE464b", "filename": "/images/signs/IE464b.png", "name": "Kết thúc đường cao tốc", "shortDescription": "Kết thúc đường cao tốc.", "description": "Chỉ dẫn kết thúc tuyến đường cao tốc." },
+        { "code": "IE465", "filename": "/images/signs/IE465.png", "name": "Khu vực có trạm thu phí", "shortDescription": "Sắp đến trạm thu phí.", "description": "Chỉ dẫn sắp đến khu vực có trạm thu phí trên đường cao tốc." },
+        { "code": "IE466", "filename": "/images/signs/IE466.png", "name": "Lối ra đường cao tốc", "shortDescription": "Lối ra cao tốc.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc." },
+        { "code": "IE467a", "filename": "/images/signs/IE467a.png", "name": "Biển số đường cao tốc", "shortDescription": "Số hiệu đường cao tốc.", "description": "Biển báo chỉ số hiệu và tên tuyến đường cao tốc." },
+        { "code": "IE467b", "filename": "/images/signs/IE467b.png", "name": "Biển số đường cao tốc", "shortDescription": "Số hiệu đường cao tốc.", "description": "Biển báo chỉ số hiệu và tên tuyến đường cao tốc." },
+        { "code": "IE468a", "filename": "/images/signs/IE468a.png", "name": "Điện thoại khẩn cấp", "shortDescription": "Điện thoại khẩn cấp.", "description": "Chỉ dẫn vị trí có điện thoại khẩn cấp trên đường cao tốc." },
+        { "code": "IE468b", "filename": "/images/signs/IE468b.png", "name": "Lối thoát hiểm", "shortDescription": "Lối thoát hiểm.", "description": "Chỉ dẫn vị trí có lối thoát hiểm (thường trong hầm)." },
+        { "code": "IE468c", "filename": "/images/signs/IE468c.png", "name": "Bình chữa cháy", "shortDescription": "Nơi đặt bình chữa cháy.", "description": "Chỉ dẫn vị trí đặt bình chữa cháy (thường trong hầm)." },
+        { "code": "IE469a", "filename": "/images/signs/IE469a.png", "name": "Đường hầm", "shortDescription": "Đường hầm.", "description": "Chỉ dẫn bắt đầu đường hầm trên cao tốc." },
+        { "code": "IE469b", "filename": "/images/signs/IE469b.png", "name": "Kết thúc đường hầm", "shortDescription": "Kết thúc đường hầm.", "description": "Chỉ dẫn kết thúc đường hầm trên cao tốc." },
+        { "code": "IE470", "filename": "/images/signs/IE470.png", "name": "Làn dừng khẩn cấp", "shortDescription": "Làn dừng khẩn cấp.", "description": "Chỉ dẫn làn đường dừng khẩn cấp bên phải." },
+        { "code": "IE471", "filename": "/images/signs/IE471.png", "name": "Trạm dừng nghỉ và thông tin", "shortDescription": "Trạm dừng nghỉ và thông tin.", "description": "Chỉ dẫn trạm dừng nghỉ có cung cấp thông tin du lịch." },
+        { "code": "IE472a", "filename": "/images/signs/IE472a.png", "name": "Lối ra có làn phụ", "shortDescription": "Lối ra có làn phụ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc có làn đường phụ." },
+        { "code": "IE472b", "filename": "/images/signs/IE472b.png", "name": "Lối ra có làn phụ", "shortDescription": "Lối ra có làn phụ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc có làn đường phụ." },
+        { "code": "IE472c", "filename": "/images/signs/IE472c.png", "name": "Lối ra có làn phụ", "shortDescription": "Lối ra có làn phụ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc có làn đường phụ." },
+        { "code": "IE472d", "filename": "/images/signs/IE472d.png", "name": "Lối ra có làn phụ", "shortDescription": "Lối ra có làn phụ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc có làn đường phụ." },
+        { "code": "IE472e", "filename": "/images/signs/IE472e.png", "name": "Lối ra có làn phụ", "shortDescription": "Lối ra có làn phụ.", "description": "Chỉ dẫn lối ra khỏi đường cao tốc có làn đường phụ." },
+        { "code": "IE473", "filename": "/images/signs/IE473.png", "name": "Trạm dừng nghỉ", "shortDescription": "Trạm dừng nghỉ.", "description": "Biển chỉ dẫn các dịch vụ có tại trạm dừng nghỉ." },
+        { "code": "IE474", "filename": "/images/signs/IE474.png", "name": "Bắt đầu khu vực điều khiển giao thông thông minh", "shortDescription": "Bắt đầu khu vực ITS.", "description": "Chỉ dẫn bắt đầu khu vực có hệ thống giám sát, điều khiển giao thông thông minh." }
+      ]
+    },
+    "supplementary_signs": {
+      "name": "Biển phụ",
+      "signs": [
+        { "code": "S501", "filename": "/images/signs/S501.png", "name": "Phạm vi tác dụng của biển", "shortDescription": "Phạm vi tác dụng của biển.", "description": "Biển báo chiều dài đoạn đường mà biển báo chính có hiệu lực." },
+        { "code": "S502", "filename": "/images/signs/S502.png", "name": "Khoảng cách đến đối tượng báo hiệu", "shortDescription": "Khoảng cách đến đối tượng.", "description": "Biển báo khoảng cách từ vị trí đặt biển đến đối tượng được báo hiệu ở phía trước." },
+        { "code": "S503a", "filename": "/images/signs/S503a.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng thẳng." },
+        { "code": "S503b", "filename": "/images/signs/S503b.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng rẽ phải." },
+        { "code": "S503c", "filename": "/images/signs/S503c.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng rẽ trái." },
+        { "code": "S503d", "filename": "/images/signs/S503d.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng rẽ trái và phải." },
+        { "code": "S503e", "filename": "/images/signs/S503e.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng đi thẳng và rẽ phải." },
+        { "code": "S503f", "filename": "/images/signs/S503f.png", "name": "Hướng tác dụng của biển", "shortDescription": "Hướng tác dụng của biển.", "description": "Chỉ dẫn hướng tác dụng của biển báo chính là hướng đi thẳng và rẽ trái." },
+        { "code": "S504", "filename": "/images/signs/S504.png", "name": "Làn đường", "shortDescription": "Biển báo làn đường.", "description": "Chỉ rõ làn đường chịu hiệu lực của biển báo chính." },
+        { "code": "S505a", "filename": "/images/signs/S505a.png", "name": "Loại xe", "shortDescription": "Loại xe chịu tác dụng.", "description": "Chỉ rõ loại phương tiện chịu tác dụng của biển báo chính." },
+        { "code": "S505b", "filename": "/images/signs/S505b.png", "name": "Loại xe", "shortDescription": "Loại xe chịu tác dụng.", "description": "Chỉ rõ loại phương tiện chịu tác dụng của biển báo chính." },
+        { "code": "S505c", "filename": "/images/signs/S505c.png", "name": "Loại xe", "shortDescription": "Loại xe chịu tác dụng.", "description": "Chỉ rõ loại phương tiện chịu tác dụng của biển báo chính." },
+        { "code": "S506a", "filename": "/images/signs/S506a.png", "name": "Hướng đường ưu tiên", "shortDescription": "Hướng đường ưu tiên.", "description": "Chỉ dẫn hướng của đường ưu tiên tại nơi giao nhau." },
+        { "code": "S506b", "filename": "/images/signs/S506b.png", "name": "Hướng đường ưu tiên", "shortDescription": "Hướng đường ưu tiên.", "description": "Chỉ dẫn hướng của đường ưu tiên tại nơi giao nhau." },
+        { "code": "S507", "filename": "/images/signs/S507.png", "name": "Hướng rẽ", "shortDescription": "Hướng rẽ.", "description": "Sử dụng cùng biển cấm rẽ hoặc hiệu lệnh để chỉ dẫn hướng rẽ tiếp theo." },
+        { "code": "S508a", "filename": "/images/signs/S508a.png", "name": "Biểu thị thời gian", "shortDescription": "Thời gian hiệu lực.", "description": "Quy định thời gian hiệu lực của biển báo chính." },
+        { "code": "S508b", "filename": "/images/signs/S508b.png", "name": "Biểu thị thời gian", "shortDescription": "Thời gian hiệu lực.", "description": "Quy định thời gian hiệu lực của biển báo chính." },
+        { "code": "S509a", "filename": "/images/signs/S509a.png", "name": "Cấm đỗ xe", "shortDescription": "Mũi tên chỉ hướng cấm.", "description": "Chỉ dẫn hướng cấm đỗ xe (trước và sau biển)." },
+        { "code": "S509b", "filename": "/images/signs/S509b.png", "name": "Cấm đỗ xe", "shortDescription": "Mũi tên chỉ hướng cấm.", "description": "Chỉ dẫn hướng cấm đỗ xe (trước và sau biển)." },
+        { "code": "S510", "filename": "/images/signs/S510.png", "name": "Báo hiệu khu vực", "shortDescription": "Biển báo hiệu khu vực.", "description": "Chỉ dẫn biển báo có hiệu lực trong một khu vực." }
+      ]
+    }
+  }

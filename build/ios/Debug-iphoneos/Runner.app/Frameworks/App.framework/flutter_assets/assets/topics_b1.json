@@ -1,0 +1,8 @@
+[
+  {"id": "b1-fatal", "name": "Câu hỏi điểm liệt", "description": "Các câu hỏi điểm liệt bắt buộc phải đúng.", "icon": "warning_amber_rounded", "color": "#FF5252"},
+  {"id": "b1-t2", "name": "Khái niệm và quy tắc", "description": "Các câu hỏi về khái niệm và quy tắc giao thông.", "icon": "rule_rounded", "color": "#1976D2"},
+  {"id": "b1-t3", "name": "Văn hóa và đạo đức", "description": "Các câu hỏi về văn hóa và đạo đức lái xe.", "icon": "emoji_people_rounded", "color": "#FFA000"},
+  {"id": "b1-t4", "name": "Kỹ thuật lái xe", "description": "Các câu hỏi về kỹ thuật lái xe an toàn.", "icon": "directions_car_filled_rounded", "color": "#388E3C"},
+  {"id": "b1-t5", "name": "Biển báo đường bộ", "description": "Các câu hỏi về biển báo giao thông đường bộ.", "icon": "traffic_rounded", "color": "#1976D2"},
+  {"id": "b1-t6", "name": "Sa hình", "description": "Các câu hỏi về sa hình và tình huống giao thông.", "icon": "map_rounded", "color": "#8E24AA"}
+] 
