@@ -14,6 +14,8 @@ import 'package:gplx_vn/screens/traffic_signs_screen.dart';
 import 'package:gplx_vn/screens/settings/settings_screen.dart';
 import 'package:gplx_vn/screens/info_screen.dart';
 import 'package:gplx_vn/screens/exam_description_screen.dart';
+import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
+import 'package:gplx_vn/screens/main_navigation_screen.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
 
@@ -36,15 +38,15 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MainNavigationScreen(initialIndex: 0),
     ),
     GoRoute(
       path: '/settings',
-      builder: (context, state) => const SettingsScreen(),
+      builder: (context, state) => const MainNavigationScreen(initialIndex: 1),
     ),
     GoRoute(
       path: '/info',
-      builder: (context, state) => const InfoScreen(),
+      builder: (context, state) => const MainNavigationScreen(initialIndex: 2),
     ),
     GoRoute(
       path: '/quiz',

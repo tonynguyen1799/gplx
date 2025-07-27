@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/quiz_constants.dart';
 import 'package:hive/hive.dart';
 import '../services/hive_service.dart';
+import '../utils/app_colors.dart';
 
 class ShortcutGridSection extends StatelessWidget {
   final ShortcutGridViewModel viewModel;
@@ -104,22 +105,29 @@ class ShortcutGridSection extends StatelessWidget {
     final firstRow = shortcuts.sublist(0, 4);
     final secondRow = shortcuts.sublist(4, 8);
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: firstRow
-              .map((item) => Expanded(child: ShortcutGridItem(item: item)))
-              .toList(),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: secondRow
-              .map((item) => Expanded(child: ShortcutGridItem(item: item)))
-              .toList(),
-        ),
-      ],
+              return Container(
+      padding: const EdgeInsets.only(top: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: firstRow
+                .map((item) => Expanded(child: ShortcutGridItem(item: item)))
+                .toList(),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: secondRow
+                .map((item) => Expanded(child: ShortcutGridItem(item: item)))
+                .toList(),
+          ),
+        ],
+      ),
     );
   }
 }

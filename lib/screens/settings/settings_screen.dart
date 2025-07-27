@@ -95,7 +95,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       );
     }
     return Scaffold(
-        bottomNavigationBar: const AppBottomNavigationBar(),
         appBar: AppBar(
         title: const Text('Cài đặt', style: TextStyle(fontWeight: FontWeight.w600)),
         automaticallyImplyLeading: false,

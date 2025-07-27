@@ -29,7 +29,11 @@ class QuizShortcut extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: selected ? BoxDecoration(
-        color: Colors.blue.shade100,
+        color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50,
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade400 : Colors.blue.shade200,
+          width: 1
+        ),
       ) : null,
       child: ListTile(
         onTap: onTap,
@@ -42,35 +46,35 @@ class QuizShortcut extends StatelessWidget {
               children: [
                 TextSpan(
                   text: 'Câu ${index + 1}/${totalQuizzes} ',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                 ),
                 TextSpan(
                   text: '[${quiz.licenseTypeCode}.${originalIndex + 1}]',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
                   ),
                 ),
                 if (practiced) ...[
                   TextSpan(
                     text: ' | ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: Colors.grey,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
                     ),
                   ),
                   TextSpan(
                     text: 'đã học',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: Colors.grey,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
                     ),
                   ),
                 ],
@@ -79,7 +83,7 @@ class QuizShortcut extends StatelessWidget {
           ),
           if (practiced) ...[
             SizedBox(width: 4),
-            Icon(Icons.check_circle, color: Colors.green, size: 18),
+            Icon(Icons.check_circle, color: Colors.green.shade400, size: 18),
           ],
         ],
       ),
@@ -92,10 +96,10 @@ class QuizShortcut extends StatelessWidget {
               Expanded(
                 child: Text(
                   quiz.text,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Colors.grey,
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[300] : Colors.grey,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -127,7 +131,7 @@ class QuizShortcut extends StatelessWidget {
       ),
       trailing: null,
       selected: selected,
-      selectedTileColor: Colors.blue,
+      selectedTileColor: Colors.transparent,
       ),
     );
   }

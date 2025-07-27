@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/shortcut_item.dart';
+import '../utils/app_colors.dart';
 
 class ShortcutGridItem extends StatelessWidget {
   final ShortcutItem item;
@@ -8,6 +9,7 @@ class ShortcutGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (item.title == 'Ủng hộ') {
       return _ScintillatingShortcutItem(item: item);
     }
@@ -37,9 +39,10 @@ class ShortcutGridItem extends StatelessWidget {
               Text(
                 item.title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  fontWeight: FontWeight.w600
+                  fontWeight: FontWeight.w600,
+                  color: theme.shortcutsText,
                 ),
               ),
               const SizedBox(height: 2),
@@ -48,7 +51,7 @@ class ShortcutGridItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade500,
+                  color: theme.shortcutsCountText,
                 ),
               ),
             ],
@@ -114,6 +117,7 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -155,17 +159,18 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
               Text(
                 widget.item.title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
+                  color: theme.shortcutsText,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 widget.item.count != null ? '${widget.item.count} câu' : ' ',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: theme.shortcutsCountText,
                 ),
               ),
             ],

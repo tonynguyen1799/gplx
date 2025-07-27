@@ -7,7 +7,6 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const AppBottomNavigationBar(),
       appBar: AppBar(
         title: const Text('Thông tin', style: TextStyle(fontWeight: FontWeight.w600)),
         automaticallyImplyLeading: false,
