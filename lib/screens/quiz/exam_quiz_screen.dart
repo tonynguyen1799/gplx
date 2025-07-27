@@ -20,6 +20,7 @@ import '../../widgets/exam_quiz_jump_button.dart';
 import 'exam_summary_screen.dart';
 import '../../models/exam_progress.dart';
 import '../../providers/exam_progress_provider.dart';
+import '../../utils/app_colors.dart';
 
 class ExamQuizScreen extends ConsumerStatefulWidget {
   final Object? extra;
@@ -196,6 +197,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                         'Bạn có chắc chắn muốn thoát khỏi bài thi? Tiến trình làm bài sẽ bị mất.',
                         style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null),
                       ),
+                actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
                 actions: [
                   TextButton(
                     onPressed: () => context.pop(false),
@@ -204,7 +206,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                       children: [
                         Icon(Icons.timer, color: Colors.blue, size: 20),
                         SizedBox(width: 4),
-                        Text('Tiếp tục thi'),
+                        Text('Tiếp tục thi', style: TextStyle(color: Colors.blue)),
                       ],
                     ),
                   ),
@@ -215,7 +217,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                       children: [
                         Icon(Icons.close, color: Colors.red, size: 20),
                         SizedBox(width: 4),
-                        Text('Thoát', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.red)),
+                        Text('Thoát', style: TextStyle(fontSize: 15, color: Colors.red)),
                       ],
                     ),
                   ),
@@ -247,10 +249,11 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                             ],
                           ),
                           content: Text('Bài thi đã hết thời gian. Bài làm sẽ được nộp tự động.', style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
         actions: [
                             TextButton(
                               onPressed: () => context.pop(),
-                              child: const Text('Đồng ý'),
+                              child: Text('Đồng ý', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                             ),
                           ],
                         ),
@@ -274,6 +277,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                                 'Bạn có chắc chắn muốn nộp bài? Bạn sẽ không thể thay đổi câu trả lời sau khi nộp.',
                                 style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null),
                               ),
+                    actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
                     actions: [
                       TextButton(
                         onPressed: () => context.pop(false),
@@ -282,7 +286,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                           children: [
                             Icon(Icons.timer_rounded, color: Colors.blue, size: 20),
                             SizedBox(width: 4),
-                            Text('Tiếp tục thi'),
+                            Text('Tiếp tục thi', style: TextStyle(color: Colors.blue)),
                           ],
                         ),
                       ),
@@ -293,7 +297,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                           children: [
                             Icon(Icons.check_circle, color: Colors.red, size: 20),
                             SizedBox(width: 4),
-                            Text('Nộp bài', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.red)),
+                            Text('Nộp bài', style: TextStyle(fontSize: 15, color: Colors.red)),
                           ],
                         ),
                       ),
@@ -380,7 +384,10 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                               quizCode: '${licenseTypeCode}.${(_quizIdToIndex[quiz.id] ?? -1) + 1}',
                     mode: mode,
                   ),
-                  Divider(thickness: 1, height: 1, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null),
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Divider(thickness: 1, height: 1, color: Theme.of(context).dividerColor),
+                              ),
                   AnswerOptions(
                               key: ValueKey(quiz.id),
                     answers: quiz.answers,

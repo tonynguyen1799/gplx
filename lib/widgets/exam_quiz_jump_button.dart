@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/quiz.dart';
+import '../../utils/app_colors.dart';
 
 class ExamQuizJumpButton extends StatelessWidget {
   final int idx;
@@ -29,47 +30,48 @@ class ExamQuizJumpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     Color? bgColor;
     Color? textColor;
     BoxBorder? border;
     Color? borderColor;
     if (reviewMode) {
       if (isUnanswered) {
-        bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey.shade200;
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey;
+        bgColor = theme.examJumpUnansweredBackground;
+        textColor = theme.examJumpUnansweredText;
+        borderColor = theme.examJumpUnansweredBorder;
       } else if (isCorrect) {
-        bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade100;
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green;
+        bgColor = theme.examJumpCorrectBackground;
+        textColor = theme.examJumpCorrectText;
+        borderColor = theme.examJumpCorrectBorder;
       } else {
-        bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade100;
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red;
+        bgColor = theme.examJumpIncorrectBackground;
+        textColor = theme.examJumpIncorrectText;
+        borderColor = theme.examJumpIncorrectBorder;
       }
     } else if (isQuickExam && isAnswered) {
       if (selectedIdx == quiz.correctIndex) {
-        bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade100;
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green;
+        bgColor = theme.examJumpCorrectBackground;
+        textColor = theme.examJumpCorrectText;
+        borderColor = theme.examJumpCorrectBorder;
       } else {
-        bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade100;
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red;
+        bgColor = theme.examJumpIncorrectBackground;
+        textColor = theme.examJumpIncorrectText;
+        borderColor = theme.examJumpIncorrectBorder;
       }
     } else if (isAnswered) {
-      bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade100;
-      textColor = Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.blue;
-      borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.blue;
+      bgColor = theme.examJumpAnsweredBackground;
+      textColor = theme.examJumpAnsweredText;
+      borderColor = theme.examJumpAnsweredBorder;
     } else {
-      bgColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey.shade200;
-      textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.grey;
-      borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey;
+      bgColor = theme.examJumpUnansweredBackground;
+      textColor = theme.examJumpUnansweredText;
+      borderColor = theme.examJumpUnansweredBorder;
     }
     if (idx == currentIndex) {
-      if (!isQuickExam && !reviewMode &!isAnswered) {
-        textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
-        borderColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.grey;
+      if (!isQuickExam && !reviewMode && !isAnswered) {
+        textColor = theme.examJumpCurrentText;
+        borderColor = theme.examJumpCurrentBorder;
       }
       border = Border.all(color: borderColor ?? Colors.blue, width: 2);
     }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/quiz_constants.dart';
 import '../models/quiz.dart';
 import '../models/quiz_practice_status.dart';
+import '../utils/app_colors.dart';
 
 class StudyByTopicSection extends StatelessWidget {
   final List<TopicProgressViewModel> topics;
@@ -23,18 +24,20 @@ class StudyByTopicSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 12),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
             child: Text(
               'Tiến độ theo chủ đề',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
+                color: theme.primaryText,
               ),
             ),
           ),
@@ -68,9 +71,7 @@ class StudyByTopicSection extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 14),
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.grey[850]
-                      : Colors.blue.shade50, // Soft blue background for each topic
+                  color: theme.studyProgressBackground,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
@@ -90,7 +91,7 @@ class StudyByTopicSection extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.grey.shade600,
+                              color: theme.studyProgressText,
                             ),
                           )
                         ),
@@ -109,9 +110,9 @@ class StudyByTopicSection extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: topic.total == 0 ? 0 : topic.done / topic.total.clamp(1, double.infinity),
                         minHeight: 8,
-                        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey.shade300,
+                        backgroundColor: theme.studyProgressBarBackground,
                         valueColor: AlwaysStoppedAnimation(
-                          Theme.of(context).brightness == Brightness.dark ? Colors.amber : Colors.blue,
+                          theme.studyProgressBarColor,
                         ),
                       ),
                     ),
@@ -119,10 +120,10 @@ class StudyByTopicSection extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         'Đúng ${topicProg.correct}    Sai ${topicProg.incorrect}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey,
+                          color: theme.studyProgressStats,
                         ),
                       ),
                     ],

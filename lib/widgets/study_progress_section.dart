@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/question_progress.dart';
+import '../utils/app_colors.dart';
 
 class StudyProgressSection extends StatelessWidget {
   final int total;
@@ -10,15 +11,14 @@ class StudyProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final quizTotal = total;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.grey[850]
-              : Colors.grey.shade100,
+          color: theme.studyProgressBackground,
           borderRadius: BorderRadius.circular(12),
           border: Border(
             left: BorderSide(
@@ -36,7 +36,7 @@ class StudyProgressSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                color: theme.studyProgressTitle,
               ),
             ),
             const SizedBox(height: 12),
@@ -53,7 +53,7 @@ class StudyProgressSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.grey.shade600,
+                          color: theme.studyProgressText,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -62,9 +62,9 @@ class StudyProgressSection extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: quizTotal == 0 ? 0 : progress.practiced / quizTotal,
                           minHeight: 8,
-                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey.shade300,
+                          backgroundColor: theme.studyProgressBarBackground,
                           valueColor: AlwaysStoppedAnimation(
-                            Theme.of(context).brightness == Brightness.dark ? Colors.amber : Colors.blue,
+                            theme.studyProgressBarColor,
                           ),
                         ),
                       ),
@@ -74,7 +74,7 @@ class StudyProgressSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.grey.shade500,
+                          color: theme.studyProgressStats,
                         ),
                       ),
                     ],
@@ -99,7 +99,7 @@ class StudyProgressSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black87,
+                          color: theme.studyProgressPercentage,
                         ),
                       ),
                     ],

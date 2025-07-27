@@ -88,6 +88,7 @@ import '../../widgets/answer_options.dart';
 import '../../widgets/quiz_content.dart';
 import '../../providers/learning_progress.provider.dart';
 import '../../widgets/quiz_shortcut.dart';
+import '../../utils/app_colors.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
   final Object? extra;
@@ -320,12 +321,13 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     String value, {
     bool isSelected = false,
   }) {
+    final theme = Theme.of(context);
     return ListTile(
       title: Text(
         label,
         style: TextStyle(
           fontSize: 14,
-          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+          color: theme.quizFilterText,
         ),
       ),
       onTap: () => Navigator.pop(context, value),
@@ -335,14 +337,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       trailing: isSelected
           ? Icon(
               Icons.check,
-              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+              color: theme.quizFilterCheckIcon,
             )
           : null,
     );
   }
 
   Widget _buildDivider() => Divider(
-    color: Colors.grey[300],
+    color: Theme.of(context).dividerColor,
     height: 1,
     thickness: 1,
     indent: 16,
@@ -351,6 +353,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (licenseTypeCode == null) {
       return const Scaffold(
         body: Center(child: Text('Không tìm thấy loại bằng lái.')),
@@ -375,7 +378,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     final appBar = PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: Container(
-        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+        color: theme.appBarBackground,
         child: SafeArea(
           bottom: false,
           child: SizedBox(
@@ -420,7 +423,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                          color: theme.appBarText,
                         ),
                       ),
                       if (_currentFilter != 'all' &&
@@ -449,7 +452,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                             return SafeArea(
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                  color: theme.quizFilterBackground,
                                   // No border radius for flat edge
                                 ),
                                 child: SingleChildScrollView(
@@ -458,14 +461,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.symmetric(
-                                          vertical: 16,
+                                          vertical: 12,
                                         ),
                                         child: Text(
                                           'Lọc câu hỏi',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                                            color: theme.quizFilterText,
                                           ),
                                         ),
                                       ),
@@ -476,7 +479,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                           vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[200],
+                                          color: theme.quizFilterGroupBackground,
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Column(
@@ -494,7 +497,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                              color: theme.dividerColor,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -505,7 +508,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                              color: theme.dividerColor,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -524,7 +527,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                           vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[200],
+                                          color: theme.quizFilterGroupBackground,
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Column(
@@ -538,7 +541,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                              color: theme.dividerColor,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -557,7 +560,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                           vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[200],
+                                          color: theme.quizFilterGroupBackground,
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Column(
@@ -571,7 +574,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                              color: theme.dividerColor,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -582,7 +585,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                             ),
                                             Divider(
                                               height: 1,
-                                              color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                              color: theme.dividerColor,
                                             ),
                                             _buildFilterTile(
                                               context,
@@ -618,14 +621,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                               Text(
                                 'Lọc',
                                 style: TextStyle(
-                                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                                  color: theme.quizFilterButtonText,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               SizedBox(width: 6),
                               Icon(
                                 Icons.filter_list,
-                                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                                color: theme.quizFilterButtonIcon,
                                 size: 26,
                               ),
                             ],
@@ -663,19 +666,19 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       body: _currentFilteredQuizzes.isEmpty
           ? Container(
               width: double.infinity,
-              color: Colors.white,
+              color: theme.quizFilterBackground,
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.filter_alt_off, size: 48, color: Colors.grey),
+                    Icon(Icons.filter_alt_off, size: 48, color: theme.quizEmptyStateIcon),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       'Không có câu hỏi nào phù hợp với bộ lọc hiện tại',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.normal,
-                        color: Colors.black87,
+                        color: theme.quizEmptyStateText,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -716,8 +719,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                           mode: mode,
                         ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Divider(thickness: 1, height: 1),
+                                padding: const EdgeInsets.all(12),
+                                child: Divider(thickness: 1, height: 1, color: theme.dividerColor),
                               ),
                         AnswerOptions(
                                 key: ValueKey(quiz.id),
@@ -774,7 +777,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                       builder: (context) {
                                         return SafeArea(
                                           child: Container(
-                                            color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+                                            color: theme.quizBottomSheetBackground,
                                             child: SizedBox(
                                               height: MediaQuery.of(context).size.height * 0.7,
                                               child: Column(
@@ -782,7 +785,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.symmetric(
-                                                      vertical: 8,
+                                                      vertical: 12,
                                                     ),
                                                     child: Text(
                                                       'Chọn câu hỏi',
@@ -790,7 +793,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                                                        color: theme.quizBottomSheetText,
                                                       ),
                                                     ),
                                                   ),
@@ -803,7 +806,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                                           (context, idx) =>
                                                               Divider(
                                                                 height: 1,
-                                                                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[600] : null,
+                                                                color: theme.dividerColor,
                                                               ),
                                                       itemBuilder: (context, idx) {
                                                         final q =
@@ -841,8 +844,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 borderRadius: BorderRadius.zero,
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              minimumSize: const Size(0, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             child: SizedBox(
                               height: 18,

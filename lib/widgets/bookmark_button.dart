@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/learning_progress.provider.dart';
 import '../models/quiz_practice_status.dart';
+import '../utils/app_colors.dart';
 
 class BookmarkButton extends ConsumerWidget {
   final String quizId;
@@ -10,6 +11,7 @@ class BookmarkButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final statusMap = ref.watch(quizStatusProvider)[licenseTypeCode] ?? {};
     final status = statusMap[quizId];
     final isSaved = status?.saved ?? false;
@@ -42,9 +44,7 @@ class BookmarkButton extends ConsumerWidget {
         children: [
           Icon(
             isSaved ? Icons.bookmark : Icons.bookmark_border,
-            color: isSaved
-                ? Colors.amber
-                : (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+            color: isSaved ? theme.amberColor : theme.primaryText,
             size: 24,
           ),
           const SizedBox(width: 4),
@@ -53,9 +53,7 @@ class BookmarkButton extends ConsumerWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 13,
-              color: isSaved
-                  ? Colors.amber
-                  : (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+              color: isSaved ? theme.amberColor : theme.primaryText,
             ),
           ),
         ],

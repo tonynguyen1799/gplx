@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../utils/app_colors.dart';
 
 class ExamTimer extends StatefulWidget {
   final int durationSeconds;
@@ -44,14 +45,15 @@ class _ExamTimerState extends State<ExamTimer> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.timer_rounded, color: Colors.red, size: 20),
-        SizedBox(width: 4),
+        Icon(Icons.timer_rounded, color: theme.errorColor, size: 20),
+        const SizedBox(width: 4),
         Text(
           _formatTime(_remainingSeconds),
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.errorColor),
         ),
       ],
     );

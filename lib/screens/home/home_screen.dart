@@ -20,6 +20,7 @@ import 'package:gplx_vn/models/quiz_practice_status.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/learning_progress.provider.dart';
 import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
+import 'package:gplx_vn/utils/app_colors.dart';
 
 ShortcutGridViewModel buildShortcutGridViewModel({required int saved, required int difficult, required int wrong}) {
   return ShortcutGridViewModel(saved: saved, difficult: difficult, wrong: wrong);
@@ -49,6 +50,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
           title: Align(
@@ -72,11 +74,10 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           centerTitle: true,
-          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-          foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+          backgroundColor: theme.appBarBackground,
+          foregroundColor: theme.appBarText,
           elevation: 0,
         ),
-        bottomNavigationBar: const AppBottomNavigationBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: FutureBuilder<String?>(

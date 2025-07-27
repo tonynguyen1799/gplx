@@ -1,0 +1,28 @@
+[
+  {
+    "id": "b1-q1",
+    "licenseTypeCode": "B1",
+    "topicIds": ["b1-t6"],
+    "text": "Biển nào cấm xe tải rẽ trái?",
+    "answers": ["Biển 1", "Biển 2", "Cả hai", "Không biển nào"],
+    "correctIndex": 0,
+    "imageUrl": null,
+    "isDifficult": true,
+    "title": "Câu 1",
+    "index": 1,
+    "explanation": "Biển 1 cấm xe tải rẽ trái."
+  },
+  {
+    "id": "b1-q2",
+    "licenseTypeCode": "B1",
+    "topicIds": ["b1-fatal", "b1-t2"],
+    "text": "Xe nào phải nhường đường?",
+    "answers": ["Xe con", "Xe tải", "Xe buýt", "Xe khách"],
+    "correctIndex": 2,
+    "imageUrl": null,
+    "isDifficult": false,
+    "title": "Câu 2",
+    "index": 2,
+    "explanation": "Xe buýt phải nhường đường."
+  }
+] 

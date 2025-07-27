@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/exam.dart';
 import '../utils/quiz_constants.dart';
 import '../providers/app_data_providers.dart';
+import '../utils/app_colors.dart';
 
 class ExamDescriptionScreen extends StatefulWidget {
   final Exam exam;
@@ -149,7 +150,6 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
       ),
       bottomNavigationBar: SizedBox(
         width: double.infinity,
-        height: 56,
         child: TextButton(
           style: TextButton.styleFrom(
             backgroundColor: Colors.blue,
@@ -201,7 +201,7 @@ class _ExamModeSelector extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 dense: true,
               ),
-              Divider(height: 1, thickness: 1, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[300], indent: 16, endIndent: 16),
+              Divider(height: 1, thickness: 1, color: Theme.of(context).dividerColor, indent: 16, endIndent: 16),
               ListTile(
                 title: Text('Chấm điểm nhanh khi chọn đáp án', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
                 onTap: () => onModeChanged(1),

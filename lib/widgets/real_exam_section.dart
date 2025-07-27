@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../utils/app_colors.dart';
 
 class RealExamSection extends StatelessWidget {
   final int examCount;
@@ -8,6 +9,7 @@ class RealExamSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         context.push('/exams');
@@ -15,9 +17,7 @@ class RealExamSection extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.deepPurple.shade900
-              : Colors.indigo.shade50,
+          color: theme.realExamBackground,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -25,7 +25,7 @@ class RealExamSection extends StatelessWidget {
             Icon(
               Icons.assignment,
               size: 32,
-              color: Theme.of(context).brightness == Brightness.dark ? Colors.amberAccent : Colors.indigo,
+              color: theme.realExamIcon,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -37,16 +37,16 @@ class RealExamSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                      color: theme.realExamTitle,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$examCount đề thi, thời gian giới hạn và cách thức làm bài như thi thật',
+                    'Bộ $examCount đề thi, thời gian và cách thức làm bài như thực tế',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade500,
+                      color: theme.realExamDescription,
                     ),
                   ),
                 ],

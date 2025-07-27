@@ -4,6 +4,7 @@ import '../../models/quiz_practice_status.dart';
 import '../../models/license_type.dart';
 import '../../models/topic.dart';
 import 'bookmark_button.dart';
+import '../../utils/app_colors.dart';
 
 class QuizContent extends StatelessWidget {
   final Quiz quiz;
@@ -31,6 +32,7 @@ class QuizContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -44,7 +46,7 @@ class QuizContent extends StatelessWidget {
                 children: [
                   Text(
                     'Câu ${quizIndex + 1}/$totalQuizzes  [${quizCode}]',
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: theme.quizContentHeader),
                   ),
                   const SizedBox(width: 4),
                   if (status?.practiced == true)
@@ -52,12 +54,12 @@ class QuizContent extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           '| đã học',
-                          style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: theme.quizContentPracticed, fontSize: 13, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 2),
-                        Icon(Icons.check_circle, color: Colors.green, size: 18),
+                        Icon(Icons.check_circle, color: theme.quizContentCheckIcon, size: 18),
                       ],
                     ),
                 ],
@@ -71,13 +73,12 @@ class QuizContent extends StatelessWidget {
           ),
           Text(
             quiz.text,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: theme.quizContentText),
           ),
           if (quiz.imageUrl != null && quiz.imageUrl!.isNotEmpty) ...[
             const SizedBox(height: 16),
             Image.asset('assets/images/' + quiz.imageUrl!),
           ],
-          const SizedBox(height: 24),
         ],
       ),
     );
