@@ -72,7 +72,7 @@ extension AppColors on ThemeData {
   Color get quizAppBarText => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
   Color get quizFilterBackground => brightness == Brightness.dark ? Colors.grey[850]! : Colors.grey[50]!;
   Color get quizFilterText => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
-  Color get quizFilterGroupBackground => brightness == Brightness.dark ? Colors.grey[700]! : Colors.grey[100]!;
+  Color get quizFilterGroupBackground => brightness == Brightness.dark ? Colors.grey[700]! : Colors.grey[200]!;
   Color get quizFilterCheckIcon => brightness == Brightness.dark ? Colors.white : Colors.black;
   Color get quizFilterButtonText => brightness == Brightness.dark ? Colors.white : Colors.black;
   Color get quizFilterButtonIcon => brightness == Brightness.dark ? Colors.white : Colors.black;

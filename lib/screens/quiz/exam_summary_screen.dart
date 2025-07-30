@@ -4,7 +4,9 @@ import '../../widgets/quiz_shortcut.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_data_providers.dart';
+import '../../providers/learning_progress.provider.dart';
 import '../../utils/quiz_constants.dart';
+import '../../utils/app_colors.dart';
 
 class ExamSummaryScreen extends StatefulWidget {
   final List<Quiz> quizzes;
@@ -26,6 +28,9 @@ class ExamSummaryScreen extends StatefulWidget {
 
 class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
   String _filter = 'all';
+  
+  // Cache for quizId to index in the full quizzes list
+  Map<String, int> _quizIdToIndex = {};
 
   List<Quiz> get _filteredQuizzes {
     switch (_filter) {
@@ -49,9 +54,14 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         return widget.quizzes;
     }
   }
+  
+  void _buildQuizIdToIndexMap(List<Quiz> allQuizzes) {
+    _quizIdToIndex = {for (int i = 0; i < allQuizzes.length; i++) allQuizzes[i].id: i};
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Consumer(
       builder: (context, ref, _) {
     int correctCount = 0;
@@ -64,6 +74,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         final configs = ref.watch(configsProvider);
         final config = configs[widget.licenseTypeCode] ?? {};
         final minCorrect = config['exam']?['numberOfRequiredCorrectQuizzes'] ?? 0;
+        final statusMap = ref.watch(quizStatusProvider)[widget.licenseTypeCode] ?? {};
         // Check for fatal quiz answered incorrectly
         final String fatalTopicId = widget.licenseTypeCode.toLowerCase() + '-fatal';
         final fatalQuizzes = widget.quizzes.where((quiz) => quiz.topicIds.contains(fatalTopicId)).toList();
@@ -74,6 +85,14 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
           return selected != null && selected == quiz.correctIndex;
         });
         final bool isPassed = allFatalCorrect && correctCount >= minCorrect;
+        
+        // Build the quizId to index map for the full quizzes list
+        final quizzesMap = ref.watch(quizzesProvider);
+        final allQuizzes = quizzesMap.containsKey(widget.licenseTypeCode)
+            ? List<Quiz>.from(quizzesMap[widget.licenseTypeCode]!)
+            : <Quiz>[];
+        _buildQuizIdToIndexMap(allQuizzes);
+        
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kết quả bài thi', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -83,12 +102,12 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
             context.go('/home');
           },
         ),
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
-        foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarText,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -97,9 +116,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: isPassed
-                      ? (Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green)
-                      : (Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red),
+                  color: isPassed ? theme.successColor : theme.errorColor,
                 ),
               ),
               const SizedBox(height: 12),
@@ -111,7 +128,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                    color: theme.primaryText,
                   ),
                 ),
               ),
@@ -123,7 +140,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                     child: Text(
                       'Bạn đã trả lời sai câu điểm liệt',
                       style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red,
+                        color: theme.errorColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -155,20 +172,16 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                   final isUnanswered = selected == null;
                   Color tileColor;
                   if (isUnanswered) {
-                    tileColor = Colors.orangeAccent.withOpacity(0.2);
+                    tileColor = theme.warningColor.withOpacity(0.2);
                   } else if (isCorrect) {
-                    tileColor = Theme.of(context).brightness == Brightness.dark
-                        ? Colors.greenAccent.withOpacity(0.35)
-                        : Colors.greenAccent.withOpacity(0.2);
+                    tileColor = theme.successColor.withOpacity(theme.brightness == Brightness.dark ? 0.35 : 0.2);
                   } else {
-                    tileColor = Theme.of(context).brightness == Brightness.dark
-                        ? Colors.redAccent.withOpacity(0.35)
-                        : Colors.redAccent.withOpacity(0.2);
+                    tileColor = theme.errorColor.withOpacity(theme.brightness == Brightness.dark ? 0.35 : 0.2);
                   }
-                  final originalIndex = widget.quizzes.indexWhere((q) => q.id == quiz.id);
+                  final originalIndex = _quizIdToIndex[quiz.id] ?? -1;
                   return QuizShortcut(
                     quiz: quiz,
-                    index: originalIndex,
+                    index: idx,
                     originalIndex: originalIndex,
                     selected: false,
                     onTap: () {
@@ -177,18 +190,17 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                         'selectedAnswers': widget.selectedAnswers,
                         'licenseTypeCode': widget.licenseTypeCode,
                         'examId': widget.examId,
-                        'startIndex': originalIndex,
+                        'startIndex': idx,
                         'reviewMode': true,
                       });
                     },
                     contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     tileColor: tileColor,
                     totalQuizzes: widget.quizzes.length,
-                    practiced: selected != null,
+                    practiced: statusMap[quiz.id]?.practiced ?? false,
                   );
                 },
               ),
-              const SizedBox(height: 24),
             ],
             ),
         ),
@@ -199,26 +211,27 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
   }
 
   Widget _buildFilterButton(String label, String value) {
+    final theme = Theme.of(context);
     final bool isSelected = _filter == value;
     Color selectedBg;
     Color selectedFg;
     switch (value) {
       case 'correct':
-        selectedBg = Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade50;
-        selectedFg = Theme.of(context).brightness == Brightness.dark ? Colors.greenAccent : Colors.green;
+        selectedBg = theme.brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade50;
+        selectedFg = theme.successColor;
         break;
       case 'incorrect':
-        selectedBg = Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade50;
-        selectedFg = Theme.of(context).brightness == Brightness.dark ? Colors.redAccent : Colors.red;
+        selectedBg = theme.brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade50;
+        selectedFg = theme.errorColor;
         break;
       case 'unanswered':
-        selectedBg = Theme.of(context).brightness == Brightness.dark ? Colors.orange.shade900 : Colors.orange.shade50;
-        selectedFg = Theme.of(context).brightness == Brightness.dark ? Colors.orangeAccent : Colors.orange;
+        selectedBg = theme.brightness == Brightness.dark ? Colors.orange.shade900 : Colors.orange.shade50;
+        selectedFg = theme.warningColor;
         break;
       case 'all':
       default:
-        selectedBg = Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50;
-        selectedFg = Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.blue;
+        selectedBg = theme.brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50;
+        selectedFg = theme.primaryColor;
         break;
     }
     return TextButton(
@@ -228,8 +241,8 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         });
       },
       style: TextButton.styleFrom(
-        backgroundColor: isSelected ? selectedBg : (Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.white),
-        foregroundColor: isSelected ? selectedFg : (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+        backgroundColor: isSelected ? selectedBg : theme.cardColor,
+        foregroundColor: isSelected ? selectedFg : theme.primaryText,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         textStyle: const TextStyle(fontWeight: FontWeight.w600),

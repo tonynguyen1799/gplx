@@ -689,7 +689,7 @@
     "correctIndex": 3,
     "isDifficult": true,
     "explanation": "Đây là câu hỏi điểm liệt. Khi CSGT dang ngang hai tay, hiệu lệnh có nghĩa là xe ở phía trước và phía sau phải dừng lại; xe ở bên phải và bên trái được phép đi.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Hãy tưởng tượng hai tay CSGT như một rào chắn. Các luồng giao thông bị tay chắn lại (phía trước và sau lưng) phải dừng. Các luồng giao thông song song với tay (bên trái và phải) được đi.",
+    "tip": "Hãy tưởng tượng hai tay CSGT như một rào chắn. Các luồng giao thông bị tay chắn lại (phía trước và sau lưng) phải dừng. Các luồng giao thông song song với tay (bên trái và phải) được đi.",
     "imageUrl": "b2-q36.jpeg",
     "topicIds": [
       "b2-t1",
@@ -710,7 +710,7 @@
     "correctIndex": 2,
     "isDifficult": true,
     "explanation": "Đây là câu hỏi điểm liệt. Khi CSGT giơ tay thẳng đứng, hiệu lệnh có nghĩa là tất cả các xe từ mọi hướng đều phải dừng lại (trừ xe đã đi vào trong khu vực giao nhau).",
-    "tip": "<b>Mẹo ghi nhớ:</b> Hiệu lệnh giơ tay thẳng đứng tương đương với tín hiệu đèn đỏ cho tất cả các hướng. Đây là tín hiệu yêu cầu dừng lại tuyệt đối để chuẩn bị cho việc thay đổi luồng giao thông.",
+    "tip": "Hiệu lệnh giơ tay thẳng đứng tương đương với tín hiệu đèn đỏ cho tất cả các hướng. Đây là tín hiệu yêu cầu dừng lại tuyệt đối để chuẩn bị cho việc thay đổi luồng giao thông.",
     "imageUrl": "b2-q37.jpeg",
     "topicIds": [
       "b2-t1",
@@ -903,7 +903,7 @@
     "correctIndex": 1,
     "isDifficult": true,
     "explanation": "Đây là câu hỏi điểm liệt. Vượt xe tại cầu hẹp có một làn, đường cong, nơi tầm nhìn bị che khuất là cực kỳ nguy hiểm và bị cấm tuyệt đối để tránh tai nạn đối đầu.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Cứ có câu hỏi về việc vượt xe ở nơi nguy hiểm (cầu hẹp, đường cong, tầm nhìn hạn chế, nơi giao nhau), đáp án luôn là 'Không được phép'.",
+    "tip": "Cứ có câu hỏi về việc vượt xe ở nơi nguy hiểm (cầu hẹp, đường cong, tầm nhìn hạn chế, nơi giao nhau), đáp án luôn là 'Không được phép'.",
     "imageUrl": "",
     "topicIds": [
       "b2-t1",
@@ -942,7 +942,7 @@
     "correctIndex": 1,
     "isDifficult": false,
     "explanation": "Theo quy định, để đảm bảo sự yên tĩnh, việc sử dụng còi trong khu đông dân cư, gần bệnh viện bị cấm trong khoảng thời gian từ 22h đêm hôm trước đến 5h sáng hôm sau.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Khung giờ được phép sử dụng còi là ban ngày, từ <b>5h sáng đến 10h tối (22h)</b>.",
+    "tip": "Khung giờ được phép sử dụng còi là ban ngày, từ <b>5h sáng đến 10h tối (22h)</b>.",
     "imageUrl": "",
     "topicIds": [
       "b2-t1"
@@ -1155,7 +1155,7 @@
     "correctIndex": 0,
     "isDifficult": false,
     "explanation": "Theo quy định, khi dừng, đỗ xe sát lề đường, khoảng cách từ bánh xe gần nhất đến mép lề đường không được vượt quá 0,25 mét (25cm) để không gây cản trở giao thông.",
-    "tip": "<b>Mẹo ghi nhớ:</b> 25cm là một khoảng cách rất nhỏ, tương đương một gang tay. Quy định này nhằm đảm bảo xe đỗ gọn gàng nhất có thể.",
+    "tip": "25cm là một khoảng cách rất nhỏ, tương đương một gang tay. Quy định này nhằm đảm bảo xe đỗ gọn gàng nhất có thể.",
     "imageUrl": "",
     "topicIds": [
       "b2-t1"
@@ -2618,8 +2618,6 @@
     ],
     "licenseTypeCode": "B2"
   },
-  JSON
-[
   {
     "id": "b2-q136",
     "index": 136,
@@ -5809,7 +5807,7 @@
     "correctIndex": 3,
     "isDifficult": false,
     "explanation": "Biển 1 'Cấm ô tô' và Biển 2 'Cấm ô tô tải' đều cấm xe tải. Biển 3 'Cấm máy kéo' không cấm xe tải.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Cấm xe nhỏ thì cấm luôn xe lớn.<br>- Biển 1 cấm ô tô con (nhỏ hơn) nên cũng cấm xe tải (lớn hơn).<br>- Biển 2 cấm trực tiếp xe tải.",
+    "tip": "Cấm xe nhỏ thì cấm luôn xe lớn.<br>- Biển 1 cấm ô tô con (nhỏ hơn) nên cũng cấm xe tải (lớn hơn).<br>- Biển 2 cấm trực tiếp xe tải.",
     "imageUrl": "b2-q302.jpeg",
     "topicIds": [
       "b2-t5"
@@ -5829,7 +5827,7 @@
     "correctIndex": 1,
     "isDifficult": false,
     "explanation": "Biển 2 'Cấm ô tô tải' sẽ cấm luôn máy kéo. Biển 3 là biển 'Cấm máy kéo'. Do đó, cả hai biển 2 và 3 đều cấm máy kéo.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Cấm xe tải (biển 2) thì cấm luôn cả máy kéo.",
+    "tip": "Cấm xe tải (biển 2) thì cấm luôn cả máy kéo.",
     "imageUrl": "b2-q303.jpeg",
     "topicIds": [
       "b2-t5"
@@ -6060,7 +6058,7 @@
     "correctIndex": 1,
     "isDifficult": false,
     "explanation": "Biển 1 'Cấm rẽ trái'. Biển 2 'Cấm quay đầu' không cấm rẽ trái. Vậy khi gặp biển 2 xe được phép rẽ trái.",
-    "tip": "<b>Mẹo ghi nhớ:</b> Biển cấm quay đầu <b>không cấm</b> rẽ trái.",
+    "tip": "Biển cấm quay đầu <b>không cấm</b> rẽ trái.",
     "imageUrl": "b2-q315.jpeg",
     "topicIds": [
       "b2-t5"

@@ -86,7 +86,11 @@ class ShortcutGridSection extends StatelessWidget {
         title: 'Mẹo',
         icon: Icons.tips_and_updates,
         color: Colors.orange.shade400,
-        onTap: () {},
+        onTap: () {
+          context.push('/tips', extra: {
+            'licenseTypeCode': licenseTypeCode,
+          });
+        },
       ),
       ShortcutItem(
         title: 'Nhắc nhở',

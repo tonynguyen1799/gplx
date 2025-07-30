@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/quiz.dart';
+import '../utils/app_colors.dart';
 
 class QuizShortcut extends StatelessWidget {
   final Quiz quiz;
@@ -27,11 +28,12 @@ class QuizShortcut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       decoration: selected ? BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50,
+        color: theme.brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50,
         border: Border.all(
-          color: Theme.of(context).brightness == Brightness.dark ? Colors.blue.shade400 : Colors.blue.shade200,
+          color: theme.brightness == Brightness.dark ? Colors.blue.shade400 : Colors.blue.shade200,
           width: 1
         ),
       ) : null,
@@ -49,7 +51,7 @@ class QuizShortcut extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                    color: theme.primaryText,
                   ),
                 ),
                 TextSpan(
@@ -57,7 +59,7 @@ class QuizShortcut extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
+                    color: theme.secondaryText,
                   ),
                 ),
                 if (practiced) ...[
@@ -66,7 +68,7 @@ class QuizShortcut extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
+                      color: theme.secondaryText,
                     ),
                   ),
                   TextSpan(
@@ -74,7 +76,7 @@ class QuizShortcut extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey,
+                      color: theme.secondaryText,
                     ),
                   ),
                 ],
@@ -83,7 +85,7 @@ class QuizShortcut extends StatelessWidget {
           ),
           if (practiced) ...[
             SizedBox(width: 4),
-            Icon(Icons.check_circle, color: Colors.green.shade400, size: 18),
+            Icon(Icons.check_circle, color: theme.successColor, size: 18),
           ],
         ],
       ),
@@ -99,7 +101,7 @@ class QuizShortcut extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[300] : Colors.grey,
+                    color: theme.secondaryText,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -117,12 +119,12 @@ class QuizShortcut extends StatelessWidget {
             ],
           ),
           if (quiz.topicIds.any((id) => id.endsWith('-fatal')))
-            const Padding(
-              padding: EdgeInsets.only(top: 4.0),
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 'Câu điểm liệt',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: theme.errorColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),

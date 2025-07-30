@@ -7,6 +7,7 @@ import '../services/hive_service.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import '../models/traffic_sign.dart';
+import '../models/exam_tip.dart';
 
 final licenseTypesProvider = StateProvider<List<LicenseType>>((ref) => []);
 final topicsProvider = StateProvider<Map<String, List<Topic>>>((ref) => {});
@@ -32,3 +33,5 @@ final trafficSignsProvider = FutureProvider<List<TrafficSign>>((ref) async {
 final selectedLicenseTypeProvider = FutureProvider<String?>((ref) async {
   return await getSelectedLicenseType();
 }); 
+
+final tipsProvider = StateProvider<Map<String, ExamTips>>((ref) => {});
