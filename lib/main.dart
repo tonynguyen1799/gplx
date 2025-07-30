@@ -68,6 +68,7 @@ class GPLXApp extends ConsumerWidget {
           style: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             elevation: 0,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         dialogTheme: DialogThemeData(
@@ -105,6 +106,7 @@ class GPLXApp extends ConsumerWidget {
           style: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             elevation: 0,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         dialogTheme: DialogThemeData(

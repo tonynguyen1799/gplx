@@ -178,6 +178,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
     final fatalTopicId = '${licenseTypeCode?.toLowerCase()}-fatal';
     return Consumer(
       builder: (context, ref, _) {
+        final theme = Theme.of(context);
         final configs = ref.watch(configsProvider);
         final config = configs[licenseTypeCode] ?? {};
         final durationMinutes = config['exam']?['durationInMunites'] ?? 20;
@@ -312,121 +313,118 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
             ),
           ),
         ],
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarText,
         elevation: 0,
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-        foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
       ),
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 0,
-                  runSpacing: 0,
-                  children: List.generate(
-                    quizzes.length,
-                    (idx) {
-                      final quizId = quizzes[idx].id;
-                      final isAnswered = selectedAnswers.containsKey(quizId);
-                      final isQuickExam = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
-                      final selectedIdx = selectedAnswers[quizId];
-                          final isCorrect = isAnswered && selectedIdx == quizzes[idx].correctIndex;
-                          final isUnanswered = !isAnswered;
-                      return ExamQuizJumpButton(
-                        idx: idx,
-                        currentIndex: currentIndex,
-                        quiz: quizzes[idx],
-                        isAnswered: isAnswered,
-                        isQuickExam: isQuickExam,
-                        selectedIdx: selectedIdx,
-                        onTap: () {
-                          setState(() {
-                            currentIndex = idx;
-                          });
-                          _pageController.jumpToPage(idx);
-                        },
-                            reviewMode: reviewMode,
-                            isCorrect: isCorrect,
-                            isUnanswered: isUnanswered,
-                      );
-                    },
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 0,
+                runSpacing: 0,
+                children: List.generate(
+                  quizzes.length,
+                  (idx) {
+                    final quizId = quizzes[idx].id;
+                    final isAnswered = selectedAnswers.containsKey(quizId);
+                    final isQuickExam = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
+                    final selectedIdx = selectedAnswers[quizId];
+                    final isCorrect = isAnswered && selectedIdx == quizzes[idx].correctIndex;
+                    final isUnanswered = !isAnswered;
+                    return ExamQuizJumpButton(
+                      idx: idx,
+                      currentIndex: currentIndex,
+                      quiz: quizzes[idx],
+                      isAnswered: isAnswered,
+                      isQuickExam: isQuickExam,
+                      selectedIdx: selectedIdx,
+                      onTap: () {
+                        setState(() {
+                          currentIndex = idx;
+                        });
+                        _pageController.jumpToPage(idx);
+                      },
+                      reviewMode: reviewMode,
+                      isCorrect: isCorrect,
+                      isUnanswered: isUnanswered,
+                    );
+                  },
                 ),
               ),
             ),
-            Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: quizzes.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      final quiz = quizzes[index];
-                      return SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                children: [
-                  QuizContent(
-                    quiz: quiz,
-                              quizIndex: index,
-                    totalQuizzes: quizzes.length,
-                    licenseTypeCode: licenseTypeCode!,
-                    status: null, // Don't show persistent status in exam mode
-                    onBookmarkChanged: () => setState(() {}),
-                              quizCode: '${licenseTypeCode}.${(_quizIdToIndex[quiz.id] ?? -1) + 1}',
-                    mode: mode,
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: quizzes.length,
+              onPageChanged: (index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                final quiz = quizzes[index];
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      QuizContent(
+                        quiz: quiz,
+                        quizIndex: index,
+                        totalQuizzes: quizzes.length,
+                        licenseTypeCode: licenseTypeCode!,
+                        status: null, // Don't show persistent status in exam mode
+                        onBookmarkChanged: () => setState(() {}),
+                        quizCode: '${licenseTypeCode}.${(_quizIdToIndex[quiz.id] ?? -1) + 1}',
+                        mode: mode,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Divider(thickness: 1, height: 1, color: Theme.of(context).dividerColor),
+                      ),
+                      AnswerOptions(
+                        key: ValueKey(quiz.id),
+                        answers: quiz.answers,
+                        correctIndex: quiz.correctIndex,
+                        onSelect: reviewMode
+                            ? ((_) async {})
+                            : (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null)
+                                ? ((_) async {})
+                                : _selectAnswer,
+                        selectedIndex: reviewMode
+                            ? (selectedAnswers.containsKey(quiz.id)
+                                ? selectedAnswers[quiz.id]!
+                                : -1)
+                            : selectedAnswers[quiz.id],
+                        showExplanation: reviewMode ||
+                            mode == QuizModes.TRAINING_MODE ||
+                            mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
+                            (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
+                        explanation: reviewMode
+                            ? quiz.explanation
+                            : (mode == QuizModes.TRAINING_MODE ||
+                                mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
+                                (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null))
+                                ? quiz.explanation
+                                : null,
+                        mode: mode ?? QuizModes.TRAINING_MODE,
+                        lockAnswer: reviewMode || (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
+                        isFatalQuiz: quiz.topicIds.contains(fatalTopicId),
+                        examMode: examMode ?? '',
+                      ),
+                    ],
                   ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Divider(thickness: 1, height: 1, color: Theme.of(context).dividerColor),
-                              ),
-                  AnswerOptions(
-                              key: ValueKey(quiz.id),
-                    answers: quiz.answers,
-                    correctIndex: quiz.correctIndex,
-                              onSelect: reviewMode
-                                  ? ((_) async {})
-                                  : (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null)
-                                      ? ((_) async {})
-                                      : _selectAnswer,
-                              selectedIndex: reviewMode
-                                  ? (selectedAnswers.containsKey(quiz.id)
-                                      ? selectedAnswers[quiz.id]!
-                                      : -1)
-                                  : selectedAnswers[quiz.id],
-                              showExplanation: reviewMode ||
-                                  mode == QuizModes.TRAINING_MODE ||
-                                  mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
-                                  (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
-                              explanation: reviewMode
-                                  ? quiz.explanation
-                                  : (mode == QuizModes.TRAINING_MODE ||
-                                      mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
-                                      (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null))
-                                      ? quiz.explanation
-                                      : null,
-                              mode: mode ?? QuizModes.TRAINING_MODE,
-                              lockAnswer: reviewMode || (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
-                    isFatalQuiz: quiz.topicIds.contains(fatalTopicId),
-                    examMode: examMode ?? '',
-                  ),
-                ],
-                        ),
-                      );
-                    },
-              ),
+                );
+              },
             ),
-            // Navigation buttons moved to bottomNavigationBar
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: SafeArea(
         child: Row(
@@ -466,8 +464,8 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
           ],
         ),
       ),
-        );
-      },
-    );
-  }
-} 
+    ); // End of Scaffold
+  }, // <-- Close the builder function for Consumer
+); // <-- Close Consumer
+} // <-- Close build method
+} // <-- Close class 

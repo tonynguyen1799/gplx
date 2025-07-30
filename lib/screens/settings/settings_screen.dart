@@ -95,7 +95,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       );
     }
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: const Text('Cài đặt', style: TextStyle(fontWeight: FontWeight.w600)),
         automaticallyImplyLeading: false,
         elevation: 0,

@@ -82,7 +82,7 @@ extension AppColors on ThemeData {
   Color get quizEmptyStateText => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
   
   // Global AppBar Colors (M3 Compliant)
-  Color get appBarBackground => brightness == Brightness.dark ? Colors.grey[850]! : Colors.grey[50]!;
+  Color get appBarBackground => brightness == Brightness.dark ? Colors.grey[850]! : Colors.white;
   Color get appBarText => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
   
   // Quiz Content Widget Colors (M3 Compliant)

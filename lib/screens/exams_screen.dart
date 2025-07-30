@@ -33,9 +33,9 @@ class ExamsScreen extends ConsumerWidget {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: 'Về trang chủ',
-                            onPressed: () {
-              Navigator.of(context).pop();
-            },
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
               title: const Text('Danh sách đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               backgroundColor: Theme.of(context).appBarBackground,
@@ -65,89 +65,89 @@ class ExamsScreen extends ConsumerWidget {
               final progressMap = ref.watch(examsProgressProvider);
               return GridView.builder(
                 padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.1,
-                ),
-                itemCount: exams.length,
-                itemBuilder: (context, index) {
-                  final exam = exams[index];
-                  final progress = progressMap[exam.id];
-                  final done = progress != null;
-                  final passed = progress?.passed ?? false;
-                  final correct = progress?.correctCount ?? 0;
-                  final incorrect = progress?.incorrectCount ?? 0;
-                  return GestureDetector(
-                    onTap: () {
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.1,
+                  ),
+                  itemCount: exams.length,
+                  itemBuilder: (context, index) {
+                    final exam = exams[index];
+                    final progress = progressMap[exam.id];
+                    final done = progress != null;
+                    final passed = progress?.passed ?? false;
+                    final correct = progress?.correctCount ?? 0;
+                    final incorrect = progress?.incorrectCount ?? 0;
+                    return GestureDetector(
+                      onTap: () {
                       context.push('/exam-description', extra: {
                         'exam': exam,
                         'licenseTypeCode': licenseTypeCode,
                       });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: !done
-                            ? (Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey.shade100)
-                            : passed
-                                ? (Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade50)
-                                : (Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade50),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.22),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            exam.name,
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                          if (done) ...[
-                            Row(
-                              children: [
-                                Icon(
-                                  passed ? Icons.check_circle : Icons.cancel,
-                                  color: passed ? Colors.green : Colors.red,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(passed ? 'Đạt' : 'Không đạt', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Đúng $correct',
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Sai $incorrect',
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: !done
+                              ? (Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey.shade100)
+                              : passed
+                                  ? (Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade50)
+                                  : (Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade50),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.22),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
                             ),
                           ],
-                        ],
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              exam.name,
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            if (done) ...[
+                              Row(
+                                children: [
+                                  Icon(
+                                    passed ? Icons.check_circle : Icons.cancel,
+                                    color: passed ? Colors.green : Colors.red,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(passed ? 'Đạt' : 'Không đạt', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Đúng $correct',
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Sai $incorrect',
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
               );
             },
           ),

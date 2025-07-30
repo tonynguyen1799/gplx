@@ -116,21 +116,21 @@ class ShortcutGridSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: firstRow
-                .map((item) => Expanded(child: ShortcutGridItem(item: item)))
-                .toList(),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: secondRow
-                .map((item) => Expanded(child: ShortcutGridItem(item: item)))
-                .toList(),
-          ),
-        ],
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: firstRow
+              .map((item) => Expanded(child: ShortcutGridItem(item: item)))
+              .toList(),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: secondRow
+              .map((item) => Expanded(child: ShortcutGridItem(item: item)))
+              .toList(),
+        ),
+      ],
       ),
     );
   }

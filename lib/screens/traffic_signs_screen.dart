@@ -33,6 +33,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final categories = ref.watch(trafficSignCategoriesProvider);
     final trafficSignsAsync = ref.watch(trafficSignsProvider);
     
@@ -63,20 +64,20 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Biển báo giao thông',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null),
+        appBar: AppBar(
+          title: Text(
+            'Biển báo giao thông',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          backgroundColor: theme.appBarBackground,
+          foregroundColor: theme.appBarText,
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
-        foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
-      ),
       body: Column(
         children: [
           _buildCustomTabBar(categories),
@@ -86,21 +87,21 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                 : trafficSignsAsync.when(
                     data: (signs) => PageView(
                       controller: _pageController!,
-                      children: [
-                        for (final cat in categories)
-                          _buildChunkedSignList(
-                            signs.where((s) => s.categoryKey == cat['key']).toList(),
-                            cat['key'] ?? '',
-                          ),
-                      ],
-                    ),
-                    loading: () => _SkeletonLoader(),
-                    error: (e, st) => Center(child: Text('Lỗi khi tải biển báo: $e')),
+            children: [
+              for (final cat in categories)
+                _buildChunkedSignList(
+                  signs.where((s) => s.categoryKey == cat['key']).toList(),
+                  cat['key'] ?? '',
+                ),
+            ],
+          ),
+          loading: () => _SkeletonLoader(),
+          error: (e, st) => Center(child: Text('Lỗi khi tải biển báo: $e')),
                   ),
           ),
         ],
-      ),
-      backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+        ),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
     );
   }
 
@@ -133,7 +134,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         itemBuilder: (context, index) {
           final isSelected = index == _currentIndex;
           final cat = categories[index];
-          
           return GestureDetector(
             onTap: () {
               _pageController?.animateToPage(
@@ -147,27 +147,32 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
               _scrollToSelectedTab(index);
             },
             child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              constraints: const BoxConstraints(minWidth: 80),
               decoration: BoxDecoration(
                 color: Colors.transparent,
-                border: isSelected 
-                  ? Border(
-                      bottom: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    )
-                  : null,
+                border: isSelected
+                    ? Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                      )
+                    : null,
               ),
-              child: Text(
-                cat['name'] ?? '',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: isSelected 
-                    ? Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black87
-                    : Colors.grey,
+              child: Center(
+                child: Text(
+                  cat['name'] ?? '',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected
+                        ? Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black87
+                        : Colors.grey,
+                  ),
                 ),
               ),
             ),
@@ -196,7 +201,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     }
     return ListView.separated(
       controller: controller,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.zero,
       itemCount: visibleSigns.length + (hasMore ? 1 : 0),
       separatorBuilder: (_, __) => Divider(height: 10, color: Theme.of(context).dividerColor),
       itemBuilder: (context, index) {
@@ -209,7 +214,8 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         }
         final sign = visibleSigns[index];
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
