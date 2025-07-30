@@ -10,6 +10,7 @@ class Quiz {
   final String title;
   final int index;
   final String? explanation;
+  final String? tip;
 
   Quiz({
     required this.id,
@@ -23,6 +24,7 @@ class Quiz {
     required this.title,
     required this.index,
     this.explanation,
+    this.tip,
   });
 
   factory Quiz.fromJson(Map<String, dynamic> json) => Quiz(
@@ -39,6 +41,7 @@ class Quiz {
         title: json['title'] ?? '',
         index: json['index'] ?? 0,
         explanation: json['explanation'],
+        tip: json['tip'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class Quiz {
         'title': title,
         'index': index,
         'explanation': explanation,
+        'tip': tip,
       };
 } 

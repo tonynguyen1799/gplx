@@ -10,6 +10,7 @@
         "cupertino_icons",
         "flutter",
         "flutter_datetime_picker",
+        "flutter_html",
         "flutter_localizations",
         "flutter_riverpod",
         "flutter_svg",
@@ -106,6 +107,17 @@
         "test_api",
         "vector_math",
         "vm_service"
+      ]
+    },
+    {
+      "name": "flutter_html",
+      "version": "3.0.0",
+      "dependencies": [
+        "collection",
+        "csslib",
+        "flutter",
+        "html",
+        "list_counter"
       ]
     },
     {
@@ -733,6 +745,26 @@
         "stream_channel",
         "string_scanner",
         "term_glyph"
+      ]
+    },
+    {
+      "name": "list_counter",
+      "version": "1.0.2",
+      "dependencies": []
+    },
+    {
+      "name": "csslib",
+      "version": "1.0.2",
+      "dependencies": [
+        "source_span"
+      ]
+    },
+    {
+      "name": "html",
+      "version": "0.15.6",
+      "dependencies": [
+        "csslib",
+        "source_span"
       ]
     },
     {

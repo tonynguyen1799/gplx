@@ -55,6 +55,48 @@
       ]
     },
     {
+      "topic_id": "numbers_tricks",
+      "topic_name": "Mẹo Về Các Con Số",
+      "topic_description": "Ghi nhớ nhanh các số liệu quan trọng về tốc độ, tuổi, niên hạn.",
+      "tips": [
+        {
+          "tip_title": "Tốc Độ Tối Đa Trong Khu Dân Cư",
+          "tip_content": "Chỉ có 2 mức tốc độ:<br>- Đường có dải phân cách ở giữa (đường đôi) hoặc đường một chiều có từ 2 làn xe trở lên: <b>60 km/h</b>.<br>- Đường không có dải phân cách (đường hai chiều) hoặc đường một chiều có 1 làn xe: <b>50 km/h</b>.",
+          "related_questions": [
+            145, 146, 147, 148
+          ]
+        },
+        {
+          "tip_title": "Tốc Độ Tối Đa Ngoài Khu Dân Cư",
+          "tip_content": "Học thuộc tốc độ trên <b>đường đôi (có dải phân cách)</b> trước:<br>- <b>90 km/h:</b> Ô tô con, xe chở người đến 30 chỗ, xe tải < 3.5 tấn.<br>- <b>80 km/h:</b> Xe trên 30 chỗ, xe tải > 3.5 tấn.<br>- <b>70 km/h:</b> Xe buýt, xe đầu kéo, xe mô tô.<br>- <b>60 km/h:</b> Các loại xe còn lại (xe kéo rơ moóc, xe trộn bê tông...).<br><br>Đối với <b>đường hai chiều (không có dải phân cách)</b>, chỉ cần lấy tốc độ tương ứng ở trên <b>trừ đi 10 km/h</b> (tương ứng 80, 70, 60, 50 km/h).",
+          "related_questions": [
+            149, 150, 151, 152, 153, 154, 155, 156
+          ]
+        },
+        {
+          "tip_title": "Độ Tuổi Lấy Bằng (Bậc Thang +3)",
+          "tip_content": "Ghi nhớ các bậc thang tuổi, mỗi bậc cách nhau 3 năm:<br>- <b>16 tuổi:</b> Xe gắn máy (< 50cc).<br>- <b>18 tuổi:</b> Bằng A1, A2, B1, B2, C1.<br>- <b>21 tuổi:</b> Bằng C (xe tải nặng).<br>- <b>24 tuổi:</b> Bằng D (xe khách 10-30 chỗ).<br>- <b>27 tuổi:</b> Bằng E (xe khách > 30 chỗ).<br><br><b>Giới hạn tuổi tối đa (Câu hỏi điểm liệt):</b><br>- Lái xe hạng E (>30 chỗ) tối đa là <b>50 tuổi đối với nữ</b> và <b>55 tuổi đối với nam</b>.",
+          "related_questions": [
+            118, 119, 120, 121, 122, 123
+          ]
+        },
+        {
+          "tip_title": "Niên Hạn Sử Dụng Xe (Tải 25 - Khách 20)",
+          "tip_content": "Chỉ có 2 loại xe có niên hạn trong bộ đề:<br>- Xe <b>Tải</b> (chở hàng): <b>25 năm</b>.<br>- Xe <b>Khách</b> (chở người trên 9 chỗ): <b>20 năm</b>.<br><i>(Lý do: Xe chở người yêu cầu an toàn cao hơn nên niên hạn ngắn hơn).</i>",
+          "related_questions": [
+            277, 278
+          ]
+        },
+        {
+          "tip_title": "Khoảng Cách An Toàn",
+          "tip_content": "<b>Khoảng cách tối thiểu giữa các xe:</b><br>- Tốc độ <b>60 km/h:</b> Khoảng cách <b>35m</b>.<br>- Tốc độ <b>trên 60 đến 80 km/h:</b> Khoảng cách <b>55m</b>.<br>- Tốc độ <b>trên 80 đến 100 km/h:</b> Khoảng cách <b>70m</b>.<br>- Tốc độ <b>trên 100 đến 120 km/h:</b> Khoảng cách <b>100m</b>.<br><br><b>Khoảng cách dừng, đỗ xe:</b><br>- Đỗ xe cách lề đường, vỉa hè: không quá <b>0,25m</b>.<br>- Đỗ xe trên đường hẹp, cách xe ngược chiều: tối thiểu <b>20m</b>.<br>- Dừng xe cách đường sắt gần nhất: tối thiểu <b>5m</b>.",
+          "related_questions": [
+            60, 61, 99, 158, 159, 160, 161, 162
+          ]
+        }
+      ]
+    },
+    {
       "topic_id": "traffic_scenarios",
       "topic_name": "Mẹo Giải Sa Hình",
       "topic_description": "Quy tắc xử lý các tình huống giao thông tại nơi giao nhau.",
@@ -99,48 +141,6 @@
           "tip_content": "Biển \"Cấm rẽ trái\" <b>KHÔNG cấm</b> quay đầu xe.<br>Biển \"Cấm quay đầu\" <b>KHÔNG cấm</b> rẽ trái.",
           "related_questions": [
             313, 314, 315, 323, 324, 550, 560
-          ]
-        }
-      ]
-    },
-    {
-      "topic_id": "numbers_tricks",
-      "topic_name": "Mẹo Về Các Con Số",
-      "topic_description": "Ghi nhớ nhanh các số liệu quan trọng về tốc độ, tuổi, niên hạn.",
-      "tips": [
-        {
-          "tip_title": "Tốc Độ Tối Đa Trong Khu Dân Cư",
-          "tip_content": "Chỉ có 2 mức tốc độ:<br>- Đường có dải phân cách ở giữa (đường đôi) hoặc đường một chiều có từ 2 làn xe trở lên: <b>60 km/h</b>.<br>- Đường không có dải phân cách (đường hai chiều) hoặc đường một chiều có 1 làn xe: <b>50 km/h</b>.",
-          "related_questions": [
-            145, 146, 147, 148
-          ]
-        },
-        {
-          "tip_title": "Tốc Độ Tối Đa Ngoài Khu Dân Cư",
-          "tip_content": "Học thuộc tốc độ trên <b>đường đôi (có dải phân cách)</b> trước:<br>- <b>90 km/h:</b> Ô tô con, xe chở người đến 30 chỗ, xe tải < 3.5 tấn.<br>- <b>80 km/h:</b> Xe trên 30 chỗ, xe tải > 3.5 tấn.<br>- <b>70 km/h:</b> Xe buýt, xe đầu kéo, xe mô tô.<br>- <b>60 km/h:</b> Các loại xe còn lại (xe kéo rơ moóc, xe trộn bê tông...).<br><br>Đối với <b>đường hai chiều (không có dải phân cách)</b>, chỉ cần lấy tốc độ tương ứng ở trên <b>trừ đi 10 km/h</b> (tương ứng 80, 70, 60, 50 km/h).",
-          "related_questions": [
-            149, 150, 151, 152, 153, 154, 155, 156
-          ]
-        },
-        {
-          "tip_title": "Độ Tuổi Lấy Bằng (Bậc Thang +3)",
-          "tip_content": "Ghi nhớ các bậc thang tuổi, mỗi bậc cách nhau 3 năm:<br>- <b>16 tuổi:</b> Xe gắn máy (< 50cc).<br>- <b>18 tuổi:</b> Bằng A1, A2, B1, B2, C1.<br>- <b>21 tuổi:</b> Bằng C (xe tải nặng).<br>- <b>24 tuổi:</b> Bằng D (xe khách 10-30 chỗ).<br>- <b>27 tuổi:</b> Bằng E (xe khách > 30 chỗ).<br><br><b>Giới hạn tuổi tối đa (Câu hỏi điểm liệt):</b><br>- Lái xe hạng E (>30 chỗ) tối đa là <b>50 tuổi đối với nữ</b> và <b>55 tuổi đối với nam</b>.",
-          "related_questions": [
-            118, 119, 120, 121, 122, 123
-          ]
-        },
-        {
-          "tip_title": "Niên Hạn Sử Dụng Xe (Tải 25 - Khách 20)",
-          "tip_content": "Chỉ có 2 loại xe có niên hạn trong bộ đề:<br>- Xe <b>Tải</b> (chở hàng): <b>25 năm</b>.<br>- Xe <b>Khách</b> (chở người trên 9 chỗ): <b>20 năm</b>.<br><i>(Lý do: Xe chở người yêu cầu an toàn cao hơn nên niên hạn ngắn hơn).</i>",
-          "related_questions": [
-            277, 278
-          ]
-        },
-        {
-          "tip_title": "Khoảng Cách An Toàn",
-          "tip_content": "<b>Khoảng cách tối thiểu giữa các xe:</b><br>- Tốc độ <b>60 km/h:</b> Khoảng cách <b>35m</b>.<br>- Tốc độ <b>trên 60 đến 80 km/h:</b> Khoảng cách <b>55m</b>.<br>- Tốc độ <b>trên 80 đến 100 km/h:</b> Khoảng cách <b>70m</b>.<br>- Tốc độ <b>trên 100 đến 120 km/h:</b> Khoảng cách <b>100m</b>.<br><br><b>Khoảng cách dừng, đỗ xe:</b><br>- Đỗ xe cách lề đường, vỉa hè: không quá <b>0,25m</b>.<br>- Đỗ xe trên đường hẹp, cách xe ngược chiều: tối thiểu <b>20m</b>.<br>- Dừng xe cách đường sắt gần nhất: tối thiểu <b>5m</b>.",
-          "related_questions": [
-            60, 61, 99, 158, 159, 160, 161, 162
           ]
         }
       ]

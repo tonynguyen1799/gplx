@@ -1,1 +1,0 @@
-@rpath/gplx_vn.debug.dylib

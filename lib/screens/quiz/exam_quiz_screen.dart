@@ -424,43 +424,43 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                     },
               ),
             ),
-                const SizedBox(height: 16),
-            SafeArea(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                          onPressed: (quizzes.isNotEmpty && currentIndex > 0) ? () {
-                            _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                          } : null,
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.grey.shade200,
-                        disabledForegroundColor: Colors.grey,
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text('Câu trước'),
-                    ),
-                  ),
-                  Expanded(
-                    child: TextButton(
-                          onPressed: (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) ? () {
-                            _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                          } : null,
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.grey.shade200,
-                        disabledForegroundColor: Colors.grey,
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text('Tiếp theo'),
-                    ),
-                  ),
-                ],
+            // Navigation buttons moved to bottomNavigationBar
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: (quizzes.isNotEmpty && currentIndex > 0) ? () {
+                  _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                } : null,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.grey.shade200,
+                  disabledForegroundColor: Colors.grey,
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text('Câu trước'),
+              ),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) ? () {
+                  _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                } : null,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.grey.shade200,
+                  disabledForegroundColor: Colors.grey,
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text('Tiếp theo'),
               ),
             ),
           ],

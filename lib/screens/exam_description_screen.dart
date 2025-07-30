@@ -37,6 +37,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -45,14 +46,14 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
             context.pop();
           },
         ),
-        title: Text(widget.exam.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+        title: Text(widget.exam.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: theme.appBarText)),
         elevation: 0,
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
-        foregroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+        backgroundColor: theme.appBarBackground,
+        foregroundColor: theme.appBarText,
       ),
-      backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Consumer(
           builder: (context, ref, _) {
             final configs = ref.watch(configsProvider);
@@ -73,10 +74,10 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                 const SizedBox(height: 28),
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[200],
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   child: Column(
                     children: [
                       Padding(
@@ -85,11 +86,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Số câu hỏi', textAlign: TextAlign.left, style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                              child: Text('Số câu hỏi', textAlign: TextAlign.left, style: TextStyle(fontSize: 14, color: theme.primaryText)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('${widget.exam.quizIds.length}', textAlign: TextAlign.right, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                              child: Text('${widget.exam.quizIds.length}', textAlign: TextAlign.right, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: theme.primaryText)),
                             ),
                           ],
                         ),
@@ -100,11 +101,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Số câu đúng tối thiểu để đạt', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                              child: Text('Số câu đúng tối thiểu để đạt', textAlign: TextAlign.left, style: const TextStyle(fontSize: 14)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('$minCorrect/$numQuizzes', textAlign: TextAlign.right, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                              child: Text('$minCorrect/$numQuizzes', textAlign: TextAlign.right, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
@@ -115,11 +116,11 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Thời gian làm bài', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                              child: Text('Thời gian làm bài', textAlign: TextAlign.left, style: const TextStyle(fontSize: 14)),
                             ),
                             Expanded(
                               flex: 2,
-                              child: Text('$duration phút', textAlign: TextAlign.right, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                              child: Text('$duration phút', textAlign: TextAlign.right, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
@@ -130,7 +131,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                           children: [
                             Expanded(
                               flex: 3,
-                              child: Text('Học viên trả lời sai câu hỏi điểm liệt sẽ bị trượt bài thi', textAlign: TextAlign.left, style: const TextStyle(fontSize: 15)),
+                              child: Text('Học viên trả lời sai câu hỏi điểm liệt sẽ bị trượt bài thi', textAlign: TextAlign.left, style: const TextStyle(fontSize: 14)),
                             ),
                           ],
                         ),
@@ -178,6 +179,7 @@ class _ExamModeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -188,25 +190,25 @@ class _ExamModeSelector extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[200],
+            color: theme.cardColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
             children: [
               ListTile(
-                title: Text('Chấm điểm sau khi nộp bài', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                title: Text('Chấm điểm sau khi nộp bài', style: TextStyle(fontSize: 14, color: theme.primaryText)),
                 onTap: () => onModeChanged(0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                trailing: selectedMode == 0 ? Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.black) : null,
+                trailing: selectedMode == 0 ? Icon(Icons.check, color: theme.primaryColor) : null,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 dense: true,
               ),
-              Divider(height: 1, thickness: 1, color: Theme.of(context).dividerColor, indent: 16, endIndent: 16),
+              Divider(height: 1, thickness: 1, color: theme.dividerColor, indent: 16, endIndent: 16),
               ListTile(
-                title: Text('Chấm điểm nhanh khi chọn đáp án', style: TextStyle(fontSize: 15, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                title: Text('Chấm điểm nhanh khi chọn đáp án', style: TextStyle(fontSize: 14, color: theme.primaryText)),
                 onTap: () => onModeChanged(1),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                trailing: selectedMode == 1 ? Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.blueAccent : Colors.black) : null,
+                trailing: selectedMode == 1 ? Icon(Icons.check, color: theme.primaryColor) : null,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 dense: true,
               ),
@@ -221,7 +223,7 @@ class _ExamModeSelector extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Ứng dụng sẽ chấm điểm và hiển thị kết quả sau khi bạn nộp bài thi',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
                 ),
               ),
             ],
@@ -233,7 +235,7 @@ class _ExamModeSelector extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Chế độ này tương tự khi thi sát hạch và phù hợp để luyện tập thi thử',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
                 ),
               ),
             ],
@@ -246,7 +248,7 @@ class _ExamModeSelector extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Ứng dụng sẽ chấm điểm ngay sau khi bạn chọn đáp án',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
                 ),
               ),
             ],
@@ -258,13 +260,12 @@ class _ExamModeSelector extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Chế độ này giúp xem nhanh kết quả và phù hợp để ôn tập nhanh trước ngày làm bài thi thật',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
                 ),
               ),
             ],
           ),
         ],
-        const SizedBox(height: 16),
       ],
     );
   }

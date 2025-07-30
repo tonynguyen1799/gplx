@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utils/quiz_constants.dart';
 import '../../utils/app_colors.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class AnswerOptions extends StatelessWidget {
   final List<String> answers;
@@ -8,6 +9,7 @@ class AnswerOptions extends StatelessWidget {
   final Future<void> Function(int index) onSelect;
   final bool showExplanation;
   final String? explanation;
+  final String? tip;
   final String mode;
   final bool lockAnswer;
   final int? selectedIndex;
@@ -21,6 +23,7 @@ class AnswerOptions extends StatelessWidget {
     required this.onSelect,
     this.showExplanation = false,
     this.explanation,
+    this.tip,
     required this.mode,
     this.lockAnswer = false,
     this.selectedIndex,
@@ -136,7 +139,7 @@ class AnswerOptions extends StatelessWidget {
                         style: TextStyle(
                           color: theme.errorColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -156,24 +159,24 @@ class AnswerOptions extends StatelessWidget {
                       ],
                     ),
                   ] else ...[
-                  Row(
-                    children: [
-                      Icon(
-                        selectedIndex == correctIndex ? Icons.check_circle : Icons.cancel,
-                        color: selectedIndex == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        selectedIndex == correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
-                        style: TextStyle(
+                    Row(
+                      children: [
+                        Icon(
+                          selectedIndex == correctIndex ? Icons.check_circle : Icons.cancel,
                           color: selectedIndex == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
-                          fontWeight: FontWeight.bold,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          selectedIndex == correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
+                          style: TextStyle(
+                            color: selectedIndex == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
+                            fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
                       ],
-                      ),
-                    ],
+                    ),
+                  ],
                   const SizedBox(height: 8),
                   Text(
                     'Đáp án đúng: số  ${correctIndex + 1}',
@@ -190,6 +193,52 @@ class AnswerOptions extends StatelessWidget {
                       color: theme.answerExplanationText,
                     ),
                   ),
+                  if (tip != null && tip!.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline,
+                          color: theme.warningColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Mẹo ghi nhớ',
+                          style: TextStyle(
+                            color: theme.warningColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Html(
+                            data: tip!,
+                            style: {
+                              "body": Style(
+                                fontSize: FontSize(15),
+                                color: theme.answerExplanationText,
+                                margin: Margins.zero,
+                                padding: HtmlPaddings.zero,
+                              ),
+                              "b": Style(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              "br": Style(
+                                margin: Margins.zero,
+                              ),
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),

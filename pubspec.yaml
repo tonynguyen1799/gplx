@@ -23,6 +23,7 @@ dependencies:
   flutter_svg: ^2.0.7
   flutter_datetime_picker: ^1.5.1
   flutter_time_picker_spinner: ^2.0.0
+  flutter_html: ^3.0.0-beta.2
   
 
 dev_dependencies:
@@ -70,6 +71,8 @@ flutter:
     - assets/configs_d.json
     - assets/configs_e.json
     - assets/configs_f.json
+    - assets/tips_b1.json
+    - assets/tips_b2.json
 
   uses-material-design: true
   # fonts:

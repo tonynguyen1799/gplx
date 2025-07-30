@@ -14,6 +14,7 @@ import 'package:gplx_vn/screens/traffic_signs_screen.dart';
 import 'package:gplx_vn/screens/settings/settings_screen.dart';
 import 'package:gplx_vn/screens/info_screen.dart';
 import 'package:gplx_vn/screens/exam_description_screen.dart';
+import 'package:gplx_vn/screens/tips_screen.dart';
 import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
 import 'package:gplx_vn/screens/main_navigation_screen.dart';
 final GoRouter appRouter = GoRouter(
@@ -88,6 +89,15 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/traffic-signs',
       builder: (context, state) => const TrafficSignsScreen(),
+    ),
+    GoRoute(
+      path: '/tips',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return TipsScreen(
+          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
+        );
+      },
     ),
   ],
 );
