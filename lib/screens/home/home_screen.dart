@@ -77,6 +77,10 @@ class HomeScreen extends ConsumerWidget {
           backgroundColor: theme.appBarBackground,
           foregroundColor: theme.appBarText,
           elevation: 0,
+          leading: null, // Assuming no leading widget for now
+          actions: [
+            // Add any actions here if needed, e.g., a settings button
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -156,7 +160,7 @@ class HomeScreen extends ConsumerWidget {
                           });
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       Consumer(
                         builder: (context, ref, _) {
                           final examsMap = ref.watch(examsProvider);
@@ -170,7 +174,7 @@ class HomeScreen extends ConsumerWidget {
                           );
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       Consumer(
                         builder: (context, ref, _) {
                           final progress = ref.watch(progressProvider(code));
@@ -182,7 +186,7 @@ class HomeScreen extends ConsumerWidget {
                           return ShortcutGridSection(viewModel: buildShortcutGridViewModel(saved: progress.savedQuizIds.length, difficult: difficultCount, wrong: progress.incorrect), licenseTypeCode: code);
                         },
                       ),
-                      // const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       // StudyByTopicSection
                       StudyByTopicSection(
                         topics: buildTopicProgressViewModels(
@@ -194,30 +198,6 @@ class HomeScreen extends ConsumerWidget {
                         quizzes: quizzes,
                         statusMap: statusMap,
                         perTopicProgress: perTopicProgress,
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.refresh),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                        ),
-                        onPressed: () async {
-                          // Reset onboarding, progress, and exam progress
-                          await clearOnboardingBox();
-                          await clearQuizStatusBox();
-                          await clearExamProgressBox();
-                          await clearReminderSettings();
-                          if (context.mounted) {
-                            context.go('/');
-                          }
-                        },
-                        label: const Text(
-                          'Đặt lại tất cả dữ liệu & bắt đầu lại onboarding',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
                       ),
                     ],
                   );

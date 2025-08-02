@@ -16,6 +16,7 @@ class ShortcutGridSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final shortcuts = [
       ShortcutItem(
         title: 'Câu đã lưu',
@@ -80,7 +81,9 @@ class ShortcutGridSection extends StatelessWidget {
         title: 'Sa hình',
         icon: Icons.map,
         color: Colors.teal.shade400,
-        onTap: () {},
+        onTap: () {
+          context.push('/road-diagram');
+        },
       ),
       ShortcutItem(
         title: 'Mẹo',
@@ -109,10 +112,10 @@ class ShortcutGridSection extends StatelessWidget {
     final firstRow = shortcuts.sublist(0, 4);
     final secondRow = shortcuts.sublist(4, 8);
 
-              return Container(
+    return Container(
       padding: const EdgeInsets.only(top: 8),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

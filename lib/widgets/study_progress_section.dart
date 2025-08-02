@@ -85,7 +85,7 @@ class StudyProgressSection extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 12),
                   width: 1,
                   height: 60,
-                  color: Theme.of(context).colorScheme.outline,
+                  color: theme.dividerColor,
                 ),
                 // Right side
                 Expanded(

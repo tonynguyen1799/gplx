@@ -77,10 +77,11 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
           ),
           backgroundColor: theme.appBarBackground,
           foregroundColor: theme.appBarText,
+          elevation: 0,
         ),
       body: Column(
         children: [
-          _buildCustomTabBar(categories),
+          _buildCustomTabBar(categories, theme),
           Expanded(
                           child: _pageController == null 
                 ? const Center(child: CircularProgressIndicator())
@@ -92,16 +93,17 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                 _buildChunkedSignList(
                   signs.where((s) => s.categoryKey == cat['key']).toList(),
                   cat['key'] ?? '',
+                  theme,
                 ),
             ],
           ),
-          loading: () => _SkeletonLoader(),
+          loading: () => _SkeletonLoader(theme: theme),
           error: (e, st) => Center(child: Text('Lỗi khi tải biển báo: $e')),
-                  ),
+        ),
           ),
         ],
         ),
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : null,
+        backgroundColor: theme.brightness == Brightness.dark ? Colors.grey[900] : null,
     );
   }
 
@@ -120,12 +122,11 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     );
   }
 
-  Widget _buildCustomTabBar(List<Map<String, dynamic>> categories) {
+  Widget _buildCustomTabBar(List<Map<String, dynamic>> categories, ThemeData theme) {
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       height: 40,
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : Colors.white,
-      ),
+      // No background color for tabs bar
       child: ListView.builder(
         controller: _tabScrollController,
         scrollDirection: Axis.horizontal,
@@ -155,7 +156,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                 border: isSelected
                     ? Border(
                         bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: theme.colorScheme.primary,
                           width: 2,
                         ),
                       )
@@ -168,7 +169,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? Theme.of(context).brightness == Brightness.dark
+                        ? isDark
                             ? Colors.white
                             : Colors.black87
                         : Colors.grey,
@@ -182,7 +183,8 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     );
   }
 
-  Widget _buildChunkedSignList(List<TrafficSign> signs, String categoryKey) {
+  Widget _buildChunkedSignList(List<TrafficSign> signs, String categoryKey, ThemeData theme) {
+    final isDark = theme.brightness == Brightness.dark;
     final controller = _controllers[categoryKey]!;
     final loadedCount = (_loadedChunks[categoryKey] ?? 1) * _chunkSize;
     final visibleSigns = signs.take(loadedCount).toList();
@@ -203,7 +205,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
       controller: controller,
       padding: EdgeInsets.zero,
       itemCount: visibleSigns.length + (hasMore ? 1 : 0),
-      separatorBuilder: (_, __) => Divider(height: 10, color: Theme.of(context).dividerColor),
+      separatorBuilder: (_, __) => Divider(height: 10, color: theme.dividerColor),
       itemBuilder: (context, index) {
         if (index >= visibleSigns.length) {
           // Loader at the end
@@ -216,7 +218,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : null,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -234,11 +235,11 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${sign.id} ${sign.name}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null)),
+                    Text('${sign.id} ${sign.name}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
                     const SizedBox(height: 4),
-                    Text(sign.shortDescription, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black)),
+                    Text(sign.shortDescription, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color)),
                     const SizedBox(height: 2),
-                    Text(sign.description, style: TextStyle(fontSize: 14, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[400] : Colors.grey, fontWeight: FontWeight.w600)),
+                    Text(sign.description, style: TextStyle(fontSize: 14, color: theme.hintColor, fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
@@ -251,8 +252,11 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
 }
 
 class _SkeletonLoader extends StatelessWidget {
+  final ThemeData theme;
+  const _SkeletonLoader({required this.theme});
   @override
   Widget build(BuildContext context) {
+    final isDark = theme.brightness == Brightness.dark;
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       itemCount: 8,
@@ -265,7 +269,7 @@ class _SkeletonLoader extends StatelessWidget {
               width: 128,
               height: 128,
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300],
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
@@ -277,25 +281,25 @@ class _SkeletonLoader extends StatelessWidget {
                   Container(
                     width: 60,
                     height: 16,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300],
+                    color: theme.cardColor,
                   ),
                   const SizedBox(height: 8),
                   Container(
                     width: 120,
                     height: 16,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300],
+                    color: theme.cardColor,
                   ),
                   const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     height: 14,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[200],
+                    color: theme.colorScheme.surface,
                   ),
                   const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     height: 14,
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[200],
+                    color: theme.colorScheme.surface,
                   ),
                 ],
               ),

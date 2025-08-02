@@ -89,6 +89,7 @@ import '../../widgets/quiz_content.dart';
 import '../../providers/learning_progress.provider.dart';
 import '../../widgets/quiz_shortcut.dart';
 import '../../utils/app_colors.dart';
+import '../../widgets/bookmark_button.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
   final Object? extra;
@@ -375,17 +376,16 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           ? 0
           : _currentFilteredQuizzes.length - 1;
     }
-    // Remove custom appBar and use default AppBar
     return Scaffold(
       appBar: AppBar(
         title: Text(
           mode == QuizModes.TRAINING_BY_TOPIC_MODE && topicName != null
-              ? '$topicName'
-              : (mode == QuizModes.TRAINING_MODE
-                  ? '${licenseType.name} - ${licenseType.code}'
-                  : licenseType.name),
+                            ? '$topicName'
+                            : (mode == QuizModes.TRAINING_MODE
+                                  ? '${licenseType.name} - ${licenseType.code}'
+                                  : licenseType.name),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+                      ),
         centerTitle: true,
         backgroundColor: theme.appBarBackground,
         foregroundColor: theme.appBarText,
@@ -395,7 +395,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           onPressed: () async {
             context.pop();
           },
-        ),
+                  ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -403,210 +403,210 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
               clipBehavior: Clip.none,
               children: [
                 TextButton(
-                  onPressed: () async {
-                    final selected = await showModalBottomSheet<String>(
-                      context: context,
-                      builder: (context) {
-                        return SafeArea(
-                          child: Container(
-                            decoration: BoxDecoration(
+                      onPressed: () async {
+                        final selected = await showModalBottomSheet<String>(
+                          context: context,
+                          builder: (context) {
+                            return SafeArea(
+                              child: Container(
+                                decoration: BoxDecoration(
                               color: theme.quizFilterBackground,
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
                                     padding: EdgeInsets.symmetric(vertical: 12),
-                                    child: Text(
-                                      'Lọc câu hỏi',
-                                      style: TextStyle(
+                                        child: Text(
+                                          'Lọc câu hỏi',
+                                          style: TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                         color: theme.quizFilterText,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  // First group
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
+                                      // First group
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
                                       color: theme.quizFilterGroupBackground,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        _buildFilterTile(
-                                          context,
-                                          mode ==
-                                              QuizModes
-                                                  .TRAINING_BY_TOPIC_MODE &&
-                                              topicName != null
-                                          ? 'Tất cả trong chủ đề này'
-                                          : 'Tất cả',
-                                          'all',
-                                          isSelected: _currentFilter == 'all',
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
-                                        Divider(
-                                          height: 1,
+                                        child: Column(
+                                          children: [
+                                            _buildFilterTile(
+                                              context,
+                                              mode ==
+                                                          QuizModes
+                                                              .TRAINING_BY_TOPIC_MODE &&
+                                                  topicName != null
+                                              ? 'Tất cả trong chủ đề này'
+                                              : 'Tất cả',
+                                              'all',
+                                              isSelected: _currentFilter == 'all',
+                                            ),
+                                            Divider(
+                                              height: 1,
                                           color: theme.dividerColor,
-                                        ),
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu đã làm',
-                                          'done',
-                                          isSelected:
-                                              _currentFilter == 'done',
-                                        ),
-                                        Divider(
-                                          height: 1,
+                                            ),
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu đã làm',
+                                              'done',
+                                              isSelected:
+                                                  _currentFilter == 'done',
+                                            ),
+                                            Divider(
+                                              height: 1,
                                           color: theme.dividerColor,
+                                            ),
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu chưa làm',
+                                              'not_done',
+                                              isSelected:
+                                                  _currentFilter == 'not_done',
+                                            ),
+                                          ],
                                         ),
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu chưa làm',
-                                          'not_done',
-                                          isSelected:
-                                              _currentFilter == 'not_done',
+                                      ),
+                                      // Second group
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 4,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Second group
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
+                                        decoration: BoxDecoration(
                                       color: theme.quizFilterGroupBackground,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu sai',
-                                          'wrong',
-                                          isSelected:
-                                              _currentFilter == 'wrong',
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
-                                        Divider(
-                                          height: 1,
+                                        child: Column(
+                                          children: [
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu sai',
+                                              'wrong',
+                                              isSelected:
+                                                  _currentFilter == 'wrong',
+                                            ),
+                                            Divider(
+                                              height: 1,
                                           color: theme.dividerColor,
+                                            ),
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu đúng',
+                                              'correct',
+                                              isSelected:
+                                                  _currentFilter == 'correct',
+                                            ),
+                                          ],
                                         ),
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu đúng',
-                                          'correct',
-                                          isSelected:
-                                              _currentFilter == 'correct',
+                                      ),
+                                      // Third group
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 4,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Third group
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
+                                        decoration: BoxDecoration(
                                       color: theme.quizFilterGroupBackground,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu đã lưu',
-                                          'saved',
-                                          isSelected:
-                                              _currentFilter == 'saved',
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
-                                        Divider(
-                                          height: 1,
+                                        child: Column(
+                                          children: [
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu đã lưu',
+                                              'saved',
+                                              isSelected:
+                                                  _currentFilter == 'saved',
+                                            ),
+                                            Divider(
+                                              height: 1,
                                           color: theme.dividerColor,
-                                        ),
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu điểm liệt',
-                                          'fatal',
-                                          isSelected:
-                                              _currentFilter == 'fatal',
-                                        ),
-                                        Divider(
-                                          height: 1,
+                                            ),
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu điểm liệt',
+                                              'fatal',
+                                              isSelected:
+                                                  _currentFilter == 'fatal',
+                                            ),
+                                            Divider(
+                                              height: 1,
                                           color: theme.dividerColor,
+                                            ),
+                                            _buildFilterTile(
+                                              context,
+                                              'Câu khó',
+                                              'difficult',
+                                              isSelected:
+                                                  _currentFilter == 'difficult',
+                                            ),
+                                          ],
                                         ),
-                                        _buildFilterTile(
-                                          context,
-                                          'Câu khó',
-                                          'difficult',
-                                          isSelected:
-                                              _currentFilter == 'difficult',
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
                                   ),
-                                  const SizedBox(height: 16),
-                                ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                        if (selected != null && selected != _currentFilter) {
+                          await _applyFilter(selected);
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.black,
+                      ),
+                  child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                      const Text(
+                                'Lọc',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      const SizedBox(width: 6),
+                              Icon(
+                                Icons.filter_list,
+                        color: theme.quizFilterButtonIcon,
+                                size: 26,
+                              ),
+                            ],
+                  ),
+                          ),
+                          if (_currentFilter != 'all')
+                            Positioned(
+                              top: -2,
+                              right: -2,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                    if (selected != null && selected != _currentFilter) {
-                      await _applyFilter(selected);
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Lọc',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Icon(
-                        Icons.filter_list,
-                        color: theme.quizFilterButtonIcon,
-                        size: 26,
-                      ),
-                    ],
+                        ],
                   ),
                 ),
-                if (_currentFilter != 'all')
-                  Positioned(
-                    top: -2,
-                    right: -2,
-                    child: Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                  ),
               ],
             ),
-          ),
-        ],
-      ),
       body: _currentFilteredQuizzes.isEmpty
           ? Container(
               width: double.infinity,

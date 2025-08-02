@@ -266,8 +266,8 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
             actions: reviewMode
                 ? null
                 : [
-          SizedBox(
-            width: 80, // Increased width so 'Nộp bài' fits on one line
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
               onPressed: () async {
                 final shouldSubmit = await showDialog<bool>(
@@ -319,151 +319,151 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
       ),
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
       body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 0,
-                runSpacing: 0,
-                children: List.generate(
-                  quizzes.length,
-                  (idx) {
-                    final quizId = quizzes[idx].id;
-                    final isAnswered = selectedAnswers.containsKey(quizId);
-                    final isQuickExam = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
-                    final selectedIdx = selectedAnswers[quizId];
-                    final isCorrect = isAnswered && selectedIdx == quizzes[idx].correctIndex;
-                    final isUnanswered = !isAnswered;
-                    return ExamQuizJumpButton(
-                      idx: idx,
-                      currentIndex: currentIndex,
-                      quiz: quizzes[idx],
-                      isAnswered: isAnswered,
-                      isQuickExam: isQuickExam,
-                      selectedIdx: selectedIdx,
-                      onTap: () {
-                        setState(() {
-                          currentIndex = idx;
-                        });
-                        _pageController.jumpToPage(idx);
-                      },
-                      reviewMode: reviewMode,
-                      isCorrect: isCorrect,
-                      isUnanswered: isUnanswered,
-                    );
-                  },
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 0,
+                  runSpacing: 0,
+                  children: List.generate(
+                    quizzes.length,
+                    (idx) {
+                      final quizId = quizzes[idx].id;
+                      final isAnswered = selectedAnswers.containsKey(quizId);
+                      final isQuickExam = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
+                      final selectedIdx = selectedAnswers[quizId];
+                          final isCorrect = isAnswered && selectedIdx == quizzes[idx].correctIndex;
+                          final isUnanswered = !isAnswered;
+                      return ExamQuizJumpButton(
+                        idx: idx,
+                        currentIndex: currentIndex,
+                        quiz: quizzes[idx],
+                        isAnswered: isAnswered,
+                        isQuickExam: isQuickExam,
+                        selectedIdx: selectedIdx,
+                        onTap: () {
+                          setState(() {
+                            currentIndex = idx;
+                          });
+                          _pageController.jumpToPage(idx);
+                        },
+                            reviewMode: reviewMode,
+                            isCorrect: isCorrect,
+                            isUnanswered: isUnanswered,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: quizzes.length,
-              onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              itemBuilder: (context, index) {
-                final quiz = quizzes[index];
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      QuizContent(
-                        quiz: quiz,
-                        quizIndex: index,
-                        totalQuizzes: quizzes.length,
-                        licenseTypeCode: licenseTypeCode!,
-                        status: null, // Don't show persistent status in exam mode
-                        onBookmarkChanged: () => setState(() {}),
-                        quizCode: '${licenseTypeCode}.${(_quizIdToIndex[quiz.id] ?? -1) + 1}',
-                        mode: mode,
-                      ),
+            Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: quizzes.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final quiz = quizzes[index];
+                      return SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                children: [
+                  QuizContent(
+                    quiz: quiz,
+                              quizIndex: index,
+                    totalQuizzes: quizzes.length,
+                    licenseTypeCode: licenseTypeCode!,
+                    status: null, // Don't show persistent status in exam mode
+                    onBookmarkChanged: () => setState(() {}),
+                              quizCode: '${licenseTypeCode}.${(_quizIdToIndex[quiz.id] ?? -1) + 1}',
+                    mode: mode,
+                  ),
                       Padding(
                         padding: const EdgeInsets.all(12),
                         child: Divider(thickness: 1, height: 1, color: Theme.of(context).dividerColor),
                       ),
-                      AnswerOptions(
-                        key: ValueKey(quiz.id),
-                        answers: quiz.answers,
-                        correctIndex: quiz.correctIndex,
-                        onSelect: reviewMode
-                            ? ((_) async {})
-                            : (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null)
-                                ? ((_) async {})
-                                : _selectAnswer,
-                        selectedIndex: reviewMode
-                            ? (selectedAnswers.containsKey(quiz.id)
-                                ? selectedAnswers[quiz.id]!
-                                : -1)
-                            : selectedAnswers[quiz.id],
-                        showExplanation: reviewMode ||
-                            mode == QuizModes.TRAINING_MODE ||
-                            mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
-                            (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
-                        explanation: reviewMode
-                            ? quiz.explanation
-                            : (mode == QuizModes.TRAINING_MODE ||
-                                mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
-                                (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null))
-                                ? quiz.explanation
-                                : null,
-                        mode: mode ?? QuizModes.TRAINING_MODE,
-                        lockAnswer: reviewMode || (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
-                        isFatalQuiz: quiz.topicIds.contains(fatalTopicId),
-                        examMode: examMode ?? '',
-                      ),
-                    ],
+                  AnswerOptions(
+                              key: ValueKey(quiz.id),
+                    answers: quiz.answers,
+                    correctIndex: quiz.correctIndex,
+                              onSelect: reviewMode
+                                  ? ((_) async {})
+                                  : (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null)
+                                      ? ((_) async {})
+                                      : _selectAnswer,
+                              selectedIndex: reviewMode
+                                  ? (selectedAnswers.containsKey(quiz.id)
+                                      ? selectedAnswers[quiz.id]!
+                                      : -1)
+                                  : selectedAnswers[quiz.id],
+                              showExplanation: reviewMode ||
+                                  mode == QuizModes.TRAINING_MODE ||
+                                  mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
+                                  (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
+                              explanation: reviewMode
+                                  ? quiz.explanation
+                                  : (mode == QuizModes.TRAINING_MODE ||
+                                      mode == QuizModes.TRAINING_BY_TOPIC_MODE ||
+                                      (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null))
+                                      ? quiz.explanation
+                                      : null,
+                              mode: mode ?? QuizModes.TRAINING_MODE,
+                              lockAnswer: reviewMode || (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null),
+                    isFatalQuiz: quiz.topicIds.contains(fatalTopicId),
+                    examMode: examMode ?? '',
                   ),
-                );
-              },
+                ],
+                        ),
+                      );
+                    },
+              ),
             ),
-          ),
         ],
       ),
       bottomNavigationBar: SafeArea(
-        child: Row(
-          children: [
-            Expanded(
-              child: TextButton(
-                onPressed: (quizzes.isNotEmpty && currentIndex > 0) ? () {
-                  _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                } : null,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey.shade200,
-                  disabledForegroundColor: Colors.grey,
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-                child: const Text('Câu trước'),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                          onPressed: (quizzes.isNotEmpty && currentIndex > 0) ? () {
+                            _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                          } : null,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.grey.shade200,
+                        disabledForegroundColor: Colors.grey,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Câu trước'),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                          onPressed: (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) ? () {
+                            _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                          } : null,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.grey.shade200,
+                        disabledForegroundColor: Colors.grey,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Tiếp theo'),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Expanded(
-              child: TextButton(
-                onPressed: (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) ? () {
-                  _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                } : null,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey.shade200,
-                  disabledForegroundColor: Colors.grey,
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-                child: const Text('Tiếp theo'),
-              ),
-            ),
-          ],
-        ),
-      ),
     ); // End of Scaffold
   }, // <-- Close the builder function for Consumer
 ); // <-- Close Consumer

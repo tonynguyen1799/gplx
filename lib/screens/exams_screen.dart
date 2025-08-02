@@ -81,18 +81,18 @@ class ExamsScreen extends ConsumerWidget {
                     final incorrect = progress?.incorrectCount ?? 0;
                     return GestureDetector(
                       onTap: () {
-                      context.push('/exam-description', extra: {
-                        'exam': exam,
-                        'licenseTypeCode': licenseTypeCode,
-                      });
+                        context.push('/exam-description', extra: {
+                          'exam': exam,
+                          'licenseTypeCode': licenseTypeCode,
+                        });
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: !done
-                              ? (Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey.shade100)
+                              ? Theme.of(context).cardColor
                               : passed
-                                  ? (Theme.of(context).brightness == Brightness.dark ? Colors.green.shade900 : Colors.green.shade50)
-                                  : (Theme.of(context).brightness == Brightness.dark ? Colors.red.shade900 : Colors.red.shade50),
+                                  ? Theme.of(context).colorScheme.secondaryContainer
+                                  : Theme.of(context).colorScheme.errorContainer,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(

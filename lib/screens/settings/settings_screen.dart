@@ -197,6 +197,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             onPressed: _resetData,
           ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.refresh),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            ),
+            onPressed: _resetData,
+            label: const Text(
+              'Đặt lại tất cả dữ liệu & bắt đầu lại onboarding',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
     );

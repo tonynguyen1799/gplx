@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import '../models/traffic_sign.dart';
 import '../models/exam_tip.dart';
+import '../models/road_diagram.dart';
 
 final licenseTypesProvider = StateProvider<List<LicenseType>>((ref) => []);
 final topicsProvider = StateProvider<Map<String, List<Topic>>>((ref) => {});
@@ -35,3 +36,22 @@ final selectedLicenseTypeProvider = FutureProvider<String?>((ref) async {
 }); 
 
 final tipsProvider = StateProvider<Map<String, ExamTips>>((ref) => {});
+
+final roadDiagramProvider = FutureProvider<RoadDiagram>((ref) async {
+  // Get selected license type (A1, A2, B1, B2, C, D, E, F)
+  String? licenseType = await getSelectedLicenseType();
+  licenseType = licenseType?.toLowerCase() ?? 'b2';
+  final supported = ['a1', 'a2', 'b1', 'b2', 'c', 'd', 'e', 'f'];
+  final type = supported.contains(licenseType) ? licenseType : 'b2';
+  final fileName = 'assets/road_diagram_${type}.json';
+  try {
+    final jsonStr = await rootBundle.loadString(fileName);
+    final json = jsonDecode(jsonStr);
+    return RoadDiagram.fromJson(json);
+  } catch (e) {
+    // fallback to b2 if file not found
+    final jsonStr = await rootBundle.loadString('assets/road_diagram_b2.json');
+    final json = jsonDecode(jsonStr);
+    return RoadDiagram.fromJson(json);
+  }
+}); 

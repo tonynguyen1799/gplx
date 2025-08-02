@@ -24,6 +24,7 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   flutter_time_picker_spinner: ^2.0.0
   flutter_html: ^3.0.0-beta.2
+  url_launcher: ^6.1.7
   
 
 dev_dependencies:
@@ -34,35 +35,6 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/images/splash_bg.svg
-    - assets/images/
-    - assets/images/signs/
-    - assets/license_types.json
-    - assets/traffic_signs.json
-    - assets/topics_a1.json
-    - assets/topics_a2.json
-    - assets/topics_b1.json
-    - assets/topics_b2.json
-    - assets/topics_c.json
-    - assets/topics_d.json
-    - assets/topics_e.json
-    - assets/topics_f.json
-    - assets/quizzes_a1.json
-    - assets/quizzes_a2.json
-    - assets/quizzes_b1.json
-    - assets/quizzes_b2.json
-    - assets/quizzes_c.json
-    - assets/quizzes_d.json
-    - assets/quizzes_e.json
-    - assets/quizzes_f.json
-    - assets/exams_a1.json
-    - assets/exams_a2.json
-    - assets/exams_b1.json
-    - assets/exams_b2.json
-    - assets/exams_c.json
-    - assets/exams_d.json
-    - assets/exams_e.json
-    - assets/exams_f.json
     - assets/configs_a1.json
     - assets/configs_a2.json
     - assets/configs_b1.json
@@ -71,8 +43,50 @@ flutter:
     - assets/configs_d.json
     - assets/configs_e.json
     - assets/configs_f.json
+    - assets/exams_a1.json
+    - assets/exams_a2.json
+    - assets/exams_b1.json
+    - assets/exams_b2.json
+    - assets/exams_c.json
+    - assets/exams_d.json
+    - assets/exams_e.json
+    - assets/exams_f.json
+    - assets/images/
+    - assets/license_types.json
+    - assets/quizzes_a1.json
+    - assets/quizzes_a2.json
+    - assets/quizzes_b1.json
+    - assets/quizzes_b2_bk.json
+    - assets/quizzes_b2.json
+    - assets/quizzes_c.json
+    - assets/quizzes_d.json
+    - assets/quizzes_e.json
+    - assets/quizzes_f.json
+    - assets/topics_a1.json
+    - assets/topics_a2.json
+    - assets/topics_b1.json
+    - assets/topics_b2.json
+    - assets/topics_c.json
+    - assets/topics_d.json
+    - assets/topics_e.json
+    - assets/topics_f.json
+    - assets/traffic_signs.json
+    - assets/road_diagram_a1.json
+    - assets/road_diagram_a2.json
+    - assets/road_diagram_b1.json
+    - assets/road_diagram_b2.json
+    - assets/road_diagram_c.json
+    - assets/road_diagram_d.json
+    - assets/road_diagram_e.json
+    - assets/road_diagram_f.json
+    - assets/tips_a1.json
+    - assets/tips_a2.json
     - assets/tips_b1.json
     - assets/tips_b2.json
+    - assets/tips_c.json
+    - assets/tips_d.json
+    - assets/tips_e.json
+    - assets/tips_f.json
 
   uses-material-design: true
   # fonts:

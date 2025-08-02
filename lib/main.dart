@@ -48,13 +48,8 @@ class GPLXApp extends ConsumerWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          toolbarHeight: 36,
+        appBarTheme: const AppBarTheme(
+          toolbarHeight: 48
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -86,13 +81,8 @@ class GPLXApp extends ConsumerWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
         scaffoldBackgroundColor: Colors.black,
-        appBarTheme: AppBarTheme(
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          toolbarHeight: 36
+        appBarTheme: const AppBarTheme(
+          toolbarHeight: 48
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

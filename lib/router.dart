@@ -17,6 +17,7 @@ import 'package:gplx_vn/screens/exam_description_screen.dart';
 import 'package:gplx_vn/screens/tips_screen.dart';
 import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
 import 'package:gplx_vn/screens/main_navigation_screen.dart';
+import 'package:gplx_vn/screens/road_diagram_screen.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
 
@@ -98,6 +99,10 @@ final GoRouter appRouter = GoRouter(
           licenseTypeCode: extra?['licenseTypeCode'] ?? '',
         );
       },
+    ),
+    GoRoute(
+      path: '/road-diagram',
+      builder: (context, state) => const RoadDiagramScreen(),
     ),
   ],
 );

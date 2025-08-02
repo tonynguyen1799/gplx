@@ -40,16 +40,14 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        title: Text('Mô tả đề thi', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
         leading: IconButton(
-          icon: const Icon(Icons.close, size: 24),
-          onPressed: () {
-            context.pop();
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
         ),
-        title: Text(widget.exam.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: theme.appBarText)),
-        elevation: 0,
         backgroundColor: theme.appBarBackground,
         foregroundColor: theme.appBarText,
+        elevation: 0,
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
