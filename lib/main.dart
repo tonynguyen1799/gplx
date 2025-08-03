@@ -42,12 +42,13 @@ class GPLXApp extends ConsumerWidget {
       routerConfig: appRouter,
       theme: ThemeData(
         textTheme: GoogleFonts.mulishTextTheme(),
-        useMaterial3: true,
+        useMaterial3: false,
         splashFactory: NoSplash.splashFactory,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
         scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.grey[100],
         appBarTheme: const AppBarTheme(
           toolbarHeight: 48
         ),
@@ -63,7 +64,7 @@ class GPLXApp extends ConsumerWidget {
           style: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             elevation: 0,
-            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+            textStyle: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
         dialogTheme: DialogThemeData(
@@ -96,7 +97,7 @@ class GPLXApp extends ConsumerWidget {
           style: TextButton.styleFrom(
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             elevation: 0,
-            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+            textStyle: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
         dialogTheme: DialogThemeData(

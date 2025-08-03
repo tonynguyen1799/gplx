@@ -8,14 +8,15 @@ import '../utils/quiz_constants.dart';
 import 'package:hive/hive.dart';
 import '../services/hive_service.dart';
 import '../utils/app_colors.dart';
+import '../providers/app_data_providers.dart';
 
-class ShortcutGridSection extends StatelessWidget {
+class ShortcutGridSection extends ConsumerWidget {
   final ShortcutGridViewModel viewModel;
   final String licenseTypeCode;
   const ShortcutGridSection({super.key, required this.viewModel, required this.licenseTypeCode});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final shortcuts = [
       ShortcutItem(
@@ -99,7 +100,9 @@ class ShortcutGridSection extends StatelessWidget {
         title: 'Nhắc nhở',
         icon: Icons.notifications,
         color: Colors.green.shade400,
-        onTap: () {},
+        onTap: () {
+          ref.read(mainNavIndexProvider.notifier).state = 1;
+        },
       ),
       ShortcutItem(
         title: 'Ủng hộ',

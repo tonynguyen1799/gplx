@@ -107,7 +107,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                           Text(
                             diagram.title,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: theme.primaryText,
                             ),
@@ -136,11 +136,6 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: theme.primaryText),
                     textAlign: TextAlign.center,
                   ),
-                ),
-              if (diagram.callToAction.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(diagram.callToAction, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: theme.secondaryText)),
                 ),
             ],
           );
@@ -182,7 +177,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                       children: [
                         Text(
                           section.heading,
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: theme.primaryText),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.primaryText),
                         ),
                         if (section.content != null && section.content!.isNotEmpty)
                           Padding(
@@ -386,14 +381,21 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
           ),
           child: Text(
             lesson.lessonNumber.replaceAll('Bài ', ''),
-            style: TextStyle(fontWeight: FontWeight.bold, color: theme.primaryColor, fontSize: 15),
+            style: TextStyle(fontWeight: FontWeight.bold, color: theme.primaryText, fontSize: 15),
           ),
         ),
         title: Text(
           lesson.title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: theme.primaryText),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: theme.primaryText),
         ),
-        subtitle: Text('Mục tiêu: ${lesson.objective}', style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: theme.secondaryText)),
+        subtitle: Text(
+          'Mục tiêu: ${lesson.objective}',
+          style: TextStyle(
+            fontSize: 14,
+            fontStyle: FontStyle.italic,
+            color: theme.secondaryText,
+          ),
+        ),
         children: [
           if (lesson.howToDo.isNotEmpty) ...[
             const SizedBox(height: 4),
@@ -401,7 +403,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
             ...lesson.howToDo.map((step) => Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('– ', style: TextStyle(fontSize: 16)),
+                const Text('– ', style: TextStyle(fontSize: 15)),
                 Expanded(
                   child: Html(
                     data: step,
@@ -415,7 +417,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                       ),
                       "b": Style(
                         fontWeight: FontWeight.bold,
-                        color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryColor,
+                        color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryText,
                       ),
                     },
                   ),
@@ -430,7 +432,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: theme.brightness == Brightness.dark
-                    ? Colors.yellow.withOpacity(0.15)
+                    ? Colors.yellow.withOpacity(0.28)
                     : Colors.yellow[100],
                 borderRadius: BorderRadius.circular(6),
               ),
@@ -445,7 +447,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                       style: {
                         "body": Style(
                           fontSize: FontSize(15),
-                          color: theme.primaryColor,
+                          color: theme.primaryText,
                           lineHeight: LineHeight(1.5),
                           margin: Margins.zero,
                           padding: HtmlPaddings.zero,

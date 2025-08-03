@@ -13,30 +13,31 @@ class OnboardingFinishScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Bắt đầu hành trình ôn tập!',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     'Bạn muốn học từng phần hay làm bài thi mô phỏng ngay?',
-                    style: TextStyle(fontSize: 16),
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -48,21 +49,21 @@ class OnboardingFinishScreen extends ConsumerWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: theme.dividerColor),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(Icons.list_alt, size: 28, color: Colors.blue),
-                            SizedBox(width: 12),
+                            Icon(Icons.list_alt, size: 28, color: theme.colorScheme.primary),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Luyện tập từng phần', style: TextStyle(fontSize: 16)),
-                                  SizedBox(height: 4),
+                                  Text('Luyện tập từng phần', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 4),
                                   Text(
                                     'Học theo từng chủ đề, từng loại câu hỏi',
-                                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 13, color: theme.colorScheme.onSurface.withOpacity(0.5), fontWeight: FontWeight.w600),
                                   ),
                                 ],
                               ),
@@ -78,21 +79,21 @@ class OnboardingFinishScreen extends ConsumerWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: theme.dividerColor),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(Icons.timer, size: 28, color: Colors.blue),
-                            SizedBox(width: 12),
+                            Icon(Icons.timer, size: 28, color: theme.colorScheme.primary),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Thi thử mô phỏng', style: TextStyle(fontSize: 16)),
-                                  SizedBox(height: 4),
+                                  Text('Thi thử mô phỏng', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 4),
                                   Text(
                                     'Trải nghiệm bài thi thật với giới hạn thời gian',
-                                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 13, color: theme.colorScheme.onSurface.withOpacity(0.5), fontWeight: FontWeight.w600),
                                   ),
                                 ],
                               ),
@@ -105,13 +106,12 @@ class OnboardingFinishScreen extends ConsumerWidget {
                 ),
               ),
             ),
-
             SizedBox(
               width: double.infinity,
               child: TextButton(
                 onPressed: () => _completeOnboarding(context, ref),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
+                  foregroundColor: theme.colorScheme.primary,
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 ),
                 child: const Text('Tôi chưa chắc, để tôi khám phá trước'),

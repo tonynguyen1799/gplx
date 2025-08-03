@@ -403,183 +403,184 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
               clipBehavior: Clip.none,
               children: [
                 TextButton(
-                      onPressed: () async {
-                        final selected = await showModalBottomSheet<String>(
-                          context: context,
-                          builder: (context) {
-                            return SafeArea(
-                              child: Container(
-                                decoration: BoxDecoration(
-                              color: theme.quizFilterBackground,
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
+                  onPressed: () async {
+                    final selected = await showModalBottomSheet<String>(
+                      context: context,
+                      builder: (context) {
+                        return SafeArea(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
                                     padding: EdgeInsets.symmetric(vertical: 12),
-                                        child: Text(
-                                          'Lọc câu hỏi',
-                                          style: TextStyle(
+                                    child: Text(
+                                      'Lọc câu hỏi',
+                                      style: TextStyle(
                                         fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.bold,
                                         color: theme.quizFilterText,
-                                          ),
-                                        ),
                                       ),
-                                      // First group
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                      color: theme.quizFilterGroupBackground,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            _buildFilterTile(
-                                              context,
-                                              mode ==
-                                                          QuizModes
-                                                              .TRAINING_BY_TOPIC_MODE &&
-                                                  topicName != null
-                                              ? 'Tất cả trong chủ đề này'
-                                              : 'Tất cả',
-                                              'all',
-                                              isSelected: _currentFilter == 'all',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                          color: theme.dividerColor,
-                                            ),
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu đã làm',
-                                              'done',
-                                              isSelected:
-                                                  _currentFilter == 'done',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                          color: theme.dividerColor,
-                                            ),
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu chưa làm',
-                                              'not_done',
-                                              isSelected:
-                                                  _currentFilter == 'not_done',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      // Second group
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                      color: theme.quizFilterGroupBackground,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu sai',
-                                              'wrong',
-                                              isSelected:
-                                                  _currentFilter == 'wrong',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                          color: theme.dividerColor,
-                                            ),
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu đúng',
-                                              'correct',
-                                              isSelected:
-                                                  _currentFilter == 'correct',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      // Third group
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                      color: theme.quizFilterGroupBackground,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu đã lưu',
-                                              'saved',
-                                              isSelected:
-                                                  _currentFilter == 'saved',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                          color: theme.dividerColor,
-                                            ),
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu điểm liệt',
-                                              'fatal',
-                                              isSelected:
-                                                  _currentFilter == 'fatal',
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                          color: theme.dividerColor,
-                                            ),
-                                            _buildFilterTile(
-                                              context,
-                                              'Câu khó',
-                                              'difficult',
-                                              isSelected:
-                                                  _currentFilter == 'difficult',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  // First group
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                  color: theme.quizFilterGroupBackground,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        _buildFilterTile(
+                                          context,
+                                          mode ==
+                                                      QuizModes
+                                                          .TRAINING_BY_TOPIC_MODE &&
+                                              topicName != null
+                                          ? 'Tất cả trong chủ đề này'
+                                          : 'Tất cả',
+                                          'all',
+                                          isSelected: _currentFilter == 'all',
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                      color: theme.dividerColor,
+                                        ),
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu đã làm',
+                                          'done',
+                                          isSelected:
+                                              _currentFilter == 'done',
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                      color: theme.dividerColor,
+                                        ),
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu chưa làm',
+                                          'not_done',
+                                          isSelected:
+                                              _currentFilter == 'not_done',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Second group
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                  color: theme.quizFilterGroupBackground,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu sai',
+                                          'wrong',
+                                          isSelected:
+                                              _currentFilter == 'wrong',
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                      color: theme.dividerColor,
+                                        ),
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu đúng',
+                                          'correct',
+                                          isSelected:
+                                              _currentFilter == 'correct',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Third group
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                  color: theme.quizFilterGroupBackground,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu đã lưu',
+                                          'saved',
+                                          isSelected:
+                                              _currentFilter == 'saved',
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                      color: theme.dividerColor,
+                                        ),
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu điểm liệt',
+                                          'fatal',
+                                          isSelected:
+                                              _currentFilter == 'fatal',
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                      color: theme.dividerColor,
+                                        ),
+                                        _buildFilterTile(
+                                          context,
+                                          'Câu khó',
+                                          'difficult',
+                                          isSelected:
+                                              _currentFilter == 'difficult',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         );
-                        if (selected != null && selected != _currentFilter) {
-                          await _applyFilter(selected);
-                        }
                       },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.black,
-                      ),
+                    );
+                    if (selected != null && selected != _currentFilter) {
+                      await _applyFilter(selected);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                  ),
                   child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                      const Text(
+                      Text(
                                 'Lọc',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
+                                  color: theme.primaryText,
                                 ),
                               ),
                       const SizedBox(width: 6),
                               Icon(
                                 Icons.filter_list,
-                        color: theme.quizFilterButtonIcon,
+                                color: theme.primaryText,
                                 size: 26,
                               ),
                             ],
@@ -683,136 +684,133 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                       },
                   ),
       bottomNavigationBar: SafeArea(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            onPressed:
-                                (_currentFilteredQuizzes.isNotEmpty && currentIndex > 0)
-                                    ? () {
-                                        _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                                      }
-                                : null,
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                              disabledBackgroundColor: Colors.grey.shade200,
-                              disabledForegroundColor: Colors.grey,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                            ),
-                            child: const Text('Câu trước'),
-                          ),
-                        ),
-                        Expanded(
-                          child: TextButton(
-                            onPressed: _currentFilteredQuizzes.isNotEmpty
-                                ? () async {
-                                    final selected = await showModalBottomSheet<int>(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder: (context) {
-                                        return SafeArea(
-                                          child: Container(
-                                color: theme.quizBottomSheetBackground,
-                                            child: SizedBox(
-                                              height: MediaQuery.of(context).size.height * 0.7,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.symmetric(
-                                          vertical: 12,
-                                                    ),
-                                                    child: Text(
-                                                      'Chọn câu hỏi',
-                                                      style: TextStyle(
-                                            fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                            color: theme.quizBottomSheetText,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: ListView.separated(
-                                                      itemCount:
-                                                          _currentFilteredQuizzes
-                                                              .length,
-                                                      separatorBuilder:
-                                                          (context, idx) =>
-                                                              Divider(
-                                                                height: 1,
-                                                    color: theme.dividerColor,
-                                                              ),
-                                                      itemBuilder: (context, idx) {
-                                                        final q =
-                                                            _currentFilteredQuizzes[idx];
-                                                        return QuizShortcut(
-                                                          quiz: q,
-                                                          index: idx,
-                                              originalIndex: quizzes.indexWhere((quiz) => quiz.id == q.id),
-                                                          selected: idx == currentIndex,
-                                                          onTap: () => Navigator.pop(context, idx),
-                                              totalQuizzes: _currentFilteredQuizzes.length,
-                                              practiced: statusMap[q.id]?.practiced == true,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+  child: Container(
+    height: 48,
+    child: Row(
+      children: [
+        Expanded(
+          child: TextButton(
+            onPressed: (_currentFilteredQuizzes.isNotEmpty && currentIndex > 0)
+                ? () {
+                    _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                  }
+                : null,
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              disabledBackgroundColor: Colors.grey.shade200,
+              disabledForegroundColor: Colors.grey,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+            child: const Text('Câu trước'),
+          ),
+        ),
+        Expanded(
+          child: TextButton(
+            onPressed: _currentFilteredQuizzes.isNotEmpty
+                ? () async {
+                    final selected = await showModalBottomSheet<int>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return SafeArea(
+                          child: Container(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Text(
+                                      'Chọn câu hỏi',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: theme.quizBottomSheetText,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ListView.separated(
+                                      itemCount: _currentFilteredQuizzes.length,
+                                      separatorBuilder: (context, idx) => Divider(
+                                        height: 1,
+                                        color: theme.dividerColor,
+                                      ),
+                                      itemBuilder: (context, idx) {
+                                        final q = _currentFilteredQuizzes[idx];
+                                        return QuizShortcut(
+                                          quiz: q,
+                                          index: idx,
+                                          originalIndex: quizzes.indexWhere((quiz) => quiz.id == q.id),
+                                          selected: idx == currentIndex,
+                                          onTap: () => Navigator.pop(context, idx),
+                                          totalQuizzes: _currentFilteredQuizzes.length,
+                                          practiced: statusMap[q.id]?.practiced == true,
                                         );
                                       },
-                                    );
-                                    if (selected != null) {
-                                      _pageController.jumpToPage(selected);
-                                    }
-                                  }
-                                : null,
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.blue,
-                              disabledBackgroundColor: Colors.grey.shade200,
-                              disabledForegroundColor: Colors.grey,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                            ),
-                            child: SizedBox(
-                              height: 18,
-                              child: Icon(Icons.list),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextButton(
-                            onPressed: _currentFilteredQuizzes.isNotEmpty && currentIndex < _currentFilteredQuizzes.length - 1
-                                ? () {
-                                    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                                  }
-                                : null,
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                              disabledBackgroundColor: Colors.grey.shade200,
-                              disabledForegroundColor: Colors.grey,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                            ),
-                            child: const Text('Tiếp theo'),
-                    ),
-                  ),
-                ],
+                        );
+                      },
+                    );
+                    if (selected != null) {
+                      _pageController.jumpToPage(selected);
+                    }
+                  }
+                : null,
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.blue,
+              disabledBackgroundColor: Colors.grey.shade200,
+              disabledForegroundColor: Colors.grey,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.list,
+                size: 20,
+                color: Colors.blue,
               ),
             ),
+          ),
+        ),
+        Expanded(
+          child: TextButton(
+            onPressed: _currentFilteredQuizzes.isNotEmpty && currentIndex < _currentFilteredQuizzes.length - 1
+                ? () {
+                    _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                  }
+                : null,
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              disabledBackgroundColor: Colors.grey.shade200,
+              disabledForegroundColor: Colors.grey,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+            child: const Text('Tiếp theo'),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
     );
   }
 }

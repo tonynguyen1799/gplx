@@ -16,6 +16,7 @@ final quizzesProvider = StateProvider<Map<String, List<Quiz>>>((ref) => {});
 final examsProvider = StateProvider<Map<String, List<Exam>>>((ref) => {}); 
 final configsProvider = StateProvider<Map<String, dynamic>>((ref) => {});
 final trafficSignCategoriesProvider = StateProvider<List<Map<String, String>>>((ref) => []);
+final mainNavIndexProvider = StateProvider<int>((ref) => 0); // 0: Home, 1: Settings, 2: Info
 
 final trafficSignsProvider = FutureProvider<List<TrafficSign>>((ref) async {
   final String jsonString = await rootBundle.loadString('assets/traffic_signs.json');
@@ -38,9 +39,8 @@ final selectedLicenseTypeProvider = FutureProvider<String?>((ref) async {
 final tipsProvider = StateProvider<Map<String, ExamTips>>((ref) => {});
 
 final roadDiagramProvider = FutureProvider<RoadDiagram>((ref) async {
-  // Get selected license type (A1, A2, B1, B2, C, D, E, F)
-  String? licenseType = await getSelectedLicenseType();
-  licenseType = licenseType?.toLowerCase() ?? 'b2';
+  final selectedLicenseType = await ref.watch(selectedLicenseTypeProvider.future);
+  String? licenseType = selectedLicenseType?.toLowerCase() ?? 'b2';
   final supported = ['a1', 'a2', 'b1', 'b2', 'c', 'd', 'e', 'f'];
   final type = supported.contains(licenseType) ? licenseType : 'b2';
   final fileName = 'assets/road_diagram_${type}.json';
@@ -49,7 +49,6 @@ final roadDiagramProvider = FutureProvider<RoadDiagram>((ref) async {
     final json = jsonDecode(jsonStr);
     return RoadDiagram.fromJson(json);
   } catch (e) {
-    // fallback to b2 if file not found
     final jsonStr = await rootBundle.loadString('assets/road_diagram_b2.json');
     final json = jsonDecode(jsonStr);
     return RoadDiagram.fromJson(json);

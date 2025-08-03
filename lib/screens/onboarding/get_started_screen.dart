@@ -94,6 +94,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                 itemBuilder: (context, index) {
                   final type = licenseTypes[index];
                   final isSelected = selectedType?.code == type.code;
+                  final theme = Theme.of(context);
                   return InkWell(
                     onTap: () {
                       setState(() {
@@ -104,9 +105,9 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.blue.shade50 : Colors.transparent,
+                        color: isSelected ? theme.colorScheme.primary.withOpacity(0.15) : Colors.transparent,
                         border: Border(
-                          bottom: BorderSide(color: Colors.grey.shade300),
+                          bottom: BorderSide(color: theme.dividerColor),
                         ),
                       ),
                       child: Row(
@@ -120,18 +121,22 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                               children: [
                                 Text(
                                   '${type.code} - ${type.name}',
-                                  style: const TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   type.description,
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           if (isSelected)
-                            const Icon(Icons.check, color: Colors.blue, size: 24),
+                            Icon(Icons.check, color: theme.colorScheme.primary, size: 24),
                         ],
                       ),
                     ),

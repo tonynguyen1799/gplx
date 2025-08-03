@@ -108,7 +108,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       // 3. Navigate to home or onboarding
       final completed = await isOnboardingComplete();
       final elapsed = DateTime.now().difference(start);
-      if (elapsed.inMilliseconds < 3000) {
+      if (elapsed.inMilliseconds < 2000) {
         await Future.delayed(Duration(milliseconds: 3000 - elapsed.inMilliseconds));
       }
       if (mounted) {
@@ -149,7 +149,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark ? Colors.indigo.shade100 : Colors.indigo.shade900, // Flat, dark blue for contrast
+                  color: Colors.indigo.shade900, // Flat, dark blue for contrast
                   // No shadow for minimalist style
                 ),
               ),

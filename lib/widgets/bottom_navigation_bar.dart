@@ -104,6 +104,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
   }
 
   @override
+  void didUpdateWidget(covariant AppBottomNavigationBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.currentIndex != null && widget.currentIndex != oldWidget.currentIndex) {
+      _currentIndex = oldWidget.currentIndex ?? 0;
+      _targetIndex = widget.currentIndex ?? 0;
+      _animationController.forward(from: 0.0);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final currentRoute = _getCurrentRoute(context);

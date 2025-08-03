@@ -123,7 +123,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                             Text(
                               'Mẹo thi hiệu quả',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: theme.primaryText,
                               ),
@@ -195,7 +195,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                         Text(
                           topic.topicName,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: theme.primaryText,
                           ),
