@@ -1,0 +1,62 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+
+# Mac OS
+.DS_Store
+
+# Android
+android/.gradle/
+android/app/build/
+
+# iOS
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+
+# Xcode
+*.xcuserstate
+*.xcworkspace
+*.xcuserdata
+*.moved-aside
+DerivedData/
+
+# Other
+*.log
+*.tmp
+
+# Linux
+linux/flutter/
+linux/build/
+
+# Windows
+windows/flutter/
+windows/build/
+
+# Web
+web/.dart_tool/
+web/build/
+
+# Misc
+*.swp
+*.swo
+
+# Coverage
+coverage/
+
+# Symbolication
+*.dSYM
+
+# Remove any tracked files that should be ignored
+# Run: git rm --cached -r build .dart_tool ios/Pods ios/Flutter/ephemeral 
