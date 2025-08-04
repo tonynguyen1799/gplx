@@ -111,92 +111,92 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 error: (_, __) => const SizedBox.shrink(),
                 data: (code) {
-                  if (code == null || !licenseTypes.any((lt) => lt.code == code)) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (context.mounted) {
-                        context.go('/');
-                      }
-                    });
-                    return const SizedBox.shrink();
+              if (code == null || !licenseTypes.any((lt) => lt.code == code)) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (context.mounted) {
+                    context.go('/');
                   }
-                  final type = licenseTypes.firstWhere((lt) => lt.code == code);
-                  final quizzesMap = ref.watch(quizzesProvider);
-                  final List<Quiz> quizzes = quizzesMap.containsKey(code)
-                      ? List<Quiz>.from(quizzesMap[code]!)
-                      : <Quiz>[];
-                  final progress = ref.watch(progressProvider(code));
-                  final topicsMap = ref.watch(topicsProvider);
-                  final perTopicProgress = ref.watch(perTopicProgressProvider(code));
-                  final List<Topic> topics = topicsMap.containsKey(code)
-                      ? List<Topic>.from(topicsMap[code]!)
-                      : <Topic>[];
-                  return FutureBuilder<Map<String, QuizPracticeStatus>>(
-                    future: loadQuizStatus(code),
-                    builder: (context, snapshot) {
-                      final statusMap = snapshot.data ?? {};
+                });
+                return const SizedBox.shrink();
+              }
+              final type = licenseTypes.firstWhere((lt) => lt.code == code);
+              final quizzesMap = ref.watch(quizzesProvider);
+              final List<Quiz> quizzes = quizzesMap.containsKey(code)
+                  ? List<Quiz>.from(quizzesMap[code]!)
+                  : <Quiz>[];
+              final progress = ref.watch(progressProvider(code));
+              final topicsMap = ref.watch(topicsProvider);
+              final perTopicProgress = ref.watch(perTopicProgressProvider(code));
+              final List<Topic> topics = topicsMap.containsKey(code)
+                  ? List<Topic>.from(topicsMap[code]!)
+                  : <Topic>[];
+              return FutureBuilder<Map<String, QuizPracticeStatus>>(
+                future: loadQuizStatus(code),
+                builder: (context, snapshot) {
+                  final statusMap = snapshot.data ?? {};
                       final perTopicProgressInt = perTopicProgress.map((k, v) => MapEntry(k, v.practiced));
-                      return ListView(
-                        children: [
-                          const SizedBox(height: 12),
-                          StudyProgressSection(
+                  return ListView(
+                    children: [
+                      const SizedBox(height: 12),
+                      StudyProgressSection(
+                        key: ValueKey(code),
+                        total: quizzes.length,
+                        progress: progress,
+                        statusMap: statusMap,
+                        onTap: () {
+                          int startIndex = 0;
+                          for (int i = 0; i < quizzes.length; i++) {
+                            if (!(statusMap[quizzes[i].id]?.practiced ?? false)) {
+                              startIndex = i;
+                              break;
+                            }
+                            if (i == quizzes.length - 1) startIndex = i;
+                          }
+                          context.push('/quiz', extra: {
+                            'licenseTypeCode': code,
+                            'startIndex': startIndex,
+                            'mode': 'training',
+                          });
+                        },
+                      ),
+                          const SizedBox(height: 18),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final examsMap = ref.watch(examsProvider);
+                          final List<Exam> exams = examsMap.containsKey(code)
+                              ? List<Exam>.from(examsMap[code]!)
+                              : <Exam>[];
+                          final viewModel = buildRealExamViewModel(exams);
+                          return RealExamSection(
                             key: ValueKey(code),
-                            total: quizzes.length,
-                            progress: progress,
-                            statusMap: statusMap,
-                            onTap: () {
-                              int startIndex = 0;
-                              for (int i = 0; i < quizzes.length; i++) {
-                                if (!(statusMap[quizzes[i].id]?.practiced ?? false)) {
-                                  startIndex = i;
-                                  break;
-                                }
-                                if (i == quizzes.length - 1) startIndex = i;
-                              }
-                              context.push('/quiz', extra: {
-                                'licenseTypeCode': code,
-                                'startIndex': startIndex,
-                                'mode': 'training',
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          Consumer(
-                            builder: (context, ref, _) {
-                              final examsMap = ref.watch(examsProvider);
-                              final List<Exam> exams = examsMap.containsKey(code)
-                                  ? List<Exam>.from(examsMap[code]!)
-                                  : <Exam>[];
-                              final viewModel = buildRealExamViewModel(exams);
-                              return RealExamSection(
-                                key: ValueKey(code),
-                                examCount: viewModel.examCount,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          Consumer(
-                            builder: (context, ref, _) {
-                              final progress = ref.watch(progressProvider(code));
-                              final quizzesMap = ref.watch(quizzesProvider);
-                              final List<Quiz> quizzes = quizzesMap.containsKey(code)
-                                  ? List<Quiz>.from(quizzesMap[code]!)
-                                  : <Quiz>[];
-                              final difficultCount = quizzes.where((q) => q.isDifficult == true).length;
-                              return ShortcutGridSection(viewModel: buildShortcutGridViewModel(saved: progress.savedQuizIds.length, difficult: difficultCount, wrong: progress.incorrect), licenseTypeCode: code);
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          StudyByTopicSection(
-                            topics: buildTopicProgressViewModels(
-                              topics,
-                              quizzes,
+                            examCount: viewModel.examCount,
+                          );
+                        },
+                      ),
+                          const SizedBox(height: 18),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final progress = ref.watch(progressProvider(code));
+                          final quizzesMap = ref.watch(quizzesProvider);
+                          final List<Quiz> quizzes = quizzesMap.containsKey(code)
+                              ? List<Quiz>.from(quizzesMap[code]!)
+                              : <Quiz>[];
+                          final difficultCount = quizzes.where((q) => q.isDifficult == true).length;
+                          return ShortcutGridSection(viewModel: buildShortcutGridViewModel(saved: progress.savedQuizIds.length, difficult: difficultCount, wrong: progress.incorrect), licenseTypeCode: code);
+                        },
+                      ),
+                          const SizedBox(height: 12),
+                      StudyByTopicSection(
+                        topics: buildTopicProgressViewModels(
+                          topics,
+                          quizzes,
                               perTopicProgressInt,
-                            ),
-                            licenseTypeCode: code,
-                            quizzes: quizzes,
+                        ),
+                        licenseTypeCode: code,
+                        quizzes: quizzes,
                             statusMap: {},
-                            perTopicProgress: perTopicProgress,
-                          ),
+                        perTopicProgress: perTopicProgress,
+                      ),
                         ],
                       );
                     },

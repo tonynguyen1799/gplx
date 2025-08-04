@@ -125,14 +125,14 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
         color: theme.bottomNavBackground,
       ),
       child: Stack(
-        children: [
+          children: [
           Row(
-            children: [
+              children: [
               _buildTabItem(context, 0, Icons.home, 'Ôn luyện', currentIndex),
               _buildTabItem(context, 1, Icons.settings, 'Cài đặt', currentIndex),
               _buildTabItem(context, 2, Icons.info, 'Thông tin', currentIndex),
-            ],
-          ),
+              ],
+            ),
           // Animated slide indicator
           AnimatedBuilder(
             animation: _slideAnimation,
@@ -157,9 +157,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
                         blurRadius: 4,
                         offset: const Offset(0, 1),
                       ),
-                    ],
-                  ),
-                ),
+                ],
+              ),
+            ),
               );
             },
           ),
@@ -182,9 +182,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
         onTap: () => _navigateToIndex(context, index),
         child: Container(
           padding: EdgeInsets.zero,
-          child: Column(
+              child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+                children: [
               Icon(icon, size: 32, color: color),
               Text(
                 label,
@@ -192,9 +192,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
                   fontSize: 10,
                   fontWeight: FontWeight.w900,
                   color: color,
-                ),
               ),
-            ],
+            ),
+          ],
           ),
         ),
       ),

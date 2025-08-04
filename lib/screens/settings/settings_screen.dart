@@ -8,6 +8,9 @@ import '../../models/license_type.dart';
 import '../../providers/app_data_providers.dart';
 import '../../utils/dialog_utils.dart';
 import 'package:go_router/go_router.dart';
+import '../../services/notification_service.dart';
+import '../../providers/learning_progress.provider.dart';
+import '../../providers/exam_progress_provider.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -68,6 +71,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _saveReminder() async {
     await setReminderEnabled(_reminderEnabled);
     await setReminderTime('${_reminderTime.hour}:${_reminderTime.minute}');
+    if (_reminderEnabled) {
+      final message = NotificationService.getRandomDailyMessage();
+      await NotificationService.scheduleDailyReminder(_reminderTime, message);
+    } else {
+      await NotificationService.cancelReminder();
+    }
   }
 
   Future<void> _saveThemeMode(AppThemeMode mode) async {
@@ -304,9 +313,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                       }
                                     }),
                                   ]),
-                                ),
-                              ],
-                            ),
+              ),
+            ],
+          ),
                           ),
                         ),
                       );
@@ -358,26 +367,40 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       },
                       title: const Text('Bật nhắc nhở hàng ngày', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                       subtitle: const Text('Nhận thông báo nhắc nhở học tập mỗi ngày', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey)),
-                      secondary: Icon(Icons.notifications_active, color: theme.warningColor),
+                      secondary: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: Center(
+                          child: Icon(Icons.notifications_active, color: theme.warningColor),
+                        ),
+                      ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     ),
                     ListTile(
                       enabled: _reminderEnabled,
-                      leading: Icon(Icons.access_time, color: theme.warningColor),
+                      leading: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: Center(
+                          child: Icon(Icons.access_time, color: theme.warningColor),
+                        ),
+                      ),
                       title: const Text('Thời gian nhắc nhở', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                       subtitle: Text('${_reminderTime.hour.toString().padLeft(2, '0')}:${_reminderTime.minute.toString().padLeft(2, '0')}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                      onTap: _reminderEnabled
-                          ? () async {
+            onTap: _reminderEnabled
+                ? () async {
                               final picked = await showSpinnerTimePicker(
-                                context: context,
-                                initialTime: _reminderTime,
-                              );
-                              if (picked != null) {
-                                setState(() => _reminderTime = picked);
+                      context: context,
+                      initialTime: _reminderTime,
+                    );
+                    if (picked != null) {
+                      setState(() => _reminderTime = picked);
                                 await _saveReminder();
-                              }
-                            }
-                          : null,
+                    }
+                  }
+                : null,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      minVerticalPadding: 0,
                     ),
                   ],
                 ),
@@ -402,7 +425,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                child: Row(
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildThemeChoice(context, AppThemeMode.system, 'Tự động', Icons.brightness_auto),
@@ -432,7 +455,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.delete, color: theme.colorScheme.error),
+                    leading: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Center(
+                        child: Icon(Icons.delete, color: theme.colorScheme.error),
+                      ),
+                    ),
                     title: Text('Xóa toàn bộ dữ liệu và đặt lại ứng dụng', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: theme.colorScheme.error)),
                     subtitle: const Text('Tất cả tiến trình, cài đặt sẽ bị xóa', style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
                     onTap: () async {
@@ -479,15 +508,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ListTile(
-                leading: Icon(Icons.info_outline, color: theme.colorScheme.primary),
+                leading: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Center(
+                    child: Icon(Icons.info_outline, color: theme.colorScheme.primary),
+              ),
+                ),
                 title: const Text('GPLX Việt Nam', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 subtitle: const Text('Phiên bản 1.0.0', style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
                 onTap: () {},
-              ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
     
   }
 } 

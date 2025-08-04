@@ -8,23 +8,62 @@ import 'models/quiz_practice_status.dart';
 import 'router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gplx_vn/screens/settings/settings_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:gplx_vn/services/notification_service.dart';
+import 'package:gplx_vn/services/hive_service.dart';
 
-Future<void> printHiveBoxKeys() async {
-  // Remove this function or refactor to use hive_service.dart if needed
+Future<void> rescheduleDailyReminderIfNeeded() async {
+  final enabled = await getReminderEnabled();
+  if (!enabled) return;
+  final timeStr = await getReminderTime();
+  final parts = timeStr.split(':');
+  final reminderTime = TimeOfDay(
+    hour: int.tryParse(parts[0]) ?? 21,
+    minute: int.tryParse(parts[1]) ?? 0,
+  );
+  final message = NotificationService.getRandomDailyMessage();
+  await NotificationService.cancelReminder();
+  await NotificationService.scheduleDailyReminder(reminderTime, message);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(QuizPracticeStatusAdapter());
+  await Firebase.initializeApp();
+  await NotificationService.init();
+  await rescheduleDailyReminderIfNeeded();
   runApp(const ProviderScope(child: GPLXApp()));
 }
 
-class GPLXApp extends ConsumerWidget {
+class GPLXApp extends ConsumerStatefulWidget {
   const GPLXApp({super.key});
+  @override
+  ConsumerState<GPLXApp> createState() => _GPLXAppState();
+}
+
+class _GPLXAppState extends ConsumerState<GPLXApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      rescheduleDailyReminderIfNeeded();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final appThemeMode = ref.watch(themeModeProvider);
     ThemeMode themeMode;
     switch (appThemeMode) {

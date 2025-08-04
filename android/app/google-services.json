@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "44122875587",
+    "project_id": "driver-license-quiz",
+    "storage_bucket": "driver-license-quiz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44122875587:android:468070a63ee250f7112476",
+        "android_client_info": {
+          "package_name": "com.dlquiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5rQbf1RS6qXv2a2NdigJVjvflpNRyNFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

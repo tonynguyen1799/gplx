@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../utils/dialog_utils.dart';
 import '../../services/hive_service.dart';
+import '../../services/notification_service.dart';
+import '../../providers/learning_progress.provider.dart';
+import '../../providers/app_data_providers.dart';
 
 class ReminderScreen extends ConsumerStatefulWidget {
   const ReminderScreen({super.key});
@@ -51,7 +54,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
       title: 'Chọn thời gian',
     );
     if (picked != null) {
-      setState(() {
+                    setState(() {
         selectedTime = picked;
       });
     }
@@ -66,6 +69,12 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   Future<void> _onNext() async {
     await setReminderEnabled(isReminderOn);
     await setReminderTime('${selectedTime.hour}:${selectedTime.minute}');
+    if (isReminderOn) {
+      final message = NotificationService.getRandomDailyMessage();
+      await NotificationService.scheduleDailyReminder(selectedTime, message);
+    } else {
+      await NotificationService.cancelReminder();
+    }
     context.push('/onboarding/finish');
   }
 
