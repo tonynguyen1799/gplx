@@ -104,6 +104,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         ),
         backgroundColor: theme.appBarBackground,
         foregroundColor: theme.appBarText,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(

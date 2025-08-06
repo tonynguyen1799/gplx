@@ -76,15 +76,15 @@ class InfoScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  'Luôn cập nhật kịp thời khi có thay đổi từ Bộ Công An.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Theme.of(context).primaryText,
-                  ),
-                ),
+                // const SizedBox(height: 16),
+                // Text(
+                //   'Luôn cập nhật kịp thời khi có thay đổi từ Bộ Công An.',
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //     fontSize: 15,
+                //     color: Theme.of(context).primaryText,
+                //   ),
+                // ),
                 const SizedBox(height: 16),
                 Text(
                   'Hỗ trợ nhiều loại bằng lái, mẹo thi, sa hình, và nhiều tính năng hữu ích khác.',
