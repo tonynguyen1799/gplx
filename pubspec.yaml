@@ -3,6 +3,8 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
+app_year: 2025
+developer_email: "support@gplx.vn"
 
 environment:
   sdk: ^3.8.1
@@ -27,6 +29,7 @@ dependencies:
   firebase_core: ^2.30.0
   flutter_local_notifications: ^16.3.2
   flutter_native_timezone: ^2.0.0
+  package_info_plus: ^8.3.0
   
 
 dev_dependencies:
@@ -37,6 +40,7 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/images/signs/P101.png
     - assets/configs_a1.json
     - assets/configs_a2.json
     - assets/configs_b1.json
@@ -54,6 +58,8 @@ flutter:
     - assets/exams_e.json
     - assets/exams_f.json
     - assets/images/
+    - assets/images/signs/
+    - assets/images/quizzes/
     - assets/license_types.json
     - assets/quizzes_a1.json
     - assets/quizzes_a2.json

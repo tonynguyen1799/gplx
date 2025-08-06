@@ -31,7 +31,7 @@ Future<TimeOfDay?> showSpinnerTimePicker({
   return await showModalBottomSheet<TimeOfDay>(
     context: context,
     isScrollControlled: true,
-    isDismissible: false,
+    isDismissible: true,
     enableDrag: false,
     builder: (ctx) {
       final isDark = Theme.of(ctx).brightness == Brightness.dark;

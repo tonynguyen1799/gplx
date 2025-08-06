@@ -77,7 +77,7 @@ class QuizContent extends StatelessWidget {
           ),
           if (quiz.imageUrl != null && quiz.imageUrl!.isNotEmpty) ...[
             const SizedBox(height: 16),
-            Image.asset('assets/images/' + quiz.imageUrl!),
+            Image.asset('assets/images/quizzes/' + quiz.imageUrl!),
           ],
         ],
       ),

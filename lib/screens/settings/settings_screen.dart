@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../services/notification_service.dart';
 import '../../providers/learning_progress.provider.dart';
 import '../../providers/exam_progress_provider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -184,6 +185,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       default:
         return Colors.grey;
     }
+  }
+
+  Widget _buildAppVersionTile(ThemeData theme) {
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        final version = snapshot.hasData ? snapshot.data!.version : '';
+        return ListTile(
+          leading: SizedBox(
+            width: 40,
+            height: 40,
+            child: Center(
+              child: Icon(Icons.info_outline, color: theme.colorScheme.primary),
+            ),
+          ),
+          title: const Text('GPLX Việt Nam', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+          subtitle: Text('Phiên bản $version', style: const TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
+          onTap: () {},
+        );
+      },
+    );
   }
 
   @override
@@ -427,14 +449,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                children: [
                     _buildThemeChoice(context, AppThemeMode.system, 'Tự động', Icons.brightness_auto),
                     _buildThemeChoice(context, AppThemeMode.light, 'Sáng', Icons.light_mode),
                     _buildThemeChoice(context, AppThemeMode.dark, 'Tối', Icons.dark_mode),
-                  ],
-                ),
+                ],
               ),
             ),
+          ),
             const SizedBox(height: 12),
             // Section: Data
             Padding(
@@ -443,7 +465,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 // 'Dữ liệu',
                 'DỮ LIỆU',
                 style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
+          ),
             ),
             // const SizedBox(height: 8),
             Container(
@@ -453,7 +475,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
-                children: [
+            children: [
                   ListTile(
                     leading: SizedBox(
                       width: 40,
@@ -486,10 +508,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         await _resetData();
                       }
                     },
-                  ),
-                ],
               ),
-            ),
+            ],
+              ),
+          ),
             const SizedBox(height: 12),
             // Section: About
             Padding(
@@ -506,19 +528,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               decoration: BoxDecoration(
                 color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                leading: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: Center(
-                    child: Icon(Icons.info_outline, color: theme.colorScheme.primary),
-              ),
-                ),
-                title: const Text('GPLX Việt Nam', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                subtitle: const Text('Phiên bản 1.0.0', style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
-                onTap: () {},
             ),
+              child: _buildAppVersionTile(theme),
           ),
         ],
       ),

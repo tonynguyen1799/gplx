@@ -112,7 +112,7 @@ class QuizShortcut extends StatelessWidget {
                 SizedBox(
                   height: 60,
                   child: Image.asset(
-                    'assets/images/' + quiz.imageUrl!,
+                    'assets/images/quizzes/' + quiz.imageUrl!,
                     fit: BoxFit.fitHeight, // Height is fixed, width scales with aspect ratio
                   ),
                 ),

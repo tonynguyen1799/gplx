@@ -152,7 +152,15 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.zero,
-        // No boxShadow
+        boxShadow: [
+          BoxShadow(
+            color: theme.brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -272,7 +280,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.label_important, color: theme.primaryColor, size: 16),
+                              Icon(Icons.label_important, color: theme.primaryText, size: 16),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
