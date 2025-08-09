@@ -18,6 +18,35 @@ class ShortcutGridSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    // Reminder subtitle (time) if enabled
+    final reminderFuture = Future.wait([
+      getReminderEnabled(),
+      getReminderTime(),
+    ]);
+    
+    return FutureBuilder<List<dynamic>>(
+      future: reminderFuture,
+      builder: (context, snapshot) {
+        bool reminderEnabled = false;
+        String reminderTime = '';
+        String reminderDisplay = '';
+        if (snapshot.hasData) {
+          reminderEnabled = snapshot.data![0] as bool;
+          reminderTime = snapshot.data![1] as String;
+          if (reminderTime.isNotEmpty) {
+            final parts = reminderTime.split(':');
+            if (parts.isNotEmpty) {
+              final hour = int.tryParse(parts[0]);
+              final minute = parts.length > 1 ? int.tryParse(parts[1]) : null;
+              if (hour != null && minute != null) {
+                reminderDisplay = '$hour:${minute.toString().padLeft(2, '0')}';
+              } else {
+                reminderDisplay = reminderTime; // fallback
+              }
+            }
+          }
+        }
+        final reminderIcon = reminderEnabled ? Icons.notifications_active : Icons.notifications_off;
     final shortcuts = [
       ShortcutItem(
         title: 'Câu đã lưu',
@@ -98,7 +127,8 @@ class ShortcutGridSection extends ConsumerWidget {
       ),
       ShortcutItem(
         title: 'Nhắc nhở',
-        icon: Icons.notifications,
+        icon: reminderIcon,
+        subtitle: reminderEnabled && reminderDisplay.isNotEmpty ? reminderDisplay : null,
         color: Colors.green.shade400,
         onTap: () {
           ref.read(mainNavIndexProvider.notifier).state = 1;
@@ -116,7 +146,7 @@ class ShortcutGridSection extends ConsumerWidget {
     final secondRow = shortcuts.sublist(4, 8);
 
     return Container(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 12, bottom: 4),
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
@@ -138,6 +168,8 @@ class ShortcutGridSection extends ConsumerWidget {
         ),
       ],
       ),
+    );
+    },
     );
   }
 }

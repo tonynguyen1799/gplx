@@ -21,6 +21,8 @@ import 'exam_summary_screen.dart';
 import '../../models/exam_progress.dart';
 import '../../providers/exam_progress_provider.dart';
 import '../../utils/app_colors.dart';
+import '../../widgets/image_key_button.dart';
+import '../../widgets/quiz_shortcut.dart';
 
 class ExamQuizScreen extends ConsumerStatefulWidget {
   final Object? extra;
@@ -361,6 +363,9 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
             ),
             Expanded(
                   child: PageView.builder(
+                    physics: (mode == QuizModes.EXAM_MODE && !reviewMode)
+                        ? const NeverScrollableScrollPhysics()
+                        : const BouncingScrollPhysics(),
                     controller: _pageController,
                     itemCount: quizzes.length,
                     onPageChanged: (index) {
@@ -394,7 +399,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                     correctIndex: quiz.correctIndex,
                               onSelect: reviewMode
                                   ? ((_) async {})
-                                  : (mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE && selectedAnswers[quiz.id] != null)
+                                  : (mode == QuizModes.EXAM_MODE)
                                       ? ((_) async {})
                                       : _selectAnswer,
                               selectedIndex: reviewMode
@@ -418,6 +423,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                     isFatalQuiz: quiz.topicIds.contains(fatalTopicId),
                     examMode: examMode ?? '',
                   ),
+                  const SizedBox(height: 16),
                 ],
                         ),
                       );
@@ -427,43 +433,226 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
         ],
       ),
       bottomNavigationBar: SafeArea(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                          onPressed: (quizzes.isNotEmpty && currentIndex > 0) ? () {
-                            _pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                          } : null,
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.grey.shade200,
-                        disabledForegroundColor: Colors.grey,
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: reviewMode
+            ? Container(
+                height: 48,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: (quizzes.isNotEmpty && currentIndex > 0)
+                            ? () {
+                                _pageController.previousPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease);
+                              }
+                            : null,
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey.shade200,
+                          disabledForegroundColor: Colors.grey,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: const Text('Câu trước'),
                       ),
-                      child: const Text('Câu trước'),
                     ),
-                  ),
-                  Expanded(
-                    child: TextButton(
-                          onPressed: (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) ? () {
-                            _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-                          } : null,
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.grey.shade200,
-                        disabledForegroundColor: Colors.grey,
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: quizzes.isNotEmpty
+                            ? () async {
+                                final selected = await showModalBottomSheet<int>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) {
+                                    final theme = Theme.of(context);
+                                    return SafeArea(
+                                      child: Container(
+                                        color: theme.scaffoldBackgroundColor,
+                                        child: SizedBox(
+                                          height: MediaQuery.of(context).size.height * 0.7,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 12),
+                                                child: Text(
+                                                  'Chọn câu hỏi',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: theme.quizBottomSheetText,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: ListView.separated(
+                                                  itemCount: quizzes.length,
+                                                  separatorBuilder: (context, idx) => Divider(
+                                                    height: 1,
+                                                    color: theme.dividerColor,
+                                                  ),
+                                                  itemBuilder: (context, idx) {
+                                                    final q = quizzes[idx];
+                                                    return QuizShortcut(
+                                                      quiz: q,
+                                                      index: idx,
+                                                      originalIndex: (_quizIdToIndex[q.id] ?? -1),
+                                                      selected: idx == currentIndex,
+                                                      onTap: () => Navigator.pop(context, idx),
+                                                      totalQuizzes: quizzes.length,
+                                                      practiced: selectedAnswers.containsKey(q.id),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                                if (selected != null) {
+                                  _pageController.jumpToPage(selected);
+                                }
+                              }
+                            : null,
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blue,
+                          disabledBackgroundColor: Colors.grey.shade200,
+                          disabledForegroundColor: Colors.grey,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.list,
+                            size: 20,
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
-                      child: const Text('Tiếp theo'),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: TextButton(
+                        onPressed: quizzes.isNotEmpty && currentIndex < quizzes.length - 1
+                            ? () {
+                                _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease);
+                              }
+                            : null,
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey.shade200,
+                          disabledForegroundColor: Colors.grey,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: const Text('Tiếp theo'),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double gap = 0;
+                    const int totalButtons = 6; // prev, 1,2,3,4, next
+                    final double rawSize = (constraints.maxWidth - gap * (totalButtons - 1)) / totalButtons;
+                    final double buttonSize = rawSize.clamp(56.0, 110.0);
+                    final double arrowIconSize = (buttonSize * 0.20).clamp(16.0, 26.0);
+                    final double numberFontSize = (buttonSize * 0.28).clamp(14.0, 22.0);
+
+                    final quiz = quizzes[currentIndex];
+                    // Disable direct answer selection by tapping answers in exam modes.
+                    // Bottom number keys control selection in exam modes. Training modes remain tappable.
+                    final bool isTrainingMode = mode == QuizModes.TRAINING_MODE || mode == QuizModes.TRAINING_BY_TOPIC_MODE;
+                    final bool isQuickExamMode = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
+                    final bool isExamMode = mode == QuizModes.EXAM_MODE;
+                    final bool canSelect = quizzes.isNotEmpty && !reviewMode && (
+                      isTrainingMode || (isExamMode && (!isQuickExamMode || (isQuickExamMode && selectedAnswers[quiz.id] == null)))
+                    );
+
+                    return Row(
+                      children: [
+                        ...[for (int i = 0; i < 4; i++) ...[
+                          if (i > 0) SizedBox(width: gap),
+                          Builder(
+                            builder: (_) {
+                              final idx = i;
+                              final enabled = canSelect && quiz.answers.length > idx;
+                              return ImageKeyButton(
+                                notPressedAssetPath: 'assets/images/key_not_pressed.png',
+                                pressedAssetPath: 'assets/images/key_pressed.png',
+                                size: buttonSize,
+                                bleedPx: 16,
+                                isEnabled: enabled,
+                                overlayChild: Text('${idx + 1}', style: TextStyle(fontWeight: FontWeight.w700, fontSize: numberFontSize, color: Colors.black87)),
+                                overlayAlignment: const Alignment(0, -0.12),
+                                onTap: () {
+                                  if (enabled) {
+                                    _selectAnswer(idx);
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ]],
+                        SizedBox(width: gap),
+                        ImageKeyButton(
+                          notPressedAssetPath: 'assets/images/key_not_pressed.png',
+                          pressedAssetPath: 'assets/images/key_pressed.png',
+                          size: buttonSize,
+                          bleedPx: 16,
+                          isEnabled: quizzes.isNotEmpty && currentIndex > 0,
+                          overlayChild: Icon(Icons.arrow_back_ios_new, size: arrowIconSize, color: Colors.black87),
+                          overlayAlignment: const Alignment(0, -0.12),
+                          onTap: () {
+                            if (quizzes.isNotEmpty && currentIndex > 0) {
+                              _pageController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            }
+                          },
+                        ),
+                        SizedBox(width: gap),
+                        ImageKeyButton(
+                          notPressedAssetPath: 'assets/images/key_not_pressed.png',
+                          pressedAssetPath: 'assets/images/key_pressed.png',
+                          size: buttonSize,
+                          bleedPx: 16,
+                          isEnabled: quizzes.isNotEmpty && currentIndex < quizzes.length - 1,
+                          overlayChild: Icon(Icons.arrow_forward_ios, size: arrowIconSize, color: Colors.black87),
+                          overlayAlignment: const Alignment(0, -0.12),
+                          onTap: () {
+                            if (quizzes.isNotEmpty && currentIndex < quizzes.length - 1) {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
+      ),
     ); // End of Scaffold
   }, // <-- Close the builder function for Consumer
 ); // <-- Close Consumer

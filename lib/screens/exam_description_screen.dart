@@ -40,7 +40,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mô tả đề thi', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+        title: const Text('Mô tả đề thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),

@@ -19,7 +19,7 @@ class ShortcutGridItem extends StatelessWidget {
         onTap: item.onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.only(top: 6),
+          padding: const EdgeInsets.only(top: 0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -46,14 +46,25 @@ class ShortcutGridItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 2),
-              Text(
-                item.count != null ? '${item.count} câu' : ' ',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: theme.shortcutsCountText,
+              if (item.subtitle != null && item.subtitle!.isNotEmpty)
+                Text(
+                  item.subtitle!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: theme.shortcutsCountText,
+                  ),
+                )
+              else
+                Text(
+                  item.count != null ? '${item.count} câu' : ' ',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: theme.shortcutsCountText,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -124,7 +135,7 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
         onTap: widget.item.onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.only(top: 6),
+          padding: const EdgeInsets.only(bottom: 6),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -166,13 +177,23 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
                 ),
               ),
               const SizedBox(height: 2),
-              Text(
-                widget.item.count != null ? '${widget.item.count} câu' : ' ',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: theme.shortcutsCountText,
+              if (widget.item.subtitle != null && widget.item.subtitle!.isNotEmpty)
+                Text(
+                  widget.item.subtitle!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: theme.shortcutsCountText,
+                  ),
+                )
+              else
+                Text(
+                  widget.item.count != null ? '${widget.item.count} câu' : ' ',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: theme.shortcutsCountText,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

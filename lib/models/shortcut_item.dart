@@ -6,6 +6,7 @@ class ShortcutItem {
   final int? count;
   final Color color;
   final VoidCallback onTap;
+  final String? subtitle;
 
   const ShortcutItem({
     required this.title,
@@ -13,5 +14,6 @@ class ShortcutItem {
     this.count,
     required this.color,
     required this.onTap,
+    this.subtitle,
   });
 }

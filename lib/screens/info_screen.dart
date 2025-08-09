@@ -12,7 +12,7 @@ class InfoScreen extends StatelessWidget {
     final appYear = DateTime.now().year;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Thông tin', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Thông tin', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).appBarBackground,
         foregroundColor: Theme.of(context).appBarText,
@@ -23,7 +23,6 @@ class InfoScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Center(
           child: Container(
-            width: 360,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,

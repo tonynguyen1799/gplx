@@ -31,6 +31,8 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
   
   // Cache for quizId to index in the full quizzes list
   Map<String, int> _quizIdToIndex = {};
+  // Cache for quizId to index within this exam's quizzes (order shown during exam)
+  Map<String, int> _examQuizIdToIndex = {};
 
   List<Quiz> get _filteredQuizzes {
     switch (_filter) {
@@ -57,6 +59,10 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
   
   void _buildQuizIdToIndexMap(List<Quiz> allQuizzes) {
     _quizIdToIndex = {for (int i = 0; i < allQuizzes.length; i++) allQuizzes[i].id: i};
+  }
+
+  void _buildExamQuizIdToIndexMap(List<Quiz> examQuizzes) {
+    _examQuizIdToIndex = {for (int i = 0; i < examQuizzes.length; i++) examQuizzes[i].id: i};
   }
 
   @override
@@ -92,10 +98,12 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
             ? List<Quiz>.from(quizzesMap[widget.licenseTypeCode]!)
             : <Quiz>[];
         _buildQuizIdToIndexMap(allQuizzes);
+        // Build exam-specific index map so numbering remains correct when filtering
+        _buildExamQuizIdToIndexMap(widget.quizzes);
         
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kết quả bài thi', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Kết quả bài thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
@@ -108,7 +116,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -180,9 +188,10 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                     tileColor = theme.errorColor.withOpacity(theme.brightness == Brightness.dark ? 0.35 : 0.2);
                   }
                   final originalIndex = _quizIdToIndex[quiz.id] ?? -1;
+                  final examIndex = _examQuizIdToIndex[quiz.id] ?? -1;
                   return QuizShortcut(
                     quiz: quiz,
-                    index: idx,
+                    index: examIndex,
                     originalIndex: originalIndex,
                     selected: false,
                     onTap: () {
@@ -191,7 +200,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                         'selectedAnswers': widget.selectedAnswers,
                         'licenseTypeCode': widget.licenseTypeCode,
                         'examId': widget.examId,
-                        'startIndex': idx,
+                        'startIndex': examIndex,
                         'reviewMode': true,
                       });
                     },
