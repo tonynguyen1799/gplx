@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/shortcut_item.dart';
 import '../utils/app_colors.dart';
+import '../utils/app_typography.dart';
 
 class ShortcutGridItem extends StatelessWidget {
   final ShortcutItem item;
@@ -39,31 +40,19 @@ class ShortcutGridItem extends StatelessWidget {
               Text(
                 item.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: theme.shortcutsText,
-                ),
+                style: theme.shortcutTitleText,
               ),
               const SizedBox(height: 2),
               if (item.subtitle != null && item.subtitle!.isNotEmpty)
                 Text(
                   item.subtitle!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: theme.shortcutsCountText,
-                  ),
+                  style: theme.shortcutCountText,
                 )
               else
                 Text(
                   item.count != null ? '${item.count} câu' : ' ',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: theme.shortcutsCountText,
-                  ),
+                  style: theme.shortcutCountText,
                 ),
             ],
           ),
@@ -170,29 +159,19 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
               Text(
                 widget.item.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: theme.shortcutsText,
-                ),
+                style: theme.shortcutTitleText.copyWith(fontSize: 14),
               ),
               const SizedBox(height: 2),
               if (widget.item.subtitle != null && widget.item.subtitle!.isNotEmpty)
                 Text(
                   widget.item.subtitle!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.shortcutsCountText,
-                  ),
+                  style: theme.shortcutCountText,
                 )
               else
                 Text(
                   widget.item.count != null ? '${widget.item.count} câu' : ' ',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.shortcutsCountText,
-                  ),
+                  style: theme.shortcutCountText,
                 ),
             ],
           ),

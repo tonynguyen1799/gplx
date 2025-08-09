@@ -233,7 +233,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         children: [
             // Section: License Type
             Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 4),
+              padding: const EdgeInsets.all(4),
               child: Text(
                 // 'Loại bằng lái đang ôn luyện',
                 'LOẠI BẰNG LÁI',
@@ -363,7 +363,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             // Section: Reminder
             Padding(
               key: _reminderKey,
-              padding: const EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 4),
+              padding: const EdgeInsets.all(4),
               child: Text(
                 // 'Nhắc nhở học tập',
                 'NHẮC NHỞ HỌC TẬP',
@@ -431,7 +431,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: 12),
             // Section: Theme
             Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 4),
+              padding: const EdgeInsets.all(4),
               child: Text(
                 // 'Giao diện',
                 'GIAO DIỆN',
@@ -460,7 +460,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: 12),
             // Section: Data
             Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 4),
+              padding: const EdgeInsets.all(4),
               child: Text(
                 // 'Dữ liệu',
                 'DỮ LIỆU',
