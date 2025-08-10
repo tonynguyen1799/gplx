@@ -3,14 +3,14 @@ import '../screens/home/viewmodel/topic_progress_view_model.dart';
 import 'package:go_router/go_router.dart';
 import '../utils/quiz_constants.dart';
 import '../models/quiz.dart';
-import '../models/quiz_practice_status.dart';
+import '../models/hive/quiz_progress.dart';
 import '../utils/app_colors.dart';
 
 class StudyByTopicSection extends StatelessWidget {
   final List<TopicProgressViewModel> topics;
   final String licenseTypeCode;
   final List<Quiz> quizzes;
-  final Map<String, QuizPracticeStatus> statusMap;
+  final Map<String, QuizProgress> statusMap;
   final Map<String, dynamic>? perTopicProgress;
 
   const StudyByTopicSection({
@@ -53,7 +53,7 @@ class StudyByTopicSection extends StatelessWidget {
                 final topicQuizIds = quizzes.where((q) => q.topicIds.contains(topic.id)).map((q) => q.id).toList();
                 int startIndex = 0;
                 for (int i = 0; i < topicQuizIds.length; i++) {
-                  if (!(statusMap[topicQuizIds[i]]?.practiced ?? false)) {
+                  if (!(statusMap[topicQuizIds[i]]?.isPracticed ?? false)) {
                     startIndex = i;
                     break;
                   }
@@ -119,7 +119,7 @@ class StudyByTopicSection extends StatelessWidget {
                     if (topicProg != null) ...[
                       const SizedBox(height: 6),
                       Text(
-                        'Đúng ${topicProg.correct}    Sai ${topicProg.incorrect}',
+                        'Đúng ${topicProg.totalCorrectQuizzes}    Sai ${topicProg.totalIncorrectQuizzes}',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,

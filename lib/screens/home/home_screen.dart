@@ -14,11 +14,11 @@ import 'package:gplx_vn/utils/icon_color_utils.dart';
 import 'package:gplx_vn/screens/home/viewmodel/shortcut_grid_view_model.dart';
 import 'package:gplx_vn/screens/home/viewmodel/topic_progress_view_model.dart';
 import 'package:gplx_vn/screens/home/viewmodel/real_exam_view_model.dart';
-import 'package:gplx_vn/models/question_progress.dart';
+import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
 import 'package:gplx_vn/models/topic.dart';
-import 'package:gplx_vn/models/quiz_practice_status.dart';
+import 'package:gplx_vn/models/hive/quiz_progress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
 import 'package:gplx_vn/utils/app_colors.dart';
 
@@ -59,153 +59,146 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final ref = this.ref;
-    return Scaffold(
+    final codeAsync = ref.watch(selectedLicenseTypeProvider);
+    final licenseTypes = ref.watch(licenseTypesProvider);
+
+    return codeAsync.when(
+      loading: () => Scaffold(
         appBar: AppBar(
-          title: Align(
-            alignment: Alignment.center,
-            child: Consumer(
-              builder: (context, ref, _) {
-                final codeAsync = ref.watch(selectedLicenseTypeProvider);
-                final licenseTypes = ref.watch(licenseTypesProvider);
-                return codeAsync.when(
-                  data: (code) {
-                    if (code != null && licenseTypes.any((lt) => lt.code == code)) {
-                      final type = licenseTypes.firstWhere((lt) => lt.code == code);
-                      return Text('${type.name} - ${type.code}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600));
-                    }
-                    return const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600));
-                  },
-                  loading: () => const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                  error: (_, __) => const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                );
-              },
-            ),
-          ),
+          title: const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           centerTitle: true,
           backgroundColor: theme.appBarBackground,
           foregroundColor: theme.appBarText,
           elevation: 0,
-          leading: null, // Assuming no leading widget for now
-          actions: [
-            // Add any actions here if needed, e.g., a settings button
-          ],
+          leading: null,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Consumer(
-            builder: (context, ref, _) {
-              final codeAsync = ref.watch(selectedLicenseTypeProvider);
-              final licenseTypes = ref.watch(licenseTypesProvider);
-              return codeAsync.when(
-                loading: () => ListView(
-                  children: [
-                    const SizedBox(height: 24),
-                    StudyProgressSection(
-                      total: 0,
-                      progress: QuestionProgress.empty(),
-                    ),
-                    const RealExamSection(),
-                    ShortcutGridSection(viewModel: ShortcutGridViewModel(saved: 0, difficult: 0, wrong: 0), licenseTypeCode: ''),
-                    const StudyByTopicSection(topics: [], licenseTypeCode: '', quizzes: [], statusMap: {}),
-                  ],
-                ),
-                error: (_, __) => const SizedBox.shrink(),
-                data: (code) {
-              if (code == null || !licenseTypes.any((lt) => lt.code == code)) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (context.mounted) {
-                    context.go('/');
-                  }
-                });
-                return const SizedBox.shrink();
-              }
-              final type = licenseTypes.firstWhere((lt) => lt.code == code);
-              final quizzesMap = ref.watch(quizzesProvider);
-              final List<Quiz> quizzes = quizzesMap.containsKey(code)
-                  ? List<Quiz>.from(quizzesMap[code]!)
-                  : <Quiz>[];
-              final progress = ref.watch(progressProvider(code));
-              final topicsMap = ref.watch(topicsProvider);
-              final perTopicProgress = ref.watch(perTopicProgressProvider(code));
-              final List<Topic> topics = topicsMap.containsKey(code)
-                  ? List<Topic>.from(topicsMap[code]!)
-                  : <Topic>[];
-              return FutureBuilder<Map<String, QuizPracticeStatus>>(
-                future: loadQuizStatus(code),
-                builder: (context, snapshot) {
-                  final statusMap = snapshot.data ?? {};
-                      final perTopicProgressInt = perTopicProgress.map((k, v) => MapEntry(k, v.practiced));
-                  return ListView(
-                    children: [
-                      const SizedBox(height: 12),
-                      StudyProgressSection(
-                        key: ValueKey(code),
-                        total: quizzes.length,
-                        progress: progress,
-                        statusMap: statusMap,
-                        onTap: () {
-                          int startIndex = 0;
-                          for (int i = 0; i < quizzes.length; i++) {
-                            if (!(statusMap[quizzes[i].id]?.practiced ?? false)) {
-                              startIndex = i;
-                              break;
-                            }
-                            if (i == quizzes.length - 1) startIndex = i;
-                          }
-                          context.push('/quiz', extra: {
-                            'licenseTypeCode': code,
-                            'startIndex': startIndex,
-                            'mode': 'training',
-                          });
-                        },
-                      ),
-                          const SizedBox(height: 18),
-                      Consumer(
-                        builder: (context, ref, _) {
-                          final examsMap = ref.watch(examsProvider);
-                          final List<Exam> exams = examsMap.containsKey(code)
-                              ? List<Exam>.from(examsMap[code]!)
-                              : <Exam>[];
-                          final viewModel = buildRealExamViewModel(exams);
-                          return RealExamSection(
-                            key: ValueKey(code),
-                            examCount: viewModel.examCount,
-                          );
-                        },
-                      ),
-                          const SizedBox(height: 18),
-                      Consumer(
-                        builder: (context, ref, _) {
-                          final progress = ref.watch(progressProvider(code));
-                          final quizzesMap = ref.watch(quizzesProvider);
-                          final List<Quiz> quizzes = quizzesMap.containsKey(code)
-                              ? List<Quiz>.from(quizzesMap[code]!)
-                              : <Quiz>[];
-                          final difficultCount = quizzes.where((q) => q.isDifficult == true).length;
-                          return ShortcutGridSection(viewModel: buildShortcutGridViewModel(saved: progress.savedQuizIds.length, difficult: difficultCount, wrong: progress.incorrect), licenseTypeCode: code);
-                        },
-                      ),
-                          const SizedBox(height: 12),
-                      StudyByTopicSection(
-                        topics: buildTopicProgressViewModels(
-                          topics,
-                          quizzes,
-                              perTopicProgressInt,
-                        ),
-                        licenseTypeCode: code,
-                        quizzes: quizzes,
-                            statusMap: {},
-                        perTopicProgress: perTopicProgress,
-                      ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              );
-            },
+          child: ListView(
+            children: const [
+              SizedBox(height: 24),
+              // Placeholder skeletons
+            ],
           ),
         ),
-      );
+      ),
+      error: (err, stack) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Trang chủ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          centerTitle: true,
+          backgroundColor: theme.appBarBackground,
+          foregroundColor: theme.appBarText,
+          elevation: 0,
+          leading: null,
+        ),
+        body: const SizedBox.shrink(),
+      ),
+      data: (code) {
+        if (code == null || !licenseTypes.any((lt) => lt.code == code)) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              context.go('/');
+            }
+          });
+          return const SizedBox.shrink();
+        }
+
+        final type = licenseTypes.firstWhere((lt) => lt.code == code);
+        final quizzesMap = ref.watch(quizzesProvider);
+        final List<Quiz> quizzes = quizzesMap.containsKey(code)
+            ? List<Quiz>.from(quizzesMap[code]!)
+            : <Quiz>[];
+        final progress = ref.watch(totalQuizzesProgressProvider(code));
+        final topicsMap = ref.watch(topicsProvider);
+        final perTopicProgress = ref.watch(topicQuizzessProgressProvider(code));
+        final List<Topic> topics = topicsMap.containsKey(code)
+            ? List<Topic>.from(topicsMap[code]!)
+            : <Topic>[];
+        final examsMap = ref.watch(examsProvider);
+        final List<Exam> exams = examsMap.containsKey(code)
+            ? List<Exam>.from(examsMap[code]!)
+            : <Exam>[];
+        final viewModel = buildRealExamViewModel(exams);
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Align(
+              alignment: Alignment.center,
+              child: Text('${type.name} - ${type.code}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            ),
+            centerTitle: true,
+            backgroundColor: theme.appBarBackground,
+            foregroundColor: theme.appBarText,
+            elevation: 0,
+            leading: null,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: FutureBuilder<Map<String, QuizProgress>>(
+              future: loadQuizStatus(code),
+              builder: (context, snapshot) {
+                final statusMap = snapshot.data ?? {};
+                final perTopicProgressInt = perTopicProgress.map((k, v) => MapEntry(k, v.totalPracticedQuizzes));
+                return ListView(
+                  children: [
+                    const SizedBox(height: 12),
+                    StudyProgressSection(
+                      key: ValueKey(code),
+                      total: quizzes.length,
+                      progress: progress,
+                      statusMap: statusMap,
+                      onTap: () {
+                        int startIndex = 0;
+                        for (int i = 0; i < quizzes.length; i++) {
+                          if (!(statusMap[quizzes[i].id]?.isPracticed ?? false)) {
+                            startIndex = i;
+                            break;
+                          }
+                          if (i == quizzes.length - 1) startIndex = i;
+                        }
+                        context.push('/quiz', extra: {
+                          'licenseTypeCode': code,
+                          'startIndex': startIndex,
+                          'mode': 'training',
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 18),
+                    RealExamSection(
+                      key: ValueKey(code),
+                      examCount: viewModel.examCount,
+                    ),
+                    const SizedBox(height: 18),
+                    Builder(builder: (context) {
+                      final difficultCount = quizzes.where((q) => q.isDifficult == true).length;
+                      return ShortcutGridSection(
+                        viewModel: buildShortcutGridViewModel(
+                          saved: progress.savedQuizIds.length,
+                          difficult: difficultCount,
+                          wrong: progress.totalIncorrectQuizzes,
+                        ),
+                        licenseTypeCode: code,
+                      );
+                    }),
+                    const SizedBox(height: 12),
+                    StudyByTopicSection(
+                      topics: buildTopicProgressViewModels(
+                        topics,
+                        quizzes,
+                        perTopicProgressInt,
+                      ),
+                      licenseTypeCode: code,
+                      quizzes: quizzes,
+                      statusMap: {},
+                      perTopicProgress: perTopicProgress,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 }

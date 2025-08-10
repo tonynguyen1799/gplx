@@ -63,7 +63,6 @@ flutter:
     - assets/quizzes_a1.json
     - assets/quizzes_a2.json
     - assets/quizzes_b1.json
-    - assets/quizzes_b2_bk.json
     - assets/quizzes_b2.json
     - assets/quizzes_c.json
     - assets/quizzes_d.json

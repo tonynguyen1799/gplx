@@ -4,7 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gplx_vn/models/hive_keys.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'models/quiz_practice_status.dart';
+import 'models/hive/quiz_progress.dart';
+import 'models/hive/exam_progress.dart';
 import 'router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gplx_vn/screens/settings/settings_screen.dart';
@@ -29,7 +30,8 @@ Future<void> rescheduleDailyReminderIfNeeded() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(QuizPracticeStatusAdapter());
+  Hive.registerAdapter(QuizProgressAdapter());
+  Hive.registerAdapter(ExamProgressAdapter());
   await Firebase.initializeApp();
   await NotificationService.init();
   await rescheduleDailyReminderIfNeeded();

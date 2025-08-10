@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/quiz.dart';
 import '../../providers/app_data_providers.dart';
 import '../../models/license_type.dart';
-import '../../models/quiz_practice_status.dart';
+import '../../models/hive/quiz_progress.dart';
 import '../../models/topic.dart';
 import '../../services/hive_service.dart';
 import 'package:go_router/go_router.dart';
@@ -15,10 +15,10 @@ import '../../widgets/exam_timer.dart';
 import '../../widgets/bookmark_button.dart';
 import '../../widgets/quiz_content.dart';
 import '../../widgets/answer_options.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../widgets/exam_quiz_jump_button.dart';
 import 'exam_summary_screen.dart';
-import '../../models/exam_progress.dart';
+import '../../models/hive/exam_progress.dart';
 import '../../providers/exam_progress_provider.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/image_key_button.dart';
@@ -147,14 +147,14 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
     });
     final minCorrect = config['exam']?['numberOfRequiredCorrectQuizzes'] ?? 0;
     final passed = allFatalCorrect && correctCount >= minCorrect;
-    ref.read(examsProgressProvider.notifier).setProgress(
+    ref.read(examsProgressProvider.notifier).updateExamProgress(
       ExamProgress(
         examId: examId!,
         licenseTypeCode: licenseTypeCode!,
-        passed: passed,
-        correctCount: correctCount,
-        incorrectCount: incorrectCount,
-        timestamp: DateTime.now(),
+        isPassed: passed,
+        totalCorrectQuizzes: correctCount,
+        totalIncorrectQuizzes: incorrectCount,
+        completedAt: DateTime.now(),
       ),
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -402,7 +402,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
                                   : (mode == QuizModes.EXAM_MODE)
                                       ? ((_) async {})
                                       : _selectAnswer,
-                              selectedIndex: reviewMode
+                              selectedIdx: reviewMode
                                   ? (selectedAnswers.containsKey(quiz.id)
                                       ? selectedAnswers[quiz.id]!
                                       : -1)

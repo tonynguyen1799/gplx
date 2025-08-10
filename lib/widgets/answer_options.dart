@@ -12,7 +12,7 @@ class AnswerOptions extends StatelessWidget {
   final String? tip;
   final String mode;
   final bool lockAnswer;
-  final int? selectedIndex;
+  final int? selectedIdx;
   final bool isFatalQuiz;
   final String examMode;
 
@@ -26,26 +26,26 @@ class AnswerOptions extends StatelessWidget {
     this.tip,
     required this.mode,
     this.lockAnswer = false,
-    this.selectedIndex,
+    this.selectedIdx,
     required this.isFatalQuiz,
     required this.examMode,
   }) : super(key: key);
 
-  Color _getAnswerOptionColor(ThemeData theme, int index, int? selectedIndex, bool isTrainingMode, bool showExplanation, int correctIndex) {
-    if (selectedIndex == null) {
+  Color _getAnswerOptionColor(ThemeData theme, int index, int? selectedIdx, bool isTrainingMode, bool showExplanation, int correctIndex) {
+    if (selectedIdx == null) {
       return theme.answerOptionBackground;
     }
     
     if (isTrainingMode || showExplanation) {
       if (index == correctIndex) {
         return theme.answerOptionCorrect;
-      } else if (selectedIndex == index) {
+      } else if (selectedIdx == index) {
         return theme.answerOptionIncorrect;
       } else {
         return theme.answerOptionBackground;
       }
     } else {
-      if (selectedIndex == index) {
+      if (selectedIdx == index) {
         return theme.answerOptionSelected;
       } else {
         return theme.answerOptionBackground;
@@ -53,9 +53,9 @@ class AnswerOptions extends StatelessWidget {
     }
   }
 
-  Color _getAnswerOptionIconColor(ThemeData theme, int index, int? selectedIndex, bool isTrainingMode, bool showExplanation, int correctIndex) {
+  Color _getAnswerOptionIconColor(ThemeData theme, int index, int? selectedIdx, bool isTrainingMode, bool showExplanation, int correctIndex) {
     if (isTrainingMode || showExplanation) {
-      if (selectedIndex == index) {
+      if (selectedIdx == index) {
         if (index == correctIndex) {
           return theme.answerOptionIconCorrect;
         } else {
@@ -82,25 +82,25 @@ class AnswerOptions extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: ((isTrainingMode || isQuickExamMode)
-                      ? (selectedIndex == null ? () => onSelect(i) : null)
+                      ? (selectedIdx == null ? () => onSelect(i) : null)
                       : (!lockAnswer ? () => onSelect(i) : null)),
             child: Container(
                 width: double.infinity,
-                color: _getAnswerOptionColor(theme, i, selectedIndex, isTrainingMode, showExplanation, correctIndex),
+                color: _getAnswerOptionColor(theme, i, selectedIdx, isTrainingMode, showExplanation, correctIndex),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IgnorePointer(
                     child: Icon(
-                        selectedIndex == i
+                        selectedIdx == i
                             ? (isTrainingMode || showExplanation
                                 ? (i == correctIndex ? Icons.check_circle : Icons.cancel)
                               : Icons.radio_button_checked)
                             : (isTrainingMode || showExplanation
                                 ? Icons.circle_outlined
                                 : Icons.radio_button_unchecked),
-                        color: _getAnswerOptionIconColor(theme, i, selectedIndex, isTrainingMode, showExplanation, correctIndex),
+                        color: _getAnswerOptionIconColor(theme, i, selectedIdx, isTrainingMode, showExplanation, correctIndex),
                       size: 30,
                     ),
                   ),
@@ -118,7 +118,7 @@ class AnswerOptions extends StatelessWidget {
             ),
           ),
           ),
-        if (selectedIndex != null && explanation != null && showExplanation) ...[
+        if (selectedIdx != null && explanation != null && showExplanation) ...[
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -143,7 +143,7 @@ class AnswerOptions extends StatelessWidget {
                         ),
                       ),
                     ),
-                  if (selectedIndex == -1) ...[
+                  if (selectedIdx == -1) ...[
                     Row(
                       children: [
                         Icon(Icons.help_outline, color: theme.warningColor),
@@ -162,14 +162,14 @@ class AnswerOptions extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          selectedIndex == correctIndex ? Icons.check_circle : Icons.cancel,
-                          color: selectedIndex == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
+                          selectedIdx == correctIndex ? Icons.check_circle : Icons.cancel,
+                          color: selectedIdx == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          selectedIndex == correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
+                          selectedIdx == correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
                           style: TextStyle(
-                            color: selectedIndex == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
+                            color: selectedIdx == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),

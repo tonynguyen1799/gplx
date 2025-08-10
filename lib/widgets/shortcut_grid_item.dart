@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/shortcut_item.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_typography.dart';
 
 class ShortcutGridItem extends StatelessWidget {
   final ShortcutItem item;
@@ -11,6 +9,16 @@ class ShortcutGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      color: theme.colorScheme.onSurface,
+    );
+    final countStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+    );
     if (item.title == 'Ủng hộ') {
       return _ScintillatingShortcutItem(item: item);
     }
@@ -25,9 +33,9 @@ class ShortcutGridItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: item.color.withOpacity(0.15),
+                  color: item.color.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -40,19 +48,19 @@ class ShortcutGridItem extends StatelessWidget {
               Text(
                 item.title,
                 textAlign: TextAlign.center,
-                style: theme.shortcutTitleText,
+                style: titleStyle,
               ),
               const SizedBox(height: 2),
               if (item.subtitle != null && item.subtitle!.isNotEmpty)
                 Text(
                   item.subtitle!,
                   textAlign: TextAlign.center,
-                  style: theme.shortcutCountText,
+                  style: countStyle,
                 )
               else
                 Text(
                   item.count != null ? '${item.count} câu' : ' ',
-                  style: theme.shortcutCountText,
+                  style: countStyle,
                 ),
             ],
           ),
@@ -84,7 +92,7 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
       vsync: this,
       duration: const Duration(milliseconds: 600),
     )..repeat(reverse: true);
-    _scaleAnim = Tween<double>(begin: 1.0, end: 1.25).animate(
+    _scaleAnim = Tween<double>(begin: 0.6, end: 1.2).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
     _colorAnim = ColorTween(begin: widget.item.color, end: Colors.pinkAccent).animate(_pulseController);
@@ -118,65 +126,79 @@ class _ScintillatingShortcutItemState extends State<_ScintillatingShortcutItem> 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      color: theme.colorScheme.onSurface,
+    );
+    final countStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+    );
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: widget.item.onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 6),
+          padding: const EdgeInsets.only(top: 0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedBuilder(
-                animation: Listenable.merge([_pulseController, _flipController]),
-                builder: (context, child) {
-                  final angle = _flipAnim.value * 3.1415926535 * 2; // 0 to 2pi (360deg)
-                  return Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateY(angle),
-                    child: Transform.scale(
-                      scale: _scaleAnim.value,
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: _colorAnim.value?.withOpacity(0.18),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          widget.item.icon,
-                          color: _colorAnim.value,
-                          size: 26,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedBuilder(
+                  animation: Listenable.merge([_pulseController, _flipController]),
+                  builder: (context, child) {
+                    final angle = _flipAnim.value * 3.1415926535 * 2;
+                    return Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(angle),
+                      child: Transform.scale(
+                        scale: 1.05 * _scaleAnim.value,
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: (_colorAnim.value ?? widget.item.color).withValues(alpha: 0.16),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              widget.item.icon,
+                              color: _colorAnim.value ?? widget.item.color,
+                              size: 28,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 4),
-              Text(
-                widget.item.title,
-                textAlign: TextAlign.center,
-                style: theme.shortcutTitleText.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 2),
-              if (widget.item.subtitle != null && widget.item.subtitle!.isNotEmpty)
-                Text(
-                  widget.item.subtitle!,
-                  textAlign: TextAlign.center,
-                  style: theme.shortcutCountText,
-                )
-              else
-                Text(
-                  widget.item.count != null ? '${widget.item.count} câu' : ' ',
-                  style: theme.shortcutCountText,
+                    );
+                  },
                 ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  widget.item.title,
+                  textAlign: TextAlign.center,
+                  style: titleStyle,
+                ),
+                const SizedBox(height: 2),
+                if (widget.item.subtitle != null && widget.item.subtitle!.isNotEmpty)
+                  Text(
+                    widget.item.subtitle!,
+                    textAlign: TextAlign.center,
+                    style: countStyle,
+                  )
+                else
+                  Text(
+                    widget.item.count != null ? '${widget.item.count} câu' : ' ',
+                    style: countStyle,
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

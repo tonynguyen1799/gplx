@@ -1,41 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quiz_practice_status.dart';
+part of 'quiz_progress.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuizPracticeStatusAdapter extends TypeAdapter<QuizPracticeStatus> {
+class QuizProgressAdapter extends TypeAdapter<QuizProgress> {
   @override
   final int typeId = 2;
 
   @override
-  QuizPracticeStatus read(BinaryReader reader) {
+  QuizProgress read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuizPracticeStatus(
-      practiced: fields[0] as bool,
-      correct: fields[1] as bool,
-      saved: fields[2] as bool,
-      selectedIndex: fields[3] as int?,
+    return QuizProgress(
+      isPracticed: fields[0] as bool,
+      isCorrect: fields[1] as bool,
+      isSaved: fields[2] as bool,
+      selectedIdx: fields[3] as int?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, QuizPracticeStatus obj) {
+  void write(BinaryWriter writer, QuizProgress obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.practiced)
+      ..write(obj.isPracticed)
       ..writeByte(1)
-      ..write(obj.correct)
+      ..write(obj.isCorrect)
       ..writeByte(2)
-      ..write(obj.saved)
+      ..write(obj.isSaved)
       ..writeByte(3)
-      ..write(obj.selectedIndex);
+      ..write(obj.selectedIdx);
   }
 
   @override
@@ -44,7 +44,7 @@ class QuizPracticeStatusAdapter extends TypeAdapter<QuizPracticeStatus> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QuizPracticeStatusAdapter &&
+      other is QuizProgressAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
-}
+} 

@@ -5,7 +5,7 @@ import '../widgets/shortcut_grid_item.dart';
 import '../screens/home/viewmodel/shortcut_grid_view_model.dart';
 import 'package:go_router/go_router.dart';
 import '../utils/quiz_constants.dart';
-import 'package:hive/hive.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/hive_service.dart';
 import '../utils/app_colors.dart';
 import '../providers/app_data_providers.dart';
@@ -70,10 +70,10 @@ class ShortcutGridSection extends ConsumerWidget {
         onTap: () async {
           // Load the current incorrect quiz IDs
           final statusMap = await loadQuizStatus(licenseTypeCode);
-          final quizzesBox = await Hive.openBox('quizzesBox');
-          final quizzes = quizzesBox.get(licenseTypeCode) ?? [];
-          final incorrectQuizIds = (quizzes as List)
-            .where((q) => statusMap[q.id]?.practiced == true && statusMap[q.id]?.correct == false)
+          final quizzesMap = ref.read(quizzesProvider);
+          final List quizzes = quizzesMap[licenseTypeCode] ?? [];
+          final incorrectQuizIds = quizzes
+            .where((q) => (statusMap[q.id]?.isPracticed ?? false) && (statusMap[q.id]?.isCorrect == false))
             .map((q) => q.id)
             .toList();
           context.push('/quiz', extra: {
@@ -138,7 +138,12 @@ class ShortcutGridSection extends ConsumerWidget {
         title: 'Ủng hộ',
         icon: Icons.favorite,
         color: Colors.pink.shade300,
-        onTap: () {},
+        onTap: () async {
+          final uri = Uri.parse('https://tonynguyen1799.github.io/dlquiz/donation.html');
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
+          }
+        },
       ),
     ];
 

@@ -1,73 +1,82 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import '../models/quiz_practice_status.dart';
-import '../models/exam_progress.dart';
+import 'package:hive/hive.dart';
+import '../models/hive/quiz_progress.dart';
+import '../models/hive/exam_progress.dart';
+import 'package:gplx_vn/models/hive_keys.dart';
 
-const String onboardingBox = 'onboardingBox';
-const String quizStatusBox = 'quizStatusBox';
+const quizStatusBox = HiveBoxes.quizStatus;
+const onboardingBox = HiveBoxes.onboarding;
 
 // ---------------- Onboarding ----------------
 Future<void> setOnboardingComplete(bool completed) async {
   final box = await Hive.openBox(onboardingBox);
-  await box.put('completedOnboarding', completed);
+  await box.put(HiveKeys.onboardingCompleted, completed);
 }
 
 Future<bool> isOnboardingComplete() async {
   final box = await Hive.openBox(onboardingBox);
-  return box.get('completedOnboarding', defaultValue: false);
+  return box.get(HiveKeys.onboardingCompleted, defaultValue: false);
 }
 
 // Add after isOnboardingComplete
 Future<void> setSelectedLicenseType(String code) async {
   final box = await Hive.openBox(onboardingBox);
-  await box.put('selectedLicenseType', code);
+  await box.put(HiveKeys.selectedLicenseType, code);
 }
 
 Future<String?> getSelectedLicenseType() async {
   final box = await Hive.openBox(onboardingBox);
-  return box.get('selectedLicenseType');
+  return box.get(HiveKeys.selectedLicenseType);
 }
 
 // ---------------- Reminder Settings ----------------
 Future<void> setReminderEnabled(bool enabled) async {
-  final box = await Hive.openBox('settings');
-  await box.put('reminderEnabled', enabled);
+  final box = await Hive.openBox(HiveBoxes.settings);
+  await box.put(HiveKeys.reminderEnabled, enabled);
 }
 
 Future<bool> getReminderEnabled() async {
-  final box = await Hive.openBox('settings');
-  return box.get('reminderEnabled', defaultValue: true);
+  final box = await Hive.openBox(HiveBoxes.settings);
+  return box.get(HiveKeys.reminderEnabled, defaultValue: true);
 }
 
 Future<void> setReminderTime(String time24h) async {
-  final box = await Hive.openBox('settings');
-  await box.put('reminderTime', time24h); // e.g., '19:00'
+  final box = await Hive.openBox(HiveBoxes.settings);
+  await box.put(HiveKeys.reminderTime, time24h); // e.g., '19:00'
 }
 
 Future<String> getReminderTime() async {
-  final box = await Hive.openBox('settings');
-  return box.get('reminderTime', defaultValue: '21:00');
+  final box = await Hive.openBox(HiveBoxes.settings);
+  return box.get(HiveKeys.reminderTime, defaultValue: '21:00');
 }
 
 // ---------------- Per-Quiz Status ----------------
-Future<Map<String, QuizPracticeStatus>> loadQuizStatus(String licenseTypeCode) async {
+Future<Map<String, QuizProgress>> loadQuizStatus(String licenseTypeCode) async {
   final box = await Hive.openBox(quizStatusBox);
   final data = box.get(licenseTypeCode);
   if (data is Map) {
-    return Map<String, QuizPracticeStatus>.from(data as Map);
+    final Map<String, QuizProgress> status = {};
+    data.forEach((key, value) {
+      if (value is QuizProgress) {
+        status[key as String] = value;
+      } else if (value is Map) {
+        // legacy map -> adapter migration path (not expected here for QuizProgress as it's typed)
+      }
+    });
+    return status;
   }
   return {};
 }
 
-Future<void> saveQuizStatus(String licenseTypeCode, Map<String, QuizPracticeStatus> updatedStatusMap) async {
+Future<void> saveQuizStatus(String licenseTypeCode, Map<String, QuizProgress> status) async {
   final box = await Hive.openBox(quizStatusBox);
-  // Load the existing map
-  final existing = box.get(licenseTypeCode);
-  final merged = <String, QuizPracticeStatus>{};
-  if (existing is Map) {
-    merged.addAll(Map<String, QuizPracticeStatus>.from(existing));
-  }
-  merged.addAll(updatedStatusMap);
-  await box.put(licenseTypeCode, merged);
+  final data = status.map((key, value) => MapEntry(key, value));
+  await box.put(licenseTypeCode, data);
+}
+
+Future<void> mergeQuizStatus(String licenseTypeCode, Map<String, QuizProgress> incoming) async {
+  final current = await loadQuizStatus(licenseTypeCode);
+  current.addAll(incoming);
+  await saveQuizStatus(licenseTypeCode, current);
 }
 
 Future<void> clearQuizStatusBox() async {
@@ -77,17 +86,17 @@ Future<void> clearQuizStatusBox() async {
 }
 
 Future<void> saveExamProgress(ExamProgress progress) async {
-  final box = await Hive.openBox('examProgressBox');
-  await box.put(progress.examId, progress.toMap());
+  final box = await Hive.openBox<ExamProgress>(HiveBoxes.examProgress);
+  await box.put(progress.examId, progress);
 }
 
 Future<Map<String, ExamProgress>> loadAllExamProgress() async {
-  final box = await Hive.openBox('examProgressBox');
+  final box = await Hive.openBox<ExamProgress>(HiveBoxes.examProgress);
   final Map<String, ExamProgress> result = {};
   for (var key in box.keys) {
-    final map = box.get(key);
-    if (map is Map) {
-      result[key as String] = ExamProgress.fromMap(Map<String, dynamic>.from(map));
+    final ExamProgress? value = box.get(key);
+    if (value != null) {
+      result[key as String] = value;
     }
   }
   return result;
@@ -100,13 +109,13 @@ Future<void> clearOnboardingBox() async {
 }
 
 Future<void> clearReminderSettings() async {
-  final box = await Hive.openBox('settings');
+  final box = await Hive.openBox(HiveBoxes.settings);
   await box.clear();
   print('Reminder settings cleared!');
 }
 
 Future<void> clearExamProgressBox() async {
-  final box = await Hive.openBox('examProgressBox');
+  final box = await Hive.openBox(HiveBoxes.examProgress);
   await box.clear();
   print('Exam progress box cleared!');
 }

@@ -12,7 +12,7 @@ import '../../providers/app_data_providers.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/hive_service.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../providers/exam_progress_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -44,7 +44,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       ref.read(licenseTypesProvider.notifier).state = licenseTypes;
       // Load all quiz statuses into memory at startup
       final licenseTypeCodes = licenseTypes.map((lt) => lt.code).toList();
-      await ref.read(quizStatusProvider.notifier).loadAllStatuses(licenseTypeCodes);
+      await ref.read(quizzesProgressProvider.notifier).loadQuizzesProgress(licenseTypeCodes);
       setState(() => _progress = 0.25);
 
       // Prepare maps for topics, quizzes, exams, configs
@@ -102,7 +102,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       ref.read(configsProvider.notifier).state = configsMap;
       ref.read(trafficSignCategoriesProvider.notifier).state = trafficSignCategories;
       // ref.read(trafficSignsProvider.notifier).state = AsyncData(trafficSigns); // Not needed for FutureProvider
-      await ref.read(examsProgressProvider.notifier).loadAllFromHive();
+      await ref.read(examsProgressProvider.notifier).loadExamsProgress();
       setState(() => _progress = 1.0);
 
       // 3. Navigate to home or onboarding

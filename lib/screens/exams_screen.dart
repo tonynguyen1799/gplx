@@ -5,7 +5,6 @@ import '../models/exam.dart';
 import '../providers/app_data_providers.dart';
 import '../providers/exam_progress_provider.dart';
 import '../utils/app_colors.dart';
-import '../utils/app_typography.dart';
 
 class ExamsScreen extends ConsumerWidget {
   const ExamsScreen({super.key});
@@ -30,9 +29,9 @@ class ExamsScreen extends ConsumerWidget {
                 tooltip: 'Về trang chủ',
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text(
+              title: const Text(
                 'Danh sách đề thi',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               backgroundColor: theme.appBarBackground,
               foregroundColor: theme.appBarText,
@@ -49,9 +48,9 @@ class ExamsScreen extends ConsumerWidget {
               tooltip: 'Về trang chủ',
               onPressed: () => context.pop(),
             ),
-            title: Text(
+            title: const Text(
               'Danh sách đề thi',
-              style: theme.appBarTitleText,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             backgroundColor: theme.appBarBackground,
             foregroundColor: theme.appBarText,
@@ -73,9 +72,9 @@ class ExamsScreen extends ConsumerWidget {
                   final exam = exams[index];
                   final progress = progressMap[exam.id];
                   final done = progress != null;
-                  final passed = progress?.passed ?? false;
-                  final correct = progress?.correctCount ?? 0;
-                  final incorrect = progress?.incorrectCount ?? 0;
+                  final passed = progress?.isPassed ?? false;
+                  final correct = progress?.totalCorrectQuizzes ?? 0;
+                  final incorrect = progress?.totalIncorrectQuizzes ?? 0;
 
                   final backgroundColor = !done
                       ? theme.cardColor

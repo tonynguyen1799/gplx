@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../models/question_progress.dart';
+import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
 import '../utils/app_colors.dart';
 
 class StudyProgressSection extends StatelessWidget {
   final int total;
-  final QuestionProgress progress;
+  final QuizzesProgress progress;
   final VoidCallback? onTap;
   final Map<String, dynamic>? statusMap;
   const StudyProgressSection({super.key, required this.total, required this.progress, this.onTap, this.statusMap});
@@ -49,7 +49,7 @@ class StudyProgressSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${progress.practiced} / $quizTotal câu đã luyện',
+                        '${progress.totalPracticedQuizzes} / $quizTotal câu đã luyện',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -60,7 +60,7 @@ class StudyProgressSection extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: LinearProgressIndicator(
-                          value: quizTotal == 0 ? 0 : progress.practiced / quizTotal,
+                          value: quizTotal == 0 ? 0 : progress.totalPracticedQuizzes / quizTotal,
                           minHeight: 8,
                           backgroundColor: theme.studyProgressBarBackground,
                           valueColor: AlwaysStoppedAnimation(
@@ -70,7 +70,7 @@ class StudyProgressSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Đúng ${progress.correct}    Sai ${progress.incorrect}',
+                        'Đúng ${progress.totalCorrectQuizzes}    Sai ${progress.totalIncorrectQuizzes}',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
@@ -95,7 +95,7 @@ class StudyProgressSection extends StatelessWidget {
                       const Icon(Icons.insights, size: 24, color: Colors.blue),
                       const SizedBox(height: 6),
                       Text(
-                        quizTotal == 0 ? '0%' : '${((progress.practiced / quizTotal) * 100).round()}%',
+                        quizTotal == 0 ? '0%' : '${((progress.totalPracticedQuizzes / quizTotal) * 100).round()}%',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

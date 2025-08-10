@@ -50,7 +50,7 @@
 /// ## Provider Roles
 /// - `quizzesProvider`: All quizzes for each license type.
 /// - `topicsProvider`: All topics for each license type.
-/// - `quizStatusProvider`: All quiz statuses, in-memory and synced to Hive.
+/// - `quizzesProgressProvider`: All quiz statuses, in-memory and synced to Hive.
 /// - `progressSelectorProvider`: Computes progress from in-memory status.
 ///
 /// ## Edge Cases
@@ -78,7 +78,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/quiz.dart';
 import '../../providers/app_data_providers.dart';
 import '../../models/license_type.dart';
-import '../../models/quiz_practice_status.dart';
+import '../../models/hive/quiz_progress.dart';
 import '../../models/topic.dart';
 import '../../services/hive_service.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +86,7 @@ import '../../utils/quiz_constants.dart';
 import 'dart:async';
 import '../../widgets/answer_options.dart';
 import '../../widgets/quiz_content.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../widgets/quiz_shortcut.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/bookmark_button.dart';
@@ -140,7 +140,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   void _updateCurrentFilteredQuizzes(String filter) {
     final topicsMap = ref.watch(topicsProvider);
     final quizzesMap = ref.watch(quizzesProvider);
-    final statusMap = ref.watch(quizStatusProvider)[licenseTypeCode] ?? {};
+    final statusMap = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
     final List<Topic> topics = topicsMap[licenseTypeCode] ?? [];
     final List<Quiz> quizzes = quizzesMap.containsKey(licenseTypeCode)
         ? List<Quiz>.from(quizzesMap[licenseTypeCode]!)
@@ -154,7 +154,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     );
     int newIndex = 0;
     if (filter == 'all') {
-      newIndex = filtered.indexWhere((q) => statusMap[q.id]?.practiced != true);
+      newIndex = filtered.indexWhere((q) => statusMap[q.id]?.isPracticed != true);
       if (newIndex == -1) newIndex = 0;
     }
     // Debug print for currentIndex and filter
@@ -206,7 +206,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   // Centralized filtering method
   List<Quiz> _getFilteredQuizzes(
     List<Quiz> quizzes,
-    Map<String, QuizPracticeStatus> statusMap,
+    Map<String, QuizProgress> statusMap,
     String fatalTopicId,
     String filter,
   ) {
@@ -218,19 +218,19 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     }
     switch (filter) {
       case 'done':
-        filtered = filtered.where((q) => statusMap[q.id]?.practiced == true).toList();
+        filtered = filtered.where((q) => statusMap[q.id]?.isPracticed == true).toList();
         break;
       case 'not_done':
         filtered = filtered
-            .where((q) => statusMap[q.id] == null || statusMap[q.id]!.practiced != true)
+            .where((q) => statusMap[q.id] == null || statusMap[q.id]!.isPracticed != true)
             .toList();
         break;
       case 'wrong':
         filtered = filtered
             .where(
               (q) =>
-                  statusMap[q.id]?.practiced == true &&
-                  statusMap[q.id]?.correct == false,
+                  statusMap[q.id]?.isPracticed == true &&
+                  statusMap[q.id]?.isCorrect == false,
             )
             .toList();
         break;
@@ -238,14 +238,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         filtered = filtered
             .where(
               (q) =>
-                  statusMap[q.id]?.practiced == true &&
-                  statusMap[q.id]?.correct == true,
+                  statusMap[q.id]?.isPracticed == true &&
+                  statusMap[q.id]?.isCorrect == true,
             )
             .toList();
         break;
       case 'saved':
         filtered = filtered
-            .where((q) => statusMap[q.id]?.saved == true)
+            .where((q) => statusMap[q.id]?.isSaved == true)
             .toList();
         break;
       case 'fatal':
@@ -278,18 +278,18 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       if (licenseTypeCode != null) {
         final currentQuiz = _currentFilteredQuizzes[currentIndex];
         final quizId = currentQuiz.id;
-        final statusMap = ref.read(quizStatusProvider)[licenseTypeCode!] ?? {};
+        final statusMap = ref.read(quizzesProgressProvider)[licenseTypeCode!] ?? {};
         final isCorrect = index == currentQuiz.correctIndex;
-        final prevStatus = statusMap[quizId];
-        await ref.read(quizStatusProvider.notifier).updateStatus(
-          licenseTypeCode!,
-          quizId,
-          QuizPracticeStatus(
-            practiced: true,
-            correct: isCorrect,
-            saved: prevStatus?.saved ?? false,
-            selectedIndex: index,
-          ),
+          final prevStatus = statusMap[quizId];
+          await ref.read(quizzesProgressProvider.notifier).updateQuizProgress(
+            licenseTypeCode!,
+            quizId,
+            QuizProgress(
+              isPracticed: true,
+              isCorrect: isCorrect,
+              isSaved: prevStatus?.isSaved ?? false,
+              selectedIdx: index,
+            ),
         );
       }
       // TODO: Handle errors if async work fails (e.g., show a snackbar)
@@ -360,7 +360,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         body: Center(child: Text('Không tìm thấy loại bằng lái.')),
       );
     }
-    final statusMap = ref.watch(quizStatusProvider)[licenseTypeCode] ?? {};
+    final statusMap = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
     String? topicName;
     if (mode == QuizModes.TRAINING_BY_TOPIC_MODE &&
         topicId != null &&
@@ -668,7 +668,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 answers: quiz.answers,
                                 correctIndex: quiz.correctIndex,
                           onSelect: _selectAnswer,
-                                selectedIndex: index == currentIndex ? _selectedIndex : null,
+                                selectedIdx: index == currentIndex ? _selectedIndex : null,
                                 showExplanation: mode == QuizModes.TRAINING_MODE || mode == QuizModes.TRAINING_BY_TOPIC_MODE,
                                 explanation: (mode == QuizModes.TRAINING_MODE || mode == QuizModes.TRAINING_BY_TOPIC_MODE) ? quiz.explanation : null,
                         tip: (mode == QuizModes.TRAINING_MODE || mode == QuizModes.TRAINING_BY_TOPIC_MODE) ? quiz.tip : null,
@@ -751,7 +751,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                           selected: idx == currentIndex,
                                           onTap: () => Navigator.pop(context, idx),
                                           totalQuizzes: _currentFilteredQuizzes.length,
-                                          practiced: statusMap[q.id]?.practiced == true,
+                                          practiced: statusMap[q.id]?.isPracticed == true,
                                         );
                                       },
                                     ),

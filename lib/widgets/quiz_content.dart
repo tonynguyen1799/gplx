@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/quiz.dart';
-import '../../models/quiz_practice_status.dart';
+import '../../models/hive/quiz_progress.dart';
 import '../../models/license_type.dart';
 import '../../models/topic.dart';
 import 'bookmark_button.dart';
@@ -11,7 +11,7 @@ class QuizContent extends StatelessWidget {
   final int quizIndex;
   final int totalQuizzes;
   final String licenseTypeCode;
-  final QuizPracticeStatus? status;
+  final QuizProgress? status;
   final VoidCallback onBookmarkChanged;
   final String? fatalTopicId;
   final String? quizCode;
@@ -49,7 +49,7 @@ class QuizContent extends StatelessWidget {
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: theme.quizContentHeader),
                   ),
                   const SizedBox(width: 4),
-                  if (status?.practiced == true)
+                  if (status?.isPracticed == true)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

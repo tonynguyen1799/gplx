@@ -9,9 +9,10 @@ import '../../providers/app_data_providers.dart';
 import '../../utils/dialog_utils.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/notification_service.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../providers/exam_progress_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:gplx_vn/models/hive_keys.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -97,13 +98,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   static Future<String> _getThemeMode() async {
-    final box = await Hive.openBox('settings');
-    return box.get('themeMode', defaultValue: 'system');
+    final box = await Hive.openBox(HiveBoxes.settings);
+    return box.get(HiveKeys.themeMode, defaultValue: 'system');
   }
 
   static Future<void> _setThemeMode(AppThemeMode mode) async {
-    final box = await Hive.openBox('settings');
-    await box.put('themeMode', mode.name);
+    final box = await Hive.openBox(HiveBoxes.settings);
+    await box.put(HiveKeys.themeMode, mode.name);
   }
 
   static AppThemeMode _parseThemeMode(String? value) {

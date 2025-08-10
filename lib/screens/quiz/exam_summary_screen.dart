@@ -4,7 +4,7 @@ import '../../widgets/quiz_shortcut.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_data_providers.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../utils/quiz_constants.dart';
 import '../../utils/app_colors.dart';
 
@@ -80,7 +80,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
         final configs = ref.watch(configsProvider);
         final config = configs[widget.licenseTypeCode] ?? {};
         final minCorrect = config['exam']?['numberOfRequiredCorrectQuizzes'] ?? 0;
-        final statusMap = ref.watch(quizStatusProvider)[widget.licenseTypeCode] ?? {};
+        final statusMap = ref.watch(quizzesProgressProvider)[widget.licenseTypeCode] ?? {};
         // Check for fatal quiz answered incorrectly
         final String fatalTopicId = widget.licenseTypeCode.toLowerCase() + '-fatal';
         final fatalQuizzes = widget.quizzes.where((quiz) => quiz.topicIds.contains(fatalTopicId)).toList();
@@ -207,7 +207,7 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     tileColor: tileColor,
                     totalQuizzes: widget.quizzes.length,
-                    practiced: statusMap[quiz.id]?.practiced ?? false,
+                    practiced: statusMap[quiz.id]?.isPracticed ?? false,
                   );
                 },
               ),

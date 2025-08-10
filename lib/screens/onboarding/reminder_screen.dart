@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../../utils/dialog_utils.dart';
 import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
-import '../../providers/learning_progress.provider.dart';
+import '../../providers/quizzes_progress_provider.dart';
 import '../../providers/app_data_providers.dart';
 
 class ReminderScreen extends ConsumerStatefulWidget {
