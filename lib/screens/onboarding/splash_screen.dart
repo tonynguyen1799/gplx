@@ -102,7 +102,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       ref.read(configsProvider.notifier).state = configsMap;
       ref.read(trafficSignCategoriesProvider.notifier).state = trafficSignCategories;
       // ref.read(trafficSignsProvider.notifier).state = AsyncData(trafficSigns); // Not needed for FutureProvider
-      await ref.read(examsProgressProvider.notifier).loadExamsProgress();
+      final currentCode = await getLicenseType();
+      if (currentCode != null) {
+        await ref.read(examsProgressProvider.notifier).loadExamsProgressFor(currentCode);
+      }
       setState(() => _progress = 1.0);
 
       // 3. Navigate to home or onboarding

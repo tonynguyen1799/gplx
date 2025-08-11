@@ -5,6 +5,7 @@ import '../models/exam.dart';
 import '../providers/app_data_providers.dart';
 import '../providers/exam_progress_provider.dart';
 import '../utils/app_colors.dart';
+import '../models/hive/exam_progress.dart';
 
 class ExamsScreen extends ConsumerWidget {
   const ExamsScreen({super.key});
@@ -12,7 +13,7 @@ class ExamsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final licenseTypeAsync = ref.watch(selectedLicenseTypeProvider);
+    final licenseTypeAsync = ref.watch(licenseTypeProvider);
 
     return licenseTypeAsync.when(
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -58,7 +59,8 @@ class ExamsScreen extends ConsumerWidget {
           ),
           body: Consumer(
             builder: (context, ref, _) {
-              final progressMap = ref.watch(examsProgressProvider);
+              final progressByLicense = ref.watch(examsProgressProvider);
+              final Map<String, ExamProgress> progressMap = progressByLicense[licenseTypeCode] ?? {};
               return GridView.builder(
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

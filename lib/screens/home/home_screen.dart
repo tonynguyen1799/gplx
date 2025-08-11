@@ -4,9 +4,7 @@ import 'package:gplx_vn/widgets/shortcut_grid_section.dart';
 import 'package:gplx_vn/widgets/study_by_topic_section.dart';
 import 'package:gplx_vn/widgets/study_progress_section.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
 import 'package:gplx_vn/services/hive_service.dart';
-import 'package:gplx_vn/models/license_type.dart';
 import 'package:gplx_vn/providers/app_data_providers.dart';
 import 'package:gplx_vn/models/quiz.dart';
 import 'package:gplx_vn/models/exam.dart';
@@ -14,13 +12,11 @@ import 'package:gplx_vn/utils/icon_color_utils.dart';
 import 'package:gplx_vn/screens/home/viewmodel/shortcut_grid_view_model.dart';
 import 'package:gplx_vn/screens/home/viewmodel/topic_progress_view_model.dart';
 import 'package:gplx_vn/screens/home/viewmodel/real_exam_view_model.dart';
-import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gplx_vn/utils/app_colors.dart';
 import 'package:gplx_vn/models/topic.dart';
 import 'package:gplx_vn/models/hive/quiz_progress.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/quizzes_progress_provider.dart';
-import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
-import 'package:gplx_vn/utils/app_colors.dart';
 
 ShortcutGridViewModel buildShortcutGridViewModel({required int saved, required int difficult, required int wrong}) {
   return ShortcutGridViewModel(saved: saved, difficult: difficult, wrong: wrong);
@@ -53,13 +49,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // Removed didChangeDependencies to prevent flicker
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final ref = this.ref;
-    final codeAsync = ref.watch(selectedLicenseTypeProvider);
+    final codeAsync = ref.watch(licenseTypeProvider);
     final licenseTypes = ref.watch(licenseTypesProvider);
 
     return codeAsync.when(
@@ -77,7 +72,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: ListView(
             children: const [
               SizedBox(height: 24),
-              // Placeholder skeletons
             ],
           ),
         ),
@@ -95,10 +89,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       data: (code) {
         if (code == null || !licenseTypes.any((lt) => lt.code == code)) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted) {
-              context.go('/');
-            }
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await cleanUp();
+            if (context.mounted) context.go('/');
           });
           return const SizedBox.shrink();
         }
@@ -135,7 +128,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FutureBuilder<Map<String, QuizProgress>>(
-              future: loadQuizStatus(code),
+              future: loadQuizzesProgress(code),
               builder: (context, snapshot) {
                 final statusMap = snapshot.data ?? {};
                 final perTopicProgressInt = perTopicProgress.map((k, v) => MapEntry(k, v.totalPracticedQuizzes));

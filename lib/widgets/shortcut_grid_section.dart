@@ -6,9 +6,10 @@ import '../screens/home/viewmodel/shortcut_grid_view_model.dart';
 import 'package:go_router/go_router.dart';
 import '../utils/quiz_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../services/hive_service.dart';
+import '../services/hive_service.dart' as hive;
 import '../utils/app_colors.dart';
 import '../providers/app_data_providers.dart';
+import '../services/hive_service.dart';
 
 class ShortcutGridSection extends ConsumerWidget {
   final ShortcutGridViewModel viewModel;
@@ -69,7 +70,7 @@ class ShortcutGridSection extends ConsumerWidget {
         color: Colors.red.shade400,
         onTap: () async {
           // Load the current incorrect quiz IDs
-          final statusMap = await loadQuizStatus(licenseTypeCode);
+          final statusMap = await hive.loadQuizzesProgress(licenseTypeCode);
           final quizzesMap = ref.read(quizzesProvider);
           final List quizzes = quizzesMap[licenseTypeCode] ?? [];
           final incorrectQuizIds = quizzes

@@ -157,9 +157,9 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                 onPressed: selectedType != null
                     ? () async {
                         if (selectedType != null) {
-                          await setSelectedLicenseType(selectedType!.code);
+                          await setLicenseType(selectedType!.code);
                         }
-                        context.push('/onboarding/reminder');
+                        if (mounted) context.go('/onboarding/reminder');
                       }
                     : null,
                 child: const Text(

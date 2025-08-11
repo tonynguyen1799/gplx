@@ -1,21 +1,16 @@
 class HiveBoxes {
-  static const String settings = 'settings';
-  static const String onboarding = 'onboarding';
-  static const String quizStatus = 'quiz_status';
-  static const String examProgress = 'examProgressBox';
+  static const String SETTINGS_BOX = 'settingsBox';
+  static const String ONBOARDING_BOX = 'onboardingBox';
+  static const String QUIZ_PROGRESS_BOX = 'quizProgressBox';
+  static const String EXAM_PROGRESS_BOX = 'examProgressBox';
 }
 
 class HiveKeys {
-  static const String onboardingCompleted = 'completedOnboarding';
-  static const String selectedLicenseType = 'selectedLicenseType';
+  static const String ONBOARDING_COMPLETED = 'completedOnboarding';
+  static const String SETTINGS_LICENSE_TYPE = 'settingsLicenseType';
 
-  static const String reminderEnabled = 'reminderEnabled';
-  static const String reminderTime = 'reminderTime';
-  static const String themeMode = 'themeMode';
-
-  // Quiz status box keys
-  // Use licenseTypeCode as dynamic key per value: box.put(licenseTypeCode, ...)
-
-  // Exam progress box keys
-  // Use examId as dynamic key per value: box.put(examId, ...)=
+  static const String SETTINGS_REMINDER_ENABLED = 'settingsReminderEnabled';
+  static const String SETTINGS_REMINDER_TIME = 'settingReminderTime';
+  
+  static const String SETTINGS_THEME_MODE = 'settingsThemeMode';
 }

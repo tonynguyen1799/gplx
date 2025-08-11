@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/hive_service.dart';
-import 'package:hive/hive.dart';
-import '../../widgets/bottom_navigation_bar.dart';
 import '../../utils/app_colors.dart';
 import '../../models/license_type.dart';
 import '../../providers/app_data_providers.dart';
 import '../../utils/dialog_utils.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/notification_service.dart';
-import '../../providers/quizzes_progress_provider.dart';
-import '../../providers/exam_progress_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:gplx_vn/models/hive_keys.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -55,7 +50,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Future<void> _loadSettings() async {
     final enabled = await getReminderEnabled();
     final timeStr = await getReminderTime();
-    final themeStr = await _getThemeMode();
+    final themeStr = await getThemeMode();
     setState(() {
       _reminderEnabled = enabled;
       final parts = timeStr.split(':');
@@ -72,39 +67,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Future<void> _saveReminder() async {
     await setReminderEnabled(_reminderEnabled);
-    await setReminderTime('${_reminderTime.hour}:${_reminderTime.minute}');
+    final hh = _reminderTime.hour.toString().padLeft(2, '0');
+    final mm = _reminderTime.minute.toString().padLeft(2, '0');
+    await setReminderTime('$hh:$mm');
+    await NotificationService.cancelReminder();
     if (_reminderEnabled) {
       final message = NotificationService.getRandomDailyMessage();
       await NotificationService.scheduleDailyReminder(_reminderTime, message);
-    } else {
-      await NotificationService.cancelReminder();
     }
   }
 
   Future<void> _saveThemeMode(AppThemeMode mode) async {
-    await _setThemeMode(mode);
+    await setThemeMode(mode.name);
     setState(() => _themeMode = mode);
     ref.read(themeModeProvider.notifier).state = mode;
-  }
-
-  Future<void> _resetData() async {
-    await clearOnboardingBox();
-    await clearReminderSettings();
-    await clearQuizStatusBox();
-    await clearExamProgressBox();
-    if (mounted) {
-      context.go('/'); // Navigate to splash screen immediately
-    }
-  }
-
-  static Future<String> _getThemeMode() async {
-    final box = await Hive.openBox(HiveBoxes.settings);
-    return box.get(HiveKeys.themeMode, defaultValue: 'system');
-  }
-
-  static Future<void> _setThemeMode(AppThemeMode mode) async {
-    final box = await Hive.openBox(HiveBoxes.settings);
-    await box.put(HiveKeys.themeMode, mode.name);
   }
 
   static AppThemeMode _parseThemeMode(String? value) {
@@ -213,7 +189,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final licenseTypes = ref.watch(licenseTypesProvider);
-    final selectedLicenseTypeAsync = ref.watch(selectedLicenseTypeProvider);
+    final selectedLicenseTypeAsync = ref.watch(licenseTypeProvider);
     if (_loading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -343,9 +319,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                       );
                       if (newType != null && newType.code != selected?.code) {
-                        await setSelectedLicenseType(newType.code);
-                        ref.refresh(selectedLicenseTypeProvider);
-                        setState(() {}); // Refresh
+                        await setLicenseType(newType.code);
+                        ref.refresh(licenseTypeProvider);
+                        setState(() {});
                       }
                     },
                   );
@@ -506,7 +482,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                       );
                       if (confirm == true) {
-                        await _resetData();
+                        await cleanUp();
+                        if (mounted) {
+                          context.go('/');
+                        }
                       }
                     },
               ),

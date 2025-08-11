@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/hive/quiz_progress.dart';
-import '../services/hive_service.dart';
+import '../services/hive_service.dart' as hive;
 import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
 import 'app_data_providers.dart';
 import '../models/quiz.dart';
@@ -13,7 +13,7 @@ class QuizzesProgressNotifier extends StateNotifier<Map<String, Map<String, Quiz
   Future<void> loadQuizzesProgress(List<String> licenseTypeCodes) async {
     final Map<String, Map<String, QuizProgress>> licenseTypeToQuizProgresses = {};
     for (final licenseTypeCode in licenseTypeCodes) {
-      licenseTypeToQuizProgresses[licenseTypeCode] = await loadQuizStatus(licenseTypeCode);
+      licenseTypeToQuizProgresses[licenseTypeCode] = await hive.loadQuizzesProgress(licenseTypeCode);
     }
     state = licenseTypeToQuizProgresses;
   }
@@ -26,7 +26,7 @@ class QuizzesProgressNotifier extends StateNotifier<Map<String, Map<String, Quiz
       ...state,
       licenseTypeCode: licenseTypeToQuizProgresses,
     };
-    await saveQuizStatus(licenseTypeCode, licenseTypeToQuizProgresses);
+    await hive.saveQuizzesProgress(licenseTypeCode, licenseTypeToQuizProgresses);
   }
 }
 

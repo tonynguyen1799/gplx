@@ -32,25 +32,24 @@ final trafficSignsProvider = FutureProvider<List<TrafficSign>>((ref) async {
   return signs;
 }); 
 
-final selectedLicenseTypeProvider = FutureProvider<String?>((ref) async {
-  return await getSelectedLicenseType();
+final licenseTypeProvider = FutureProvider<String?>((ref) async {
+  return await getLicenseType();
 }); 
 
 final tipsProvider = StateProvider<Map<String, ExamTips>>((ref) => {});
 
 final roadDiagramProvider = FutureProvider<RoadDiagram>((ref) async {
-  final selectedLicenseType = await ref.watch(selectedLicenseTypeProvider.future);
-  String? licenseType = selectedLicenseType?.toLowerCase() ?? 'b2';
-  final supported = ['a1', 'a2', 'b1', 'b2', 'c', 'd', 'e', 'f'];
-  final type = supported.contains(licenseType) ? licenseType : 'b2';
+  final selectedLicenseType = await ref.watch(licenseTypeProvider.future);
+  final type = selectedLicenseType?.toLowerCase();
+  if (type == null || type.isEmpty) {
+    return RoadDiagram(title: '', sections: [], closingRemark: '', callToAction: '');
+  }
   final fileName = 'assets/road_diagram_${type}.json';
   try {
     final jsonStr = await rootBundle.loadString(fileName);
     final json = jsonDecode(jsonStr);
     return RoadDiagram.fromJson(json);
-  } catch (e) {
-    final jsonStr = await rootBundle.loadString('assets/road_diagram_b2.json');
-    final json = jsonDecode(jsonStr);
-    return RoadDiagram.fromJson(json);
+  } catch (_) {
+    return RoadDiagram(title: '', sections: [], closingRemark: '', callToAction: '');
   }
 }); 
