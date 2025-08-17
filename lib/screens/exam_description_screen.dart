@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/exam.dart';
-import '../utils/quiz_constants.dart';
+import '../models/riverpod/data/exam.dart';
+
+import '../constants/quiz_constants.dart';
+import '../constants/route_constants.dart';
 import '../providers/app_data_providers.dart';
 import '../utils/app_colors.dart';
 
@@ -26,8 +28,7 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
   }
 
   void _startExam() {
-    context.push('/exam-quiz', extra: {
-      'mode': QuizModes.EXAM_MODE,
+            context.push(RouteConstants.ROUTE_EXAM_QUIZ, extra: {
       'exam_mode': _selectedMode == 0 ? ExamModes.EXAM_NORMAL_MODE : ExamModes.EXAM_QUICK_MODE,
       'examId': widget.exam.id,
       'licenseTypeCode': widget.licenseTypeCode,
@@ -54,11 +55,15 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Consumer(
           builder: (context, ref, _) {
-            final configs = ref.watch(configsProvider);
-            final config = configs[widget.licenseTypeCode] ?? {};
-            final minCorrect = config['exam']?['numberOfRequiredCorrectQuizzes'] ?? 0;
-            final numQuizzes = config['exam']?['numberOfQuizzes'] ?? widget.exam.quizIds.length;
-            final duration = config['exam']?['durationInMunites'] ?? 20;
+            final asyncConfig = ref.watch(configProvider);
+            
+            return asyncConfig.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+              data: (config) {
+                    final minCorrect = config.exam.totalRequiredCorrectQuizzes;
+    final numQuizzes = config.exam.totalOfQuizzes;
+                final duration = config.exam.durationInMinutes;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -143,6 +148,8 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
                   onModeChanged: _onModeChanged,
                 ),
               ],
+                );
+              },
             );
           },
         ),

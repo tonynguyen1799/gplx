@@ -47,21 +47,6 @@ extension AppColors on ThemeData {
   Color get surfaceVariant => brightness == Brightness.dark ? Colors.grey[850]! : Colors.grey[100]!;
   Color get outline => brightness == Brightness.dark ? Colors.grey[600]! : Colors.grey[400]!;
   
-  // Study Progress & Topic Widget Colors (M3 Compliant)
-  Color get studyProgressBackground => brightness == Brightness.dark ? Colors.grey[900]! : Colors.grey[50]!;
-  Color get studyProgressTitle => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
-  Color get studyProgressText => brightness == Brightness.dark ? Colors.grey[300]! : Colors.grey[700]!;
-  Color get studyProgressStats => brightness == Brightness.dark ? Colors.grey[400]! : Colors.grey[500]!;
-  Color get studyProgressPercentage => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
-  Color get studyProgressBarBackground => brightness == Brightness.dark ? Colors.grey[800]! : Colors.grey[200]!;
-  Color get studyProgressBarColor => brightness == Brightness.dark ? Colors.amber[400]! : Colors.blue[600]!;
-  
-  // Real Exam Widget Colors (M3 Compliant)
-  Color get realExamBackground => brightness == Brightness.dark ? Colors.deepPurple[900]! : Colors.indigo[50]!;
-  Color get realExamIcon => brightness == Brightness.dark ? Colors.amberAccent : Colors.indigo;
-  Color get realExamTitle => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
-  Color get realExamDescription => brightness == Brightness.dark ? Colors.grey[400]! : Colors.grey[500]!;
-  
   // Shortcuts Widget Colors (M3 Compliant)
   Color get shortcutsBackground => brightness == Brightness.dark ? Colors.grey[800]! : Colors.white;
   Color get shortcutsText => brightness == Brightness.dark ? Colors.white : Colors.grey[900]!;
@@ -102,4 +87,14 @@ extension AppColors on ThemeData {
   Color get answerOptionText => primaryText;
   Color get answerExplanationBackground => brightness == Brightness.dark ? Colors.grey[900]! : Colors.blue[50]!;
   Color get answerExplanationText => brightness == Brightness.dark ? Colors.white : Colors.black;
-} 
+  
+  // Custom constants
+  Color get LIGHT_SURFACE_VARIANT => brightness == Brightness.dark ? Colors.grey[900]! : Colors.grey[50]!;
+  Color get SURFACE_VARIANT => brightness == Brightness.dark ? Colors.grey[900]! : Colors.grey[100]!;
+
+  Color get PROGRESS_BAR_BG => brightness == Brightness.dark ? Colors.grey[800]! : Colors.grey[200]!;
+  Color get PROGRESS_BAR_FG => brightness == Brightness.dark ? Colors.amber[400]! : Colors.blue[600]!;
+
+  Color get EXAM_WIDGET_BG => brightness == Brightness.dark ? Colors.indigo[900]! : Colors.indigo[50]!;
+  Color get EXAM_WIDGET_ICON => brightness == Brightness.dark ? Colors.indigo[400]! : Colors.indigo;
+}

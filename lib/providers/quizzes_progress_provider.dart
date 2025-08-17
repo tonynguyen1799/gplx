@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/hive/quiz_progress.dart';
-import '../services/hive_service.dart' as hive;
+
+import 'package:gplx_vn/models/hive/quiz_progress.dart';
 import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
-import 'app_data_providers.dart';
-import '../models/quiz.dart';
-import '../models/topic.dart';
 import 'package:gplx_vn/models/riverpod/topic_progress.dart';
+import 'package:gplx_vn/services/hive_service.dart' as hive;
+
+import 'app_data_providers.dart';
 
 class QuizzesProgressNotifier extends StateNotifier<Map<String, Map<String, QuizProgress>>> {
   QuizzesProgressNotifier() : super({});
@@ -36,10 +36,17 @@ final quizzesProgressProvider = StateNotifierProvider<QuizzesProgressNotifier, M
 
 final totalQuizzesProgressProvider = Provider.family<QuizzesProgress, String>((ref, licenseTypeCode) {
   final Map<String, QuizProgress> quizIdToQuizProgresses = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
-  int totalPracticedQuizzes = 0, totalCorrectQuizzes = 0, totalIncorrectQuizzes = 0;
-  List<String> savedQuizIdsForLicense = [];
-  quizIdToQuizProgresses.forEach((quizId, quizProgress) {
-    if (quizProgress.isPracticed) {
+  final asyncQuizzes = ref.watch(quizzesProvider);
+  
+  if (asyncQuizzes.isLoading) return QuizzesProgress.empty();
+  if (asyncQuizzes.hasError) return QuizzesProgress.empty();
+  
+  final quizzes = asyncQuizzes.value ?? [];
+  int totalPracticedQuizzes = 0, totalCorrectQuizzes = 0, totalIncorrectQuizzes = 0, totalSavedQuizzes = 0;
+  
+  for (final quiz in quizzes) {
+    final QuizProgress? quizProgress = quizIdToQuizProgresses[quiz.id];
+    if (quizProgress != null && quizProgress.isPracticed) {
       totalPracticedQuizzes++;
       if (quizProgress.isCorrect) {
         totalCorrectQuizzes++;
@@ -47,41 +54,46 @@ final totalQuizzesProgressProvider = Provider.family<QuizzesProgress, String>((r
         totalIncorrectQuizzes++;
       }
     }
-    if (quizProgress.isSaved) {
-      savedQuizIdsForLicense.add(quizId);
+    if (quizProgress != null && quizProgress.isSaved) {
+      totalSavedQuizzes++;
     }
-  });
+  }
+  
   return QuizzesProgress(
     totalPracticedQuizzes: totalPracticedQuizzes,
     totalCorrectQuizzes: totalCorrectQuizzes,
     totalIncorrectQuizzes: totalIncorrectQuizzes,
-    savedQuizIds: savedQuizIdsForLicense,
+    totalSavedQuizzes: totalSavedQuizzes,
   );
 });
 
-final topicQuizzessProgressProvider = Provider.family<Map<String, TopicProgress>, String>((ref, licenseTypeCode) {
+final topicQuizzesProgressProvider = Provider.family<Map<String, TopicProgress>, String>((ref, licenseTypeCode) {
   final Map<String, QuizProgress> quizIdToQuizProgresses = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
-  final Map<String, List<Quiz>> licenseTypeToQuizzes = ref.watch(quizzesProvider);
-  final Map<String, List<Topic>> licenseTypeToTopics = ref.watch(topicsProvider);
-  final List<Quiz> quizzesForLicenseType = licenseTypeToQuizzes[licenseTypeCode] ?? [];
-  final List<Topic> topicsForLicenseType = licenseTypeToTopics[licenseTypeCode] ?? [];
+  final asyncQuizzes = ref.watch(quizzesProvider);
+  final asyncTopics = ref.watch(topicsProvider);
+  
+  if (asyncQuizzes.isLoading || asyncTopics.isLoading) return <String, TopicProgress>{};
+  if (asyncQuizzes.hasError || asyncTopics.hasError) return <String, TopicProgress>{};
+  
+  final quizzes = asyncQuizzes.value ?? [];
+  final topics = asyncTopics.value ?? [];
 
-  final Map<String, TopicProgress> topicIdToTopicProgress = {
-    for (final topic in topicsForLicenseType) topic.id: TopicProgress(),
+  final Map<String, TopicProgress> topicIdToTopicProgress = <String, TopicProgress>{
+    for (final topic in topics) topic.id: TopicProgress(),
   };
 
-  for (final quiz in quizzesForLicenseType) {
+  for (final quiz in quizzes) {
     final QuizProgress? quizProgress = quizIdToQuizProgresses[quiz.id];
     for (final topicId in quiz.topicIds) {
-      final TopicProgress? topicProgressEntry = topicIdToTopicProgress[topicId];
-      if (topicProgressEntry == null) continue;
-      topicProgressEntry.totalQuizzes++;
+      final TopicProgress? topicProgress = topicIdToTopicProgress[topicId];
+      if (topicProgress == null) continue;
+      topicProgress.totalQuizzes++;
       if (quizProgress != null && quizProgress.isPracticed) {
-        topicProgressEntry.totalPracticedQuizzes++;
+        topicProgress.totalPracticedQuizzes++;
         if (quizProgress.isCorrect) {
-          topicProgressEntry.totalCorrectQuizzes++;
+          topicProgress.totalCorrectQuizzes++;
         } else {
-          topicProgressEntry.totalIncorrectQuizzes++;
+          topicProgress.totalIncorrectQuizzes++;
         }
       }
     }
@@ -89,4 +101,3 @@ final topicQuizzessProgressProvider = Provider.family<Map<String, TopicProgress>
   return topicIdToTopicProgress;
 });
 
- 

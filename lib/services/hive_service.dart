@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import '../models/hive/quiz_progress.dart';
 import '../models/hive/exam_progress.dart';
-import 'package:gplx_vn/models/hive_keys.dart';
+import 'package:gplx_vn/constants/hive_keys.dart';
 
 const String kDefaultReminderTime = '21:00';
 const String kDefaultThemeMode = 'system';

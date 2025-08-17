@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../models/exam.dart';
+
 import '../providers/app_data_providers.dart';
-import '../providers/exam_progress_provider.dart';
+import '../providers/license_type_provider.dart';
+import '../providers/exams_progress_provider.dart';
 import '../utils/app_colors.dart';
+import '../constants/route_constants.dart';
 import '../models/hive/exam_progress.dart';
 
 class ExamsScreen extends ConsumerWidget {
@@ -19,9 +21,12 @@ class ExamsScreen extends ConsumerWidget {
       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (err, stack) => const Scaffold(body: Center(child: Text('Không thể tải loại GPLX'))),
       data: (licenseTypeCode) {
-        final examsMap = ref.watch(examsProvider);
-        final exams = examsMap[licenseTypeCode] ?? <Exam>[];
+        final asyncExams = ref.watch(examsProvider);
 
+        return asyncExams.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+          data: (exams) {
         if (exams.isEmpty) {
           return Scaffold(
             appBar: AppBar(
@@ -30,9 +35,9 @@ class ExamsScreen extends ConsumerWidget {
                 tooltip: 'Về trang chủ',
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: const Text(
-                'Danh sách đề thi',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              title: Text(
+                'Thi thử mô phỏng - $licenseTypeCode',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               backgroundColor: theme.appBarBackground,
               foregroundColor: theme.appBarText,
@@ -49,9 +54,9 @@ class ExamsScreen extends ConsumerWidget {
               tooltip: 'Về trang chủ',
               onPressed: () => context.pop(),
             ),
-            title: const Text(
-              'Danh sách đề thi',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            title: Text(
+              'Thi thử mô phỏng - $licenseTypeCode',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             backgroundColor: theme.appBarBackground,
             foregroundColor: theme.appBarText,
@@ -91,7 +96,7 @@ class ExamsScreen extends ConsumerWidget {
 
                   return GestureDetector(
                     onTap: () {
-                      context.push('/exam-description', extra: {
+                      context.push(RouteConstants.ROUTE_EXAM_DESCRIPTION, extra: {
                         'exam': exam,
                         'licenseTypeCode': licenseTypeCode,
                       });
@@ -172,6 +177,8 @@ class ExamsScreen extends ConsumerWidget {
               );
             },
           ),
+            );
+          },
         );
       },
     );

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -83,11 +82,17 @@ class NotificationService {
     _initialized = true;
   }
 
-  static Future<void> scheduleDailyReminder(TimeOfDay time, String message) async {
+  static Future<void> scheduleDailyReminder(String time24h, String message) async {
     await init();
     await cancelReminder();
     final now = tz.TZDateTime.now(tz.local);
-    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute);
+    
+    // Parse the time string to get hour and minute
+    final parts = time24h.split(':');
+    final hour = int.tryParse(parts[0]) ?? 21;
+    final minute = int.tryParse(parts[1]) ?? 0;
+    
+    var scheduled = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
     if (scheduled.isBefore(now)) {
       scheduled = scheduled.add(const Duration(days: 1));
     }

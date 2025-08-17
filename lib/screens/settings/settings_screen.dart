@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/hive_service.dart';
 import '../../utils/app_colors.dart';
-import '../../models/license_type.dart';
+import '../../models/riverpod/data/license_type.dart';
 import '../../providers/app_data_providers.dart';
+import '../../providers/license_type_provider.dart';
 import '../../utils/dialog_utils.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/notification_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:gplx_vn/providers/reminder_provider.dart';
 
 enum AppThemeMode { system, light, dark }
 
@@ -22,7 +24,7 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _reminderEnabled = true;
-  TimeOfDay _reminderTime = const TimeOfDay(hour: 21, minute: 0);
+  String _reminderTime = "21:00";
   AppThemeMode _themeMode = AppThemeMode.system;
   bool _loading = true;
   final ScrollController _scrollController = ScrollController();
@@ -53,23 +55,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final themeStr = await getThemeMode();
     setState(() {
       _reminderEnabled = enabled;
-      final parts = timeStr.split(':');
-      if (parts.length == 2) {
-        _reminderTime = TimeOfDay(
-          hour: int.tryParse(parts[0]) ?? 21,
-          minute: int.tryParse(parts[1]) ?? 0,
-        );
-      }
+      // Use the time string directly
+      _reminderTime = timeStr.isNotEmpty ? timeStr : "21:00";
       _themeMode = _parseThemeMode(themeStr);
       _loading = false;
     });
   }
 
   Future<void> _saveReminder() async {
-    await setReminderEnabled(_reminderEnabled);
-    final hh = _reminderTime.hour.toString().padLeft(2, '0');
-    final mm = _reminderTime.minute.toString().padLeft(2, '0');
-    await setReminderTime('$hh:$mm');
+    // Time is already properly formatted string
+    await ref.read(reminderSettingsProvider.notifier).setReminderEnabled(_reminderEnabled);
+    await ref.read(reminderSettingsProvider.notifier).setReminderTime(_reminderTime);
     await NotificationService.cancelReminder();
     if (_reminderEnabled) {
       final message = NotificationService.getRandomDailyMessage();
@@ -319,8 +315,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                       );
                       if (newType != null && newType.code != selected?.code) {
-                        await setLicenseType(newType.code);
-                        ref.refresh(licenseTypeProvider);
+                        await ref.read(licenseTypeProvider.notifier).setLicenseType(newType.code);
                         setState(() {});
                       }
                     },
@@ -385,7 +380,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                       ),
                       title: const Text('Thời gian nhắc nhở', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                      subtitle: Text('${_reminderTime.hour.toString().padLeft(2, '0')}:${_reminderTime.minute.toString().padLeft(2, '0')}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                      subtitle: Text(_reminderTime, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
             onTap: _reminderEnabled
                 ? () async {
                               final picked = await showSpinnerTimePicker(

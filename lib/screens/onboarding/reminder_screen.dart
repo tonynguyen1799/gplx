@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import '../../utils/dialog_utils.dart';
+import '../../constants/route_constants.dart';
 import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
-import '../../providers/quizzes_progress_provider.dart';
-import '../../providers/app_data_providers.dart';
 
 class ReminderScreen extends ConsumerStatefulWidget {
   const ReminderScreen({super.key});
@@ -17,7 +15,7 @@ class ReminderScreen extends ConsumerStatefulWidget {
 
 class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   bool isReminderOn = true;
-  TimeOfDay selectedTime = const TimeOfDay(hour: 20, minute: 30);
+  String selectedTime = "20:30";
 
   @override
   void initState() {
@@ -30,19 +28,8 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     final reminderTime = await getReminderTime();
     setState(() {
       isReminderOn = reminderEnabled;
-      if (reminderTime != null && reminderTime is String) {
-        final parts = reminderTime.split(':');
-        if (parts.length == 2) {
-          selectedTime = TimeOfDay(
-            hour: int.tryParse(parts[0]) ?? 20,
-            minute: int.tryParse(parts[1]) ?? 30,
-          );
-        } else {
-          selectedTime = const TimeOfDay(hour: 20, minute: 30);
-        }
-      } else {
-        selectedTime = const TimeOfDay(hour: 20, minute: 30);
-      }
+      // Use the time string directly, with fallback
+      selectedTime = reminderTime.isNotEmpty ? reminderTime : "20:30";
     });
   }
 
@@ -60,22 +47,19 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     }
   }
 
-  String _formatTime(TimeOfDay time) {
-    final now = DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-    return DateFormat.Hm().format(dt);
-  }
+
 
   Future<void> _onNext() async {
     await setReminderEnabled(isReminderOn);
-    await setReminderTime('${selectedTime.hour}:${selectedTime.minute}');
+    // Time is already properly formatted string
+    await setReminderTime(selectedTime);
     if (isReminderOn) {
       final message = NotificationService.getRandomDailyMessage();
       await NotificationService.scheduleDailyReminder(selectedTime, message);
     } else {
       await NotificationService.cancelReminder();
     }
-    context.push('/onboarding/finish');
+    context.push(RouteConstants.ROUTE_ONBOARDING_FINISH);
   }
 
   @override
@@ -154,7 +138,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                       ],
                     ),
                     Text(
-                      _formatTime(selectedTime),
+                        selectedTime,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: isReminderOn ? theme.textTheme.bodyMedium?.color : theme.disabledColor,

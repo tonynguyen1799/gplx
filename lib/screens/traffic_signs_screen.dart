@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../providers/app_data_providers.dart';
-import '../models/traffic_sign.dart';
+import '../models/riverpod/data/traffic_sign.dart';
+import '../models/riverpod/data/traffic_sign_category.dart';
 import '../utils/app_colors.dart';
-import 'dart:async';
 
 class TrafficSignsScreen extends ConsumerStatefulWidget {
   const TrafficSignsScreen({super.key});
@@ -35,7 +34,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final categories = ref.watch(trafficSignCategoriesProvider);
-    final trafficSignsAsync = ref.watch(trafficSignsProvider);
     
     if (categories.isEmpty) {
       return const Scaffold(
@@ -43,7 +41,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
       );
     }
 
-    // Initialize controllers if not already done
     if (_pageController == null) {
       _pageController = PageController();
       _pageController!.addListener(() {
@@ -52,15 +49,14 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
           setState(() {
             _currentIndex = page;
           });
-          // Scroll to selected tab
           _scrollToSelectedTab(page);
         }
       });
     }
 
-    for (final cat in categories) {
-      _loadedChunks.putIfAbsent(cat['key'] ?? '', () => 1);
-      _controllers.putIfAbsent(cat['key'] ?? '', () => ScrollController());
+    for (final category in categories) {
+      _loadedChunks.putIfAbsent(category.key, () => 1);
+      _controllers.putIfAbsent(category.key, () => ScrollController());
     }
 
     return Scaffold(
@@ -83,23 +79,19 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         children: [
           _buildCustomTabBar(categories, theme),
           Expanded(
-                          child: _pageController == null 
+            child: _pageController == null 
                 ? const Center(child: CircularProgressIndicator())
-                : trafficSignsAsync.when(
-                    data: (signs) => PageView(
-                      controller: _pageController!,
-            children: [
-              for (final cat in categories)
-                _buildChunkedSignList(
-                  signs.where((s) => s.categoryKey == cat['key']).toList(),
-                  cat['key'] ?? '',
-                  theme,
-                ),
-            ],
-          ),
-          loading: () => _SkeletonLoader(theme: theme),
-          error: (e, st) => Center(child: Text('Lỗi khi tải biển báo: $e')),
-        ),
+                : PageView(
+                    controller: _pageController!,
+                    children: [
+                      for (final category in categories)
+                        _buildChunkedSignList(
+                          category.signs,
+                          category.key,
+                          theme,
+                        ),
+                    ],
+                  ),
           ),
         ],
         ),
@@ -107,11 +99,10 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     );
   }
 
-    void _scrollToSelectedTab(int index) {
+  void _scrollToSelectedTab(int index) {
     if (!_tabScrollController.hasClients) return;
     
-    // Calculate the position to scroll to
-    final itemWidth = 120.0; // Approximate width of each tab item
+    final itemWidth = 120.0;
     final padding = 16.0;
     final targetPosition = (itemWidth + padding) * index;
     
@@ -122,11 +113,10 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
     );
   }
 
-  Widget _buildCustomTabBar(List<Map<String, dynamic>> categories, ThemeData theme) {
+  Widget _buildCustomTabBar(List<TrafficSignCategory> categories, ThemeData theme) {
     final isDark = theme.brightness == Brightness.dark;
     return Container(
       height: 40,
-      // No background color for tabs bar
       child: ListView.builder(
         controller: _tabScrollController,
         scrollDirection: Axis.horizontal,
@@ -134,7 +124,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final isSelected = index == _currentIndex;
-          final cat = categories[index];
+          final category = categories[index];
           return GestureDetector(
             onTap: () {
               _pageController?.animateToPage(
@@ -164,7 +154,7 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
               ),
               child: Center(
                 child: Text(
-                  cat['name'] ?? '',
+                  category.name,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -184,7 +174,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
   }
 
   Widget _buildChunkedSignList(List<TrafficSign> signs, String categoryKey, ThemeData theme) {
-    final isDark = theme.brightness == Brightness.dark;
     final controller = _controllers[categoryKey]!;
     final loadedCount = (_loadedChunks[categoryKey] ?? 1) * _chunkSize;
     final visibleSigns = signs.take(loadedCount).toList();
@@ -249,64 +238,6 @@ class _TrafficSignsScreenState extends ConsumerState<TrafficSignsScreen> {
       },
     );
   }
-}
 
-class _SkeletonLoader extends StatelessWidget {
-  final ThemeData theme;
-  const _SkeletonLoader({required this.theme});
-  @override
-  Widget build(BuildContext context) {
-    final isDark = theme.brightness == Brightness.dark;
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      itemCount: 8,
-      separatorBuilder: (_, __) => const Divider(height: 10),
-      itemBuilder: (context, index) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 128,
-              height: 128,
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 60,
-                    height: 16,
-                    color: theme.cardColor,
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: 120,
-                    height: 16,
-                    color: theme.cardColor,
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: double.infinity,
-                    height: 14,
-                    color: theme.colorScheme.surface,
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: double.infinity,
-                    height: 14,
-                    color: theme.colorScheme.surface,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 } 

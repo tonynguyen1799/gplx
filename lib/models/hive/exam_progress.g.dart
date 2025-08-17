@@ -1,5 +1,3 @@
-// GENERATED CODE - MANUALLY WRITTEN ADAPTER
-
 part of 'exam_progress.dart';
 
 class ExamProgressAdapter extends TypeAdapter<ExamProgress> {

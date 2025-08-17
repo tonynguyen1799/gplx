@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/tony/Private/flutter/flutter"
+export "FLUTTER_ROOT=/Users/tony/Private/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/tony/Private/gplx"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=/Users/tony/Private/gplx/lib/main.dart"

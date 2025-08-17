@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../providers/app_data_providers.dart';
-import '../models/road_diagram.dart';
+import '../models/riverpod/data/road_diagram.dart';
 import '../utils/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:core';
@@ -30,7 +30,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncDiagram = ref.watch(roadDiagramProvider);
+    final asyncDiagram = ref.watch(roadDiagramsProvider);
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(

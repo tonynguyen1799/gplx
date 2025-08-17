@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/hive_service.dart';
+import 'package:gplx_vn/constants/navigation_constants.dart';
 
 class OnboardingFinishScreen extends ConsumerWidget {
   const OnboardingFinishScreen({super.key});
 
   Future<void> _completeOnboarding(BuildContext context, WidgetRef ref) async {
     await setOnboardingComplete(true);
-    context.go('/home');
+            context.go('/main', extra: {'initialIndex': MainNav.TAB_HOME});
   }
 
   @override

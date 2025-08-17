@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/quiz_constants.dart';
+import '../../constants/quiz_constants.dart';
 import '../../utils/app_colors.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -10,7 +10,7 @@ class AnswerOptions extends StatelessWidget {
   final bool showExplanation;
   final String? explanation;
   final String? tip;
-  final String mode;
+  final int mode;
   final bool lockAnswer;
   final int? selectedIdx;
   final bool isFatalQuiz;

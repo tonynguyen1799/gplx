@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/quiz.dart';
+import '../../models/riverpod/data/quiz.dart';
 import '../../models/hive/quiz_progress.dart';
-import '../../models/license_type.dart';
-import '../../models/topic.dart';
+import '../../models/riverpod/data/license_type.dart';
+import '../../models/riverpod/data/topic.dart';
 import 'bookmark_button.dart';
 import '../../utils/app_colors.dart';
 
@@ -15,7 +15,7 @@ class QuizContent extends StatelessWidget {
   final VoidCallback onBookmarkChanged;
   final String? fatalTopicId;
   final String? quizCode;
-  final String? mode;
+  final int? mode;
 
   const QuizContent({
     Key? key,

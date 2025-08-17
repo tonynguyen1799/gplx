@@ -1,52 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../models/exam_tip.dart';
+import '../models/riverpod/data/tip.dart';
 import '../providers/app_data_providers.dart';
 import '../utils/app_colors.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 
-class TipsScreen extends ConsumerStatefulWidget {
-  final String licenseTypeCode;
-
-  const TipsScreen({
-    Key? key,
-    required this.licenseTypeCode,
-  }) : super(key: key);
+class TipsScreen extends ConsumerWidget {
+  const TipsScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TipsScreen> createState() => _TipsScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final asyncTips = ref.watch(tipsProvider);
+
+    return asyncTips.when(
+      loading: () => Scaffold(
+        appBar: AppBar(
+          title: const Text('Mẹo thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          backgroundColor: theme.appBarBackground,
+          foregroundColor: theme.appBarText,
+          elevation: 0,
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, st) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Mẹo thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          backgroundColor: theme.appBarBackground,
+          foregroundColor: theme.appBarText,
+          elevation: 0,
+        ),
+        body: Center(child: Text('Lỗi khi tải dữ liệu: $e')),
+      ),
+      data: (tips) => _TipsScreenContent(tips: tips, theme: theme),
+    );
+  }
 }
 
-class _TipsScreenState extends ConsumerState<TipsScreen> {
-  final Map<String, bool> _expandedTopics = {};
+class _TipsScreenContent extends StatefulWidget {
+  final Tips tips;
+  final ThemeData theme;
+
+  const _TipsScreenContent({required this.tips, required this.theme});
 
   @override
-  void initState() {
-    super.initState();
-    _loadTips();
-  }
+  State<_TipsScreenContent> createState() => _TipsScreenContentState();
+}
 
-  Future<void> _loadTips() async {
-    try {
-      final tipsMap = ref.read(tipsProvider);
-      if (!tipsMap.containsKey(widget.licenseTypeCode)) {
-        final String jsonString = await rootBundle.loadString('assets/tips_${widget.licenseTypeCode.toLowerCase()}.json');
-        final Map<String, dynamic> jsonMap = json.decode(jsonString);
-        final ExamTips tips = ExamTips.fromJson(jsonMap);
-        
-        ref.read(tipsProvider.notifier).state = {
-          ...tipsMap,
-          widget.licenseTypeCode: tips,
-        };
-      }
-    } catch (e) {
-      // Handle error - tips file might not exist for this license type
-      print('Error loading tips for ${widget.licenseTypeCode}: $e');
-    }
-  }
+class _TipsScreenContentState extends State<_TipsScreenContent> {
+  final Map<String, bool> _expandedTopics = {};
 
   void _toggleTopic(String topicId) {
     setState(() {
@@ -56,27 +66,25 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tips = ref.watch(tipsProvider)[widget.licenseTypeCode];
+    final theme = widget.theme;
+    final tips = widget.tips;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Mẹo thi ${widget.licenseTypeCode}',
+          'Mẹo thi',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: theme.appBarText),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: theme.appBarBackground,
         foregroundColor: theme.appBarText,
         elevation: 0,
       ),
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: tips == null
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
+      body: ListView(
               children: [
                 // Header section
                 Container(
@@ -150,7 +158,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
     );
   }
 
-  Widget _buildTopicCard(ExamTipTopic topic, ThemeData theme) {
+  Widget _buildTopicCard(TipTopic topic, ThemeData theme) {
     final isExpanded = _expandedTopics[topic.topicId] ?? false;
     
     return Container(
@@ -239,7 +247,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
     );
   }
 
-  Widget _buildTipTile(ExamTip tip, ThemeData theme, int index) {
+  Widget _buildTipTile(Tip tip, ThemeData theme, int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: Column(

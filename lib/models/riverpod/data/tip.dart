@@ -1,15 +1,15 @@
-class ExamTip {
+class Tip {
   final String tipTitle;
   final String tipContent;
   final List<int> relatedQuestions;
 
-  ExamTip({
+  Tip({
     required this.tipTitle,
     required this.tipContent,
     required this.relatedQuestions,
   });
 
-  factory ExamTip.fromJson(Map<String, dynamic> json) => ExamTip(
+  factory Tip.fromJson(Map<String, dynamic> json) => Tip(
         tipTitle: json['tip_title'] ?? '',
         tipContent: json['tip_content'] ?? '',
         relatedQuestions: json['related_questions'] != null
@@ -24,25 +24,25 @@ class ExamTip {
       };
 }
 
-class ExamTipTopic {
+class TipTopic {
   final String topicId;
   final String topicName;
   final String topicDescription;
-  final List<ExamTip> tips;
+  final List<Tip> tips;
 
-  ExamTipTopic({
+  TipTopic({
     required this.topicId,
     required this.topicName,
     required this.topicDescription,
     required this.tips,
   });
 
-  factory ExamTipTopic.fromJson(Map<String, dynamic> json) => ExamTipTopic(
+  factory TipTopic.fromJson(Map<String, dynamic> json) => TipTopic(
         topicId: json['topic_id'] ?? '',
         topicName: json['topic_name'] ?? '',
         topicDescription: json['topic_description'] ?? '',
         tips: json['tips'] != null
-            ? (json['tips'] as List).map((tip) => ExamTip.fromJson(tip)).toList()
+            ? (json['tips'] as List).map((tip) => Tip.fromJson(tip)).toList()
             : [],
       );
 
@@ -54,16 +54,16 @@ class ExamTipTopic {
       };
 }
 
-class ExamTips {
-  final List<ExamTipTopic> examTips;
+class Tips {
+  final List<TipTopic> examTips;
 
-  ExamTips({
+  Tips({
     required this.examTips,
   });
 
-  factory ExamTips.fromJson(Map<String, dynamic> json) => ExamTips(
+  factory Tips.fromJson(Map<String, dynamic> json) => Tips(
         examTips: json['exam_tips'] != null
-            ? (json['exam_tips'] as List).map((topic) => ExamTipTopic.fromJson(topic)).toList()
+            ? (json['exam_tips'] as List).map((topic) => TipTopic.fromJson(topic)).toList()
             : [],
       );
 

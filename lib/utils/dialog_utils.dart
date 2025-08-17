@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:time_picker_spinner/time_picker_spinner.dart';
 import 'package:gplx_vn/utils/app_colors.dart';
 
-Future<TimeOfDay?> showAppTimePicker({
+Future<String?> showSpinnerTimePicker({
   required BuildContext context,
-  required TimeOfDay initialTime,
-}) {
-  return showTimePicker(
-    context: context,
-    initialTime: initialTime,
-    builder: (context, child) {
-      return Theme(
-        data: Theme.of(context).copyWith(
-          textTheme: Theme.of(context).textTheme,
-        ),
-        child: child!,
-      );
-    },
-  );
-}
-
-Future<TimeOfDay?> showSpinnerTimePicker({
-  required BuildContext context,
-  required TimeOfDay initialTime,
+  required String initialTime,
   String? title,
 }) async {
-  DateTime selectedDateTime = DateTime(2000, 1, 1, initialTime.hour, initialTime.minute);
-  TimeOfDay? lastValue = initialTime;
-  return await showModalBottomSheet<TimeOfDay>(
+  // Parse initial time string to DateTime for the spinner
+  final parts = initialTime.split(':');
+  final hour = int.tryParse(parts[0]) ?? 21;
+  final minute = int.tryParse(parts[1]) ?? 0;
+  
+  DateTime selectedDateTime = DateTime(2000, 1, 1, hour, minute);
+  return await showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
     isDismissible: true,
@@ -63,7 +48,10 @@ Future<TimeOfDay?> showSpinnerTimePicker({
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(ctx, TimeOfDay(hour: selectedDateTime.hour, minute: selectedDateTime.minute));
+                      // Return formatted time string in 24-hour format
+                      final hh = selectedDateTime.hour.toString().padLeft(2, '0');
+                      final mm = selectedDateTime.minute.toString().padLeft(2, '0');
+                      Navigator.pop(ctx, '$hh:$mm');
                     },
                     child: const Text('Chọn', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                     style: TextButton.styleFrom(

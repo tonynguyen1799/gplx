@@ -75,21 +75,19 @@
 /// ---
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../models/quiz.dart';
+import '../../models/riverpod/data/quiz.dart';
 import '../../providers/app_data_providers.dart';
-import '../../models/license_type.dart';
+import '../../models/riverpod/data/license_type.dart';
 import '../../models/hive/quiz_progress.dart';
-import '../../models/topic.dart';
-import '../../services/hive_service.dart';
+import '../../models/riverpod/data/topic.dart';
 import 'package:go_router/go_router.dart';
-import '../../utils/quiz_constants.dart';
-import 'dart:async';
+import '../../constants/quiz_constants.dart';
 import '../../widgets/answer_options.dart';
 import '../../widgets/quiz_content.dart';
 import '../../providers/quizzes_progress_provider.dart';
+import '../../providers/license_type_provider.dart';
 import '../../widgets/quiz_shortcut.dart';
 import '../../utils/app_colors.dart';
-import '../../widgets/bookmark_button.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
   final Object? extra;
@@ -102,50 +100,26 @@ class QuizScreen extends ConsumerStatefulWidget {
 class _QuizScreenState extends ConsumerState<QuizScreen> {
   int currentIndex = 0;
   late final PageController _pageController;
-  String? licenseTypeCode;
-  String? mode;
+  int? mode;
   String? topicId;
-  String _currentFilter = 'all';
+  int _currentFilter = QuizConstants.QUIZ_FILTER_ALL;
   int? _selectedIndex; // Selected answer index for the current quiz
 
   // Rename _filteredQuizSnapshot to _currentFilteredQuizzes
   List<Quiz> _currentFilteredQuizzes = [];
 
-  late final LicenseType licenseType = (() {
-    final licenseTypes = ref.watch(licenseTypesProvider);
-    return licenseTypes.firstWhere(
-      (lt) => lt.code == licenseTypeCode,
-      orElse: () => LicenseType(
-        code: licenseTypeCode ?? '',
-        name: licenseTypeCode ?? '',
-        description: '',
-      ),
-    );
-  })();
+  List<Topic> topics = [];
 
-  late final List<Topic> topics = (() {
-    final topicsMap = ref.watch(topicsProvider);
-    return topicsMap[licenseTypeCode] ?? [];
-  })();
+  List<Quiz> quizzes = [];
 
-  late final List<Quiz> quizzes = (() {
-    final quizzesMap = ref.watch(quizzesProvider);
-    return quizzesMap.containsKey(licenseTypeCode)
-        ? List<Quiz>.from(quizzesMap[licenseTypeCode]!)
-        : <Quiz>[];
-  })();
+  LicenseType? licenseType;
 
-  late final String fatalTopicId = '${licenseTypeCode?.toLowerCase()}-fatal';
-
-  void _updateCurrentFilteredQuizzes(String filter) {
-    final topicsMap = ref.watch(topicsProvider);
-    final quizzesMap = ref.watch(quizzesProvider);
-    final statusMap = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
-    final List<Topic> topics = topicsMap[licenseTypeCode] ?? [];
-    final List<Quiz> quizzes = quizzesMap.containsKey(licenseTypeCode)
-        ? List<Quiz>.from(quizzesMap[licenseTypeCode]!)
-        : <Quiz>[];
-    final fatalTopicId = '${licenseTypeCode?.toLowerCase()}-fatal';
+  void _updateCurrentFilteredQuizzes(int filter) {
+    // Use the actual data from updated variables
+    final licenseTypeCode = ref.read(licenseTypeProvider).value ?? '';
+    final statusMap = ref.read(quizzesProgressProvider)[licenseTypeCode] ?? {};
+    final fatalTopicId = '${licenseTypeCode.toLowerCase()}-fatal';
+    
     final filtered = _getFilteredQuizzes(
       quizzes,
       statusMap,
@@ -153,12 +127,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       filter,
     );
     int newIndex = 0;
-    if (filter == 'all') {
+    if (filter == QuizConstants.QUIZ_FILTER_ALL) {
       newIndex = filtered.indexWhere((q) => statusMap[q.id]?.isPracticed != true);
       if (newIndex == -1) newIndex = 0;
     }
-    // Debug print for currentIndex and filter
-    print('Filter: $filter, Filtered count: ${filtered.length}, currentIndex: $newIndex');
     setState(() {
       _currentFilter = filter;
       _currentFilteredQuizzes = filtered;
@@ -177,24 +149,18 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     super.initState();
     final params = widget.extra as Map<String, dynamic>?;
     if (params != null) {
-      licenseTypeCode = params['licenseTypeCode'] as String?;
-      mode = params['mode'] as String?;
+      mode = params['mode'] as int?;
       topicId = params['topicId'] as String?;
       final startIndex = params['startIndex'] as int?;
       if (startIndex != null) {
         currentIndex = startIndex;
       }
-      final filter = params['filter'] as String?;
-      if (filter != null && filter.isNotEmpty) {
+      final filter = params['filter'] as int?;
+      if (filter != null) {
         _currentFilter = filter;
       }
     }
     _pageController = PageController(initialPage: currentIndex);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (licenseTypeCode != null) {
-        _updateCurrentFilteredQuizzes(_currentFilter);
-      }
-    });
   }
 
   @override
@@ -208,7 +174,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     List<Quiz> quizzes,
     Map<String, QuizProgress> statusMap,
     String fatalTopicId,
-    String filter,
+    int filter,
   ) {
     List<Quiz> filtered = quizzes;
     if (mode == QuizModes.TRAINING_BY_TOPIC_MODE &&
@@ -217,15 +183,15 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       filtered = filtered.where((q) => q.topicIds.contains(topicId)).toList();
     }
     switch (filter) {
-      case 'done':
+      case QuizConstants.QUIZ_FILTER_PRACTICED:
         filtered = filtered.where((q) => statusMap[q.id]?.isPracticed == true).toList();
         break;
-      case 'not_done':
+      case QuizConstants.QUIZ_FILTER_UNPRACTICED:
         filtered = filtered
             .where((q) => statusMap[q.id] == null || statusMap[q.id]!.isPracticed != true)
             .toList();
         break;
-      case 'wrong':
+      case QuizConstants.QUIZ_FILTER_INCORRECT:
         filtered = filtered
             .where(
               (q) =>
@@ -234,7 +200,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
             )
             .toList();
         break;
-      case 'correct':
+      case QuizConstants.QUIZ_FILTER_CORRECT:
         filtered = filtered
             .where(
               (q) =>
@@ -243,20 +209,20 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
             )
             .toList();
         break;
-      case 'saved':
+      case QuizConstants.QUIZ_FILTER_SAVED:
         filtered = filtered
             .where((q) => statusMap[q.id]?.isSaved == true)
             .toList();
         break;
-      case 'fatal':
+      case QuizConstants.QUIZ_FILTER_FATAL:
         filtered = filtered
             .where((q) => q.topicIds.contains(fatalTopicId))
             .toList();
         break;
-      case 'difficult':
+      case QuizConstants.QUIZ_FILTER_DIFFICULT:
         filtered = filtered.where((q) => q.isDifficult == true).toList();
         break;
-      case 'all':
+      case QuizConstants.QUIZ_FILTER_ALL:
       default:
         break;
     }
@@ -264,8 +230,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   }
 
   // When user applies a new filter, update only the filter and reload the future
-  Future<void> _applyFilter(String filter) async {
-    if (licenseTypeCode == null) return;
+  Future<void> _applyFilter(int filter) async {
     _updateCurrentFilteredQuizzes(filter);
   }
 
@@ -275,14 +240,15 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     });
     // Do async work in the background, do not block UI
     () async {
-      if (licenseTypeCode != null) {
+      final licenseTypeCode = ref.read(licenseTypeProvider).value ?? '';
+      if (licenseTypeCode.isNotEmpty) {
         final currentQuiz = _currentFilteredQuizzes[currentIndex];
         final quizId = currentQuiz.id;
-        final statusMap = ref.read(quizzesProgressProvider)[licenseTypeCode!] ?? {};
+        final statusMap = ref.read(quizzesProgressProvider)[licenseTypeCode] ?? {};
         final isCorrect = index == currentQuiz.correctIndex;
           final prevStatus = statusMap[quizId];
           await ref.read(quizzesProgressProvider.notifier).updateQuizProgress(
-            licenseTypeCode!,
+            licenseTypeCode,
             quizId,
             QuizProgress(
               isPracticed: true,
@@ -296,30 +262,12 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     }();
   }
 
-  void _nextQuestion(int total) {
-    if (currentIndex < total - 1) {
-      setState(() {
-        currentIndex++;
-        // Reset selection for the new quiz so user can re-answer
-        _selectedIndex = null;
-      });
-    }
-  }
 
-  void _prevQuestion() {
-    if (currentIndex > 0) {
-      setState(() {
-        currentIndex--;
-        // Reset selection for the new quiz so user can re-answer
-        _selectedIndex = null;
-      });
-    }
-  }
 
   Widget _buildFilterTile(
     BuildContext context,
     String label,
-    String value, {
+    int value, {
     bool isSelected = false,
   }) {
     final theme = Theme.of(context);
@@ -344,46 +292,80 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     );
   }
 
-  Widget _buildDivider() => Divider(
-    color: Theme.of(context).dividerColor,
-    height: 1,
-    thickness: 1,
-    indent: 16,
-    endIndent: 16,
-  );
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    if (licenseTypeCode == null) {
-      return const Scaffold(
-        body: Center(child: Text('Không tìm thấy loại bằng lái.')),
-      );
-    }
+
+    return Consumer(
+      builder: (context, ref, _) {
+        final asyncTopics = ref.watch(topicsProvider);
+        final asyncQuizzes = ref.watch(quizzesProvider);
+        
+        return asyncTopics.when(
+          loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+          error: (err, stack) => Scaffold(body: Center(child: Text('Lỗi khi tải dữ liệu: $err'))),
+          data: (topics) => asyncQuizzes.when(
+            loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+            error: (err, stack) => Scaffold(body: Center(child: Text('Lỗi khi tải dữ liệu: $err'))),
+            data: (quizzes) {
+              // Update the variables with actual data
+              this.topics = topics;
+              this.quizzes = quizzes;
+              
+              // Get license type from provider
+              final licenseTypeCode = ref.read(licenseTypeProvider).value ?? '';
+              final licenseTypes = ref.read(licenseTypesProvider);
+              this.licenseType = licenseTypes.firstWhere(
+                (lt) => lt.code == licenseTypeCode,
+                orElse: () => LicenseType(
+                  code: licenseTypeCode,
+                  name: licenseTypeCode,
+                  description: '',
+                ),
+              );
+              
+              // Initialize filtered quizzes immediately when data is available
+              if (_currentFilteredQuizzes.isEmpty && quizzes.isNotEmpty) {
+                // Initialize without setState to avoid build issues
+                final statusMap = ref.read(quizzesProgressProvider)[licenseTypeCode] ?? {};
+                final fatalTopicId = '${licenseTypeCode.toLowerCase()}-fatal';
+                _currentFilteredQuizzes = _getFilteredQuizzes(quizzes, statusMap, fatalTopicId, _currentFilter);
+              }
+              
+              if (quizzes.isEmpty) {
+                return const Scaffold(body: Center(child: Text('Không có câu hỏi nào.', style: TextStyle(fontSize: 15))));
+              }
+              
+              final quiz = _currentFilteredQuizzes.isNotEmpty && currentIndex < _currentFilteredQuizzes.length 
+                  ? _currentFilteredQuizzes[currentIndex] 
+                  : quizzes.first;
     final statusMap = ref.watch(quizzesProgressProvider)[licenseTypeCode] ?? {};
-    String? topicName;
-    if (mode == QuizModes.TRAINING_BY_TOPIC_MODE &&
+              final status = statusMap[quiz.id];
+              final topicName = mode == QuizModes.TRAINING_BY_TOPIC_MODE &&
         topicId != null &&
-        topicId!.isNotEmpty) {
-      final topic = topics.firstWhere(
+                  topicId!.isNotEmpty
+                  ? topics.firstWhere(
         (t) => t.id == topicId,
         orElse: () => Topic(id: topicId!, name: topicId!, description: ''),
-      );
-      topicName = topic.name;
-    }
+                    ).name
+                  : null;
+
+              final theme = Theme.of(context);
+              final fatalTopicId = '${licenseTypeCode.toLowerCase()}-fatal';
+
     if (currentIndex >= _currentFilteredQuizzes.length) {
       currentIndex = _currentFilteredQuizzes.isEmpty
           ? 0
           : _currentFilteredQuizzes.length - 1;
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          mode == QuizModes.TRAINING_BY_TOPIC_MODE && topicName != null
+                    topicName != null
                             ? '$topicName'
                             : (mode == QuizModes.TRAINING_MODE
-                                  ? '${licenseType.name} - ${licenseType.code}'
-                                  : licenseType.name),
+                              ? '${licenseType?.name ?? ''} - ${licenseType?.code ?? ''}'
+                              : licenseType?.name ?? ''),
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                       ),
         centerTitle: true,
@@ -404,7 +386,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    final selected = await showModalBottomSheet<String>(
+                    final selected = await showModalBottomSheet<int>(
                       context: context,
                       builder: (context) {
                         return SafeArea(
@@ -447,8 +429,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                               topicName != null
                                           ? 'Tất cả trong chủ đề này'
                                           : 'Tất cả',
-                                          'all',
-                                          isSelected: _currentFilter == 'all',
+                                          QuizConstants.QUIZ_FILTER_ALL,
+                                          isSelected: _currentFilter == QuizConstants.QUIZ_FILTER_ALL,
                                         ),
                                         Divider(
                                           height: 1,
@@ -457,9 +439,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu đã làm',
-                                          'done',
+                                          QuizConstants.QUIZ_FILTER_PRACTICED,
                                           isSelected:
-                                              _currentFilter == 'done',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_PRACTICED,
                                         ),
                                         Divider(
                                           height: 1,
@@ -468,9 +450,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu chưa làm',
-                                          'not_done',
+                                          QuizConstants.QUIZ_FILTER_UNPRACTICED,
                                           isSelected:
-                                              _currentFilter == 'not_done',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_UNPRACTICED,
                                         ),
                                       ],
                                     ),
@@ -490,9 +472,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu sai',
-                                          'wrong',
+                                          QuizConstants.QUIZ_FILTER_INCORRECT,
                                           isSelected:
-                                              _currentFilter == 'wrong',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_INCORRECT,
                                         ),
                                         Divider(
                                           height: 1,
@@ -501,9 +483,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu đúng',
-                                          'correct',
+                                          QuizConstants.QUIZ_FILTER_CORRECT,
                                           isSelected:
-                                              _currentFilter == 'correct',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_CORRECT,
                                         ),
                                       ],
                                     ),
@@ -523,9 +505,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu đã lưu',
-                                          'saved',
+                                          QuizConstants.QUIZ_FILTER_SAVED,
                                           isSelected:
-                                              _currentFilter == 'saved',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_SAVED,
                                         ),
                                         Divider(
                                           height: 1,
@@ -534,9 +516,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu điểm liệt',
-                                          'fatal',
+                                          QuizConstants.QUIZ_FILTER_FATAL,
                                           isSelected:
-                                              _currentFilter == 'fatal',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_FATAL,
                                         ),
                                         Divider(
                                           height: 1,
@@ -545,9 +527,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                         _buildFilterTile(
                                           context,
                                           'Câu khó',
-                                          'difficult',
+                                          QuizConstants.QUIZ_FILTER_DIFFICULT,
                                           isSelected:
-                                              _currentFilter == 'difficult',
+                                              _currentFilter == QuizConstants.QUIZ_FILTER_DIFFICULT,
                                         ),
                                       ],
                                     ),
@@ -586,7 +568,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                             ],
                   ),
                           ),
-                          if (_currentFilter != 'all')
+                          if (_currentFilter != QuizConstants.QUIZ_FILTER_ALL)
                             Positioned(
                               top: -2,
                               right: -2,
@@ -652,8 +634,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 quiz: quiz,
                                 quizIndex: index,
                           totalQuizzes: _currentFilteredQuizzes.length,
-                          licenseTypeCode: licenseTypeCode!,
-                                status: statusMap[quiz.id],
+                          licenseTypeCode: licenseTypeCode,
+                                  status: status,
                           onBookmarkChanged: () => setState(() {}),
                           fatalTopicId: fatalTopicId,
                                 quizCode: '${licenseTypeCode}.${quizzes.indexWhere((q) => q.id == quiz.id) + 1}',
@@ -812,26 +794,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   ),
 ),
     );
-  }
-}
-
-String _filterLabel(String filter) {
-  switch (filter) {
-    case 'done':
-      return 'Câu đã làm';
-    case 'not_done':
-      return 'Câu chưa làm';
-    case 'wrong':
-      return 'Câu sai';
-    case 'correct':
-      return 'Câu đúng';
-    case 'saved':
-      return 'Câu đã lưu';
-    case 'fatal':
-      return 'Câu điểm liệt';
-    case 'difficult':
-      return 'Câu khó';
-    default:
-      return filter;
+            },
+          ),
+        );
+      },
+    );
   }
 }

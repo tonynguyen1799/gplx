@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/license_type.dart';
-import '../../models/quiz.dart';
-import '../../models/exam.dart';
-import '../../models/topic.dart';
-import '../../models/traffic_sign.dart';
+import '../../models/riverpod/data/license_type.dart';
+import '../../models/riverpod/data/traffic_sign_category.dart';
 import '../../providers/app_data_providers.dart';
-import 'package:hive/hive.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/hive_service.dart';
 import '../../providers/quizzes_progress_provider.dart';
-import '../../providers/exam_progress_provider.dart';
+import '../../providers/exams_progress_provider.dart';
+import 'package:gplx_vn/constants/navigation_constants.dart';
+import 'package:gplx_vn/constants/route_constants.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -48,60 +46,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       setState(() => _progress = 0.25);
 
       // Prepare maps for topics, quizzes, exams, configs
-      final topicsMap = <String, List<Topic>>{};
-      final quizzesMap = <String, List<Quiz>>{};
-      final examsMap = <String, List<Exam>>{};
-      final configsMap = <String, dynamic>{};
-      List<TrafficSign> trafficSigns = [];
 
-      final totalSteps = licenseTypes.length * 4; // now 4 steps per license
-      int currentStep = 0;
-
-      // 2. For each license type, load topics, quizzes, exams, configs
-      for (final lt in licenseTypes) {
-        final code = lt.code.toLowerCase();
-        // Topics
-        final topicsJson = await rootBundle.loadString('assets/topics_${code}.json');
-        topicsMap[lt.code] = (json.decode(topicsJson) as List).map((e) => Topic.fromJson(e)).toList();
-        currentStep++;
-        setState(() => _progress = 0.25 + 0.5 * (currentStep / totalSteps));
-        // Quizzes
-        final quizzesJson = await rootBundle.loadString('assets/quizzes_${code}.json');
-        quizzesMap[lt.code] = (json.decode(quizzesJson) as List).map((e) => Quiz.fromJson(e)).toList();
-        currentStep++;
-        setState(() => _progress = 0.25 + 0.5 * (currentStep / totalSteps));
-        // Exams
-        final examsJson = await rootBundle.loadString('assets/exams_${code}.json');
-        examsMap[lt.code] = (json.decode(examsJson) as List).map((e) => Exam.fromJson(e)).toList();
-        currentStep++;
-        setState(() => _progress = 0.25 + 0.5 * (currentStep / totalSteps));
-        // Configs
-        final configsJson = await rootBundle.loadString('assets/configs_${code}.json');
-        configsMap[lt.code] = json.decode(configsJson);
-        currentStep++;
-        setState(() => _progress = 0.25 + 0.5 * (currentStep / totalSteps));
-      }
-      // Load traffic signs
+      // 2. Load traffic signs in their organized structure
       final String trafficSignsJson = await rootBundle.loadString('assets/traffic_signs.json');
       final Map<String, dynamic> trafficSignsMap = json.decode(trafficSignsJson);
-      List<Map<String, String>> trafficSignCategories = [];
+      final List<TrafficSignCategory> categories = [];
+      
       for (final entry in trafficSignsMap.entries) {
         final key = entry.key;
-        final name = entry.value['name'] as String? ?? key;
-        trafficSignCategories.add({'key': key, 'name': name});
-        if (entry.value is Map && entry.value['signs'] is List) {
-          trafficSigns.addAll((entry.value['signs'] as List).map((e) => TrafficSign.fromJson(e, categoryKey: key)));
-        }
+        final category = TrafficSignCategory.fromJson(entry.value, key);
+        categories.add(category);
       }
 
-      ref.read(topicsProvider.notifier).state = topicsMap;
+      ref.read(trafficSignCategoriesProvider.notifier).state = categories;
       setState(() => _progress = 0.8);
-      ref.read(quizzesProvider.notifier).state = quizzesMap;
-      setState(() => _progress = 0.9);
-      ref.read(examsProvider.notifier).state = examsMap;
-      ref.read(configsProvider.notifier).state = configsMap;
-      ref.read(trafficSignCategoriesProvider.notifier).state = trafficSignCategories;
-      // ref.read(trafficSignsProvider.notifier).state = AsyncData(trafficSigns); // Not needed for FutureProvider
       final currentCode = await getLicenseType();
       if (currentCode != null) {
         await ref.read(examsProgressProvider.notifier).loadExamsProgressFor(currentCode);
@@ -115,10 +73,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         await Future.delayed(Duration(milliseconds: 3000 - elapsed.inMilliseconds));
       }
       if (mounted) {
-        if (completed) {
-          context.go('/home');
-        } else {
-          context.go('/onboarding/get-started');
+                  if (completed) {
+            context.go('/main', extra: {'initialIndex': MainNav.TAB_HOME});
+          } else {
+          context.go(RouteConstants.ROUTE_ONBOARDING_GET_STARTED);
         }
       }
     } catch (e) {

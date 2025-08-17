@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/quiz.dart';
+import '../models/riverpod/data/quiz.dart';
 import '../utils/app_colors.dart';
 
 class QuizShortcut extends StatelessWidget {

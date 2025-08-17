@@ -1,7 +1,7 @@
 {
   "exam": {
-    "durationInMunites": 26,
-    "numberOfQuizzes": 45,
-    "numberOfRequiredCorrectQuizzes": 41
+    "durationInMinutes": 26,
+    "totalOfQuizzes": 45,
+    "totalRequiredCorrectQuizzes": 41
   }
 }

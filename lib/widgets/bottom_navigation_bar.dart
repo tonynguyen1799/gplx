@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../utils/app_colors.dart';
+import 'package:gplx_vn/constants/navigation_constants.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   final Function(int)? onTabChanged;
@@ -19,8 +19,8 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
-  int _currentIndex = 0;
-  int _targetIndex = 0;
+  int _currentIndex = MainNav.TAB_HOME;
+  int _targetIndex = MainNav.TAB_HOME;
 
   @override
   void initState() {
@@ -40,32 +40,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
     super.dispose();
   }
 
-  String _getCurrentRoute(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith('/home')) return '/home';
-    if (location.startsWith('/settings')) return '/settings';
-    if (location.startsWith('/info')) return '/info';
-    return '/home'; // default
-  }
-
-  int _getCurrentIndex(String route) {
-    switch (route) {
-      case '/home':
-        return 0;
-      case '/settings':
-        return 1;
-      case '/info':
-        return 2;
-      default:
-        return 0;
-    }
-  }
-
   void _navigateToIndex(BuildContext context, int index) {
     // If we have a callback, use it (for MainNavigationScreen)
     if (widget.onTabChanged != null) {
       // Set target index for animation
-      _currentIndex = widget.currentIndex ?? 0;
+      _currentIndex = widget.currentIndex ?? MainNav.TAB_HOME;
       _targetIndex = index;
       
       // Start indicator animation immediately
@@ -75,40 +54,14 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
       widget.onTabChanged!(index);
       return;
     }
-    
-    // Otherwise, use the original navigation logic
-    final currentRoute = _getCurrentRoute(context);
-    final currentIndex = _getCurrentIndex(currentRoute);
-    
-    // Set target index for animation
-    _currentIndex = currentIndex;
-    _targetIndex = index;
-    
-    // Start indicator animation with a slight delay for better visual effect
-    _animationController.forward(from: 0.0);
-    
-    // Navigate after a short delay to sync with indicator animation
-    Future.delayed(const Duration(milliseconds: 50), () {
-      switch (index) {
-        case 0:
-          context.go('/home');
-          break;
-        case 1:
-          context.go('/settings');
-          break;
-        case 2:
-          context.go('/info');
-          break;
-      }
-    });
   }
 
   @override
   void didUpdateWidget(covariant AppBottomNavigationBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.currentIndex != null && widget.currentIndex != oldWidget.currentIndex) {
-      _currentIndex = oldWidget.currentIndex ?? 0;
-      _targetIndex = widget.currentIndex ?? 0;
+          _currentIndex = oldWidget.currentIndex ?? MainNav.TAB_HOME;
+    _targetIndex = widget.currentIndex ?? MainNav.TAB_HOME;
       _animationController.forward(from: 0.0);
     }
   }
@@ -116,8 +69,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final currentRoute = _getCurrentRoute(context);
-    final currentIndex = widget.currentIndex ?? _getCurrentIndex(currentRoute);
+    final currentIndex = widget.currentIndex ?? MainNav.TAB_HOME;
     
     return Container(
       height: 48,
@@ -128,16 +80,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
           children: [
           Row(
               children: [
-              _buildTabItem(context, 0, Icons.home, 'Ôn luyện', currentIndex),
-              _buildTabItem(context, 1, Icons.settings, 'Cài đặt', currentIndex),
-              _buildTabItem(context, 2, Icons.info, 'Thông tin', currentIndex),
+                      _buildTabItem(context, MainNav.TAB_HOME, Icons.home, 'Ôn luyện', currentIndex),
+        _buildTabItem(context, MainNav.TAB_SETTINGS, Icons.settings, 'Cài đặt', currentIndex),
+        _buildTabItem(context, MainNav.TAB_INFO, Icons.info, 'Thông tin', currentIndex),
               ],
             ),
           // Animated slide indicator
           AnimatedBuilder(
             animation: _slideAnimation,
             builder: (context, child) {
-              final itemWidth = MediaQuery.of(context).size.width / 3;
+              final itemWidth = MediaQuery.of(context).size.width / MainNav.tabCount;
               final startPosition = itemWidth * _currentIndex;
               final endPosition = itemWidth * _targetIndex;
               final currentPosition = startPosition + (endPosition - startPosition) * _slideAnimation.value;
@@ -167,8 +119,6 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with Ti
       ),
     );
   }
-
-
 
   Widget _buildTabItem(BuildContext context, int index, IconData icon, String label, int currentIndex) {
     final theme = Theme.of(context);

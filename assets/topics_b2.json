@@ -4,48 +4,48 @@
     "name": "Câu hỏi điểm liệt",
     "description": "Các câu hỏi về tình huống mất an toàn giao thông nghiêm trọng.",
     "icon": "warning_amber_rounded",
-    "color": "#D32F2F"
+    "color": "0xFFD32F2F"
   },
   {
     "id": "b2-t1",
     "name": "Quy định & Quy tắc GTĐB",
     "description": "Quy định chung và các quy tắc giao thông đường bộ.",
     "icon": "rule_rounded",
-    "color": "#1976D2"
+    "color": "0xFF1976D2"
   },
   {
     "id": "b2-t2",
     "name": "Văn hóa và Đạo đức",
     "description": "Văn hóa giao thông, đạo đức, phòng cháy chữa cháy và cứu hộ.",
     "icon": "psychology_rounded",
-    "color": "#388E3C"
+    "color": "0xFF388E3C"
   },
   {
     "id": "b2-t3",
     "name": "Kỹ thuật lái xe",
     "description": "Các câu hỏi về kỹ thuật và thao tác điều khiển xe an toàn.",
     "icon": "sports_motorsports_rounded",
-    "color": "#7B1FA2"
+    "color": "0xFF7B1FA2"
   },
   {
     "id": "b2-t4",
     "name": "Cấu tạo và Sửa chữa",
     "description": "Các câu hỏi về cấu tạo, bảo dưỡng và sửa chữa xe cơ bản.",
     "icon": "construction_rounded",
-    "color": "#FFA000"
+    "color": "0xFFFFA000"
   },
   {
     "id": "b2-t5",
     "name": "Hệ thống biển báo",
     "description": "Nhận biết và hiểu ý nghĩa của các loại biển báo hiệu.",
     "icon": "traffic_rounded",
-    "color": "#00796B"
+    "color": "0xFF00796B"
   },
   {
     "id": "b2-t6",
     "name": "Giải thế sa hình",
     "description": "Giải các thế sa hình và kỹ năng xử lý tình huống giao thông.",
     "icon": "signpost_rounded",
-    "color": "#5D4037"
+    "color": "0xFF5D4037"
   }
 ]

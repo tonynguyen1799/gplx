@@ -1,6 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
-import 'package:gplx_vn/screens/home/home_screen.dart';
 import 'package:gplx_vn/screens/onboarding/get_started_screen.dart';
 import 'package:gplx_vn/screens/onboarding/onboarding_finish_screen.dart';
 import 'package:gplx_vn/screens/onboarding/reminder_screen.dart';
@@ -8,16 +6,14 @@ import 'package:gplx_vn/screens/onboarding/splash_screen.dart';
 import 'package:gplx_vn/screens/quiz/quiz_screen.dart';
 import 'package:gplx_vn/screens/quiz/exam_quiz_screen.dart';
 import 'package:gplx_vn/screens/exams_screen.dart';
-import 'package:gplx_vn/utils/quiz_constants.dart';
 import 'package:gplx_vn/screens/quiz/exam_summary_screen.dart';
 import 'package:gplx_vn/screens/traffic_signs_screen.dart';
-import 'package:gplx_vn/screens/settings/settings_screen.dart';
-import 'package:gplx_vn/screens/info_screen.dart';
 import 'package:gplx_vn/screens/exam_description_screen.dart';
 import 'package:gplx_vn/screens/tips_screen.dart';
-import 'package:gplx_vn/widgets/bottom_navigation_bar.dart';
 import 'package:gplx_vn/screens/main_navigation_screen.dart';
 import 'package:gplx_vn/screens/road_diagram_screen.dart';
+
+
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
 
@@ -39,23 +35,16 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const OnboardingFinishScreen(),
     ),
     GoRoute(
-      path: '/home',
-      builder: (context, state) => const MainNavigationScreen(initialIndex: 0),
-    ),
-    GoRoute(
-      path: '/settings',
-      builder: (context, state) => const MainNavigationScreen(initialIndex: 1),
-    ),
-    GoRoute(
-      path: '/info',
-      builder: (context, state) => const MainNavigationScreen(initialIndex: 2),
-    ),
-    GoRoute(
-      path: '/quiz',
+      path: '/main',
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>?;
-        return QuizScreen(key: state.pageKey, extra: state.extra);
+        final initialIndex = extra?['initialIndex'] ?? 0;
+        return MainNavigationScreen(initialIndex: initialIndex);
       },
+      ),
+    GoRoute(
+      path: '/quiz',
+      builder: (context, state) => QuizScreen(key: state.pageKey, extra: state.extra),
     ),
     GoRoute(
       path: '/exam-quiz',
@@ -71,7 +60,7 @@ final GoRouter appRouter = GoRouter(
         final extra = state.extra as Map<String, dynamic>?;
         return ExamDescriptionScreen(
           exam: extra?['exam'],
-          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
+          licenseTypeCode: extra?['exam']?['licenseTypeCode'] ?? '',
         );
       },
     ),
@@ -82,8 +71,8 @@ final GoRouter appRouter = GoRouter(
         return ExamSummaryScreen(
           quizzes: extra?['quizzes'] ?? [],
           selectedAnswers: extra?['selectedAnswers'] ?? {},
-          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
-          examId: extra?['examId'] ?? '',
+          licenseTypeCode: extra?['exam']?['licenseTypeCode'] ?? '',
+          examId: extra?['exam']?['id'] ?? '',
         );
       },
     ),
@@ -93,12 +82,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/tips',
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        return TipsScreen(
-          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
-        );
-      },
+      builder: (context, state) => const TipsScreen(),
     ),
     GoRoute(
       path: '/road-diagram',

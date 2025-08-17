@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/license_type.dart';
+import '../../models/riverpod/data/license_type.dart';
 import '../../providers/app_data_providers.dart';
 import '../../services/hive_service.dart';
+import '../../constants/route_constants.dart';
 
 IconData getLicenseTypeIcon(String code) {
   switch (code) {
@@ -159,7 +160,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                         if (selectedType != null) {
                           await setLicenseType(selectedType!.code);
                         }
-                        if (mounted) context.go('/onboarding/reminder');
+                        if (mounted) context.go(RouteConstants.ROUTE_ONBOARDING_REMINDER);
                       }
                     : null,
                 child: const Text(

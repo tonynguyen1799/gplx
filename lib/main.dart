@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:gplx_vn/models/hive_keys.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/hive/quiz_progress.dart';
 import 'models/hive/exam_progress.dart';
@@ -17,14 +16,9 @@ Future<void> rescheduleDailyReminderIfNeeded() async {
   final enabled = await getReminderEnabled();
   if (!enabled) return;
   final timeStr = await getReminderTime();
-  final parts = timeStr.split(':');
-  final reminderTime = TimeOfDay(
-    hour: int.tryParse(parts[0]) ?? 21,
-    minute: int.tryParse(parts[1]) ?? 0,
-  );
   final message = NotificationService.getRandomDailyMessage();
   await NotificationService.cancelReminder();
-  await NotificationService.scheduleDailyReminder(reminderTime, message);
+  await NotificationService.scheduleDailyReminder(timeStr, message);
 }
 
 void main() async {
@@ -82,7 +76,11 @@ class _GPLXAppState extends ConsumerState<GPLXApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: true,
       routerConfig: appRouter,
       theme: ThemeData(
-        textTheme: GoogleFonts.mulishTextTheme(),
+        textTheme: GoogleFonts.mulishTextTheme().copyWith(
+          bodySmall: GoogleFonts.mulishTextTheme().bodySmall?.copyWith(fontSize: 13),
+          bodyLarge: GoogleFonts.mulishTextTheme().bodyLarge?.copyWith(fontSize: 15),
+          titleLarge: GoogleFonts.mulishTextTheme().titleLarge?.copyWith(fontSize: 18),
+        ),
         useMaterial3: false,
         splashFactory: NoSplash.splashFactory,
         splashColor: Colors.transparent,
@@ -116,7 +114,11 @@ class _GPLXAppState extends ConsumerState<GPLXApp> with WidgetsBindingObserver {
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        textTheme: GoogleFonts.mulishTextTheme(ThemeData(brightness: Brightness.dark).textTheme),
+        textTheme: GoogleFonts.mulishTextTheme(ThemeData(brightness: Brightness.dark).textTheme).copyWith(
+          bodySmall: GoogleFonts.mulishTextTheme(ThemeData(brightness: Brightness.dark).textTheme).bodySmall?.copyWith(fontSize: 13),
+          bodyLarge: GoogleFonts.mulishTextTheme(ThemeData(brightness: Brightness.dark).textTheme).bodyLarge?.copyWith(fontSize: 15),
+          titleLarge: GoogleFonts.mulishTextTheme(ThemeData(brightness: Brightness.dark).textTheme).titleLarge?.copyWith(fontSize: 18),
+        ),
         useMaterial3: false,
         splashFactory: NoSplash.splashFactory,
         splashColor: Colors.transparent,
