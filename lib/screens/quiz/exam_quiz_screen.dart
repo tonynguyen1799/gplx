@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/riverpod/data/quiz.dart';
 import '../../providers/app_data_providers.dart';
+import '../../providers/license_type_provider.dart';
 import '../../models/riverpod/data/license_type.dart';
 import '../../models/hive/quiz_progress.dart';
 import '../../models/riverpod/data/topic.dart';
@@ -116,10 +117,11 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
     _pageController = PageController(initialPage: currentIndex);
     final params = widget.extra as Map<String, dynamic>?;
     if (params != null) {
-      licenseTypeCode = params['licenseTypeCode'] as String?;
       mode = QuizModes.EXAM_MODE; // Always set to exam mode for this screen
-      examId = params['examId'] as String?;
-      examMode = params['exam_mode'] as String?;
+      final examIdParam = params['examId'];
+      examId = examIdParam?.toString();
+      final examModeParam = params['exam_mode'];
+      examMode = examModeParam?.toString();
       reviewMode = params['reviewMode'] == true;
       if (params['selectedAnswers'] != null) {
         selectedAnswers = Map<String, int>.from(params['selectedAnswers'] as Map);
@@ -130,6 +132,7 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
         currentIndex = startIndex;
       }
     }
+    
     // Ensure the PageController jumps to the correct page after build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_pageController.hasClients) {
@@ -209,6 +212,14 @@ class _ExamQuizScreenState extends ConsumerState<ExamQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get license type code from provider
+    final licenseTypeAsync = ref.watch(licenseTypeProvider);
+    licenseTypeAsync.when(
+      data: (code) => licenseTypeCode = code,
+      loading: () => licenseTypeCode = null,
+      error: (err, stack) => licenseTypeCode = null,
+    );
+    
     if (licenseTypeCode == null) {
       return const Scaffold(body: Center(child: Text('Không tìm thấy loại bằng lái.')));
     }

@@ -72,8 +72,10 @@ class ExamsScreen extends ConsumerWidget {
                           final examProgress = examIdToExamProgress[exam.id];
                           final isPracticed = examProgress != null;
                           final isPassed = examProgress?.isPassed ?? false;
-                          final totalCorrectQuizzes = examProgress?.totalCorrectQuizzes ?? 0;
-                          final totalIncorrectQuizzes = examProgress?.totalIncorrectQuizzes ?? 0;
+                          final bgColor = !isPracticed
+                                ? theme.SURFACE_VARIANT
+                                : isPassed ? theme.SUCCESS_COLOR : theme.ERROR_COLOR;
+                          final fgColor = isPracticed ? Colors.white : null;
 
                           return GestureDetector(
                             onTap: () {
@@ -84,9 +86,7 @@ class ExamsScreen extends ConsumerWidget {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: !isPracticed
-                                ? theme.SURFACE_VARIANT
-                                : isPassed ? theme.SUCCESS_COLOR : theme.ERROR_COLOR,
+                                color: bgColor,
                                 borderRadius: BorderRadius.circular(borderRadius),
                               ),
                               padding: const EdgeInsets.all(contentPadding),
@@ -98,7 +98,7 @@ class ExamsScreen extends ConsumerWidget {
                                     exam.name,
                                     style: theme.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                      color: fgColor,
                                     ),
                                   ),
                                   if (isPracticed) ...[
@@ -106,14 +106,14 @@ class ExamsScreen extends ConsumerWidget {
                                       children: [
                                         Icon(
                                           isPassed ? Icons.check_circle : Icons.cancel,
-                                          color: Colors.white,
+                                          color: fgColor,
                                         ),
                                         SizedBox(width: subSectionSpacing),
                                         Text(
                                           isPassed ? 'Đạt' : 'Không đạt',
                                           style: theme.textTheme.bodyMedium?.copyWith(
                                             fontWeight: FontWeight.w600,
-                                            color: Colors.white,
+                                            color: fgColor,
                                           ),
                                         ),
                                       ],
@@ -123,20 +123,20 @@ class ExamsScreen extends ConsumerWidget {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            'Đúng $totalCorrectQuizzes',
+                                            'Đúng ${examProgress?.totalCorrectQuizzes ?? 0}',
                                             style: theme.textTheme.bodySmall?.copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.white.withOpacity(0.8),
+                                              color: fgColor?.withOpacity(0.8),
                                             ),
                                             textAlign: TextAlign.left,
                                           ),
                                         ),
                                         Expanded(
                                           child: Text(
-                                            'Sai $totalIncorrectQuizzes',
+                                            'Sai ${examProgress?.totalIncorrectQuizzes ?? 0}',
                                             style: theme.textTheme.bodySmall?.copyWith(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.white.withOpacity(0.8),
+                                              color: fgColor?.withOpacity(0.8),
                                             ),
                                             textAlign: TextAlign.right,
                                           ),

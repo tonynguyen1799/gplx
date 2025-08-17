@@ -31,7 +31,6 @@ class _ExamDescriptionScreenState extends State<ExamDescriptionScreen> {
             context.push(RouteConstants.ROUTE_EXAM_QUIZ, extra: {
       'exam_mode': _selectedMode == 0 ? ExamModes.EXAM_NORMAL_MODE : ExamModes.EXAM_QUICK_MODE,
       'examId': widget.exam.id,
-      'licenseTypeCode': widget.licenseTypeCode,
       'startIndex': 0,
     });
   }

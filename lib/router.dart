@@ -60,7 +60,7 @@ final GoRouter appRouter = GoRouter(
         final extra = state.extra as Map<String, dynamic>?;
         return ExamDescriptionScreen(
           exam: extra?['exam'],
-          licenseTypeCode: extra?['exam']?['licenseTypeCode'] ?? '',
+          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
         );
       },
     ),
@@ -71,8 +71,8 @@ final GoRouter appRouter = GoRouter(
         return ExamSummaryScreen(
           quizzes: extra?['quizzes'] ?? [],
           selectedAnswers: extra?['selectedAnswers'] ?? {},
-          licenseTypeCode: extra?['exam']?['licenseTypeCode'] ?? '',
-          examId: extra?['exam']?['id'] ?? '',
+          licenseTypeCode: extra?['licenseTypeCode'] ?? '',
+          examId: extra?['examId'] ?? '',
         );
       },
     ),

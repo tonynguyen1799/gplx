@@ -200,7 +200,6 @@ class _ExamSummaryScreenState extends State<ExamSummaryScreen> {
                             onTap: () {
                               context.push(RouteConstants.ROUTE_EXAM_QUIZ, extra: {
                                 'selectedAnswers': widget.selectedAnswers,
-                                'licenseTypeCode': widget.licenseTypeCode,
                                 'examId': widget.examId,
                                 'startIndex': examIndex,
                                 'reviewMode': true,
