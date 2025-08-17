@@ -88,7 +88,6 @@ extension AppColors on ThemeData {
   Color get answerExplanationBackground => brightness == Brightness.dark ? Colors.grey[900]! : Colors.blue[50]!;
   Color get answerExplanationText => brightness == Brightness.dark ? Colors.white : Colors.black;
   
-  // Custom constants
   Color get LIGHT_SURFACE_VARIANT => brightness == Brightness.dark ? Colors.grey[900]! : Colors.grey[50]!;
   Color get SURFACE_VARIANT => brightness == Brightness.dark ? Colors.grey[900]! : Colors.grey[100]!;
 
@@ -96,5 +95,9 @@ extension AppColors on ThemeData {
   Color get PROGRESS_BAR_FG => brightness == Brightness.dark ? Colors.amber[400]! : Colors.blue[600]!;
 
   Color get EXAM_WIDGET_BG => brightness == Brightness.dark ? Colors.indigo[900]! : Colors.indigo[50]!;
-  Color get EXAM_WIDGET_ICON => brightness == Brightness.dark ? Colors.indigo[400]! : Colors.indigo;
+  Color get EXAM_WIDGET_ICON => brightness == Brightness.dark ? Colors.indigo[50]! : Colors.indigo;
+
+  Color get SUCCESS_COLOR => brightness == Brightness.dark ? Colors.green[900]! : Colors.green[800]!;
+  Color get WARNING_COLOR => brightness == Brightness.dark ? Colors.orange[900]! : Colors.orange[800]!;
+  Color get ERROR_COLOR => brightness == Brightness.dark ? Colors.red[900]! : Colors.red[800]!;
 }

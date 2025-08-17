@@ -12,6 +12,12 @@ import '../models/hive/exam_progress.dart';
 class ExamsScreen extends ConsumerWidget {
   const ExamsScreen({super.key});
 
+  static const double appBarFontSize = 18.0;
+  static const double contentPadding = 16.0;
+  static const double borderRadius = 12.0;
+  static const double sectionSpacing = 12.0;
+  static const double subSectionSpacing = 6.0;
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -27,156 +33,125 @@ class ExamsScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
           data: (exams) {
-        if (exams.isEmpty) {
-          return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                tooltip: 'Về trang chủ',
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              title: Text(
-                'Thi thử mô phỏng - $licenseTypeCode',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-              backgroundColor: theme.appBarBackground,
-              foregroundColor: theme.appBarText,
-              elevation: 0,
-            ),
-            body: const Center(child: Text('Không có đề thi nào.')),
-          );
-        }
-
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              tooltip: 'Về trang chủ',
-              onPressed: () => context.pop(),
-            ),
-            title: Text(
-              'Thi thử mô phỏng - $licenseTypeCode',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            backgroundColor: theme.appBarBackground,
-            foregroundColor: theme.appBarText,
-            elevation: 0,
-          ),
-          body: Consumer(
-            builder: (context, ref, _) {
-              final progressByLicense = ref.watch(examsProgressProvider);
-              final Map<String, ExamProgress> progressMap = progressByLicense[licenseTypeCode] ?? {};
-              return GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.1,
+            return Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 48.0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => context.pop(),
                 ),
-                itemCount: exams.length,
-                itemBuilder: (context, index) {
-                  final exam = exams[index];
-                  final progress = progressMap[exam.id];
-                  final done = progress != null;
-                  final passed = progress?.isPassed ?? false;
-                  final correct = progress?.totalCorrectQuizzes ?? 0;
-                  final incorrect = progress?.totalIncorrectQuizzes ?? 0;
+                title: Text(
+                  'Thi thử mô phỏng - $licenseTypeCode',
+                  style: TextStyle(
+                    fontSize: appBarFontSize, 
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+                centerTitle: true,
+                backgroundColor: theme.appBarBackground,
+                foregroundColor: theme.appBarText,
+                elevation: 0,
+              ),
+              body: exams.isEmpty
+                  ? const Center(child: Text('Không có đề thi nào.'))
+                  : Consumer(
+                    builder: (context, ref, _) {
+                      final examsProgress = ref.watch(examsProgressProvider);
+                      final Map<String, ExamProgress> examIdToExamProgress = examsProgress[licenseTypeCode] ?? {};
+                      return GridView.builder(
+                        padding: const EdgeInsets.all(contentPadding),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: contentPadding,
+                          mainAxisSpacing: contentPadding,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemCount: exams.length,
+                        itemBuilder: (context, index) {
+                          final exam = exams[index];
+                          final examProgress = examIdToExamProgress[exam.id];
+                          final isPracticed = examProgress != null;
+                          final isPassed = examProgress?.isPassed ?? false;
+                          final totalCorrectQuizzes = examProgress?.totalCorrectQuizzes ?? 0;
+                          final totalIncorrectQuizzes = examProgress?.totalIncorrectQuizzes ?? 0;
 
-                  final backgroundColor = !done
-                      ? theme.cardColor
-                      : passed
-                          ? theme.colorScheme.secondaryContainer
-                          : theme.colorScheme.errorContainer;
-                  final contentColor = !done
-                      ? theme.colorScheme.onSurface
-                      : passed
-                          ? theme.colorScheme.onSecondaryContainer
-                          : theme.colorScheme.onErrorContainer;
-
-                  return GestureDetector(
-                    onTap: () {
-                      context.push(RouteConstants.ROUTE_EXAM_DESCRIPTION, extra: {
-                        'exam': exam,
-                        'licenseTypeCode': licenseTypeCode,
-                      });
+                          return GestureDetector(
+                            onTap: () {
+                              context.push(RouteConstants.ROUTE_EXAM_DESCRIPTION, extra: {
+                                'exam': exam,
+                                'licenseTypeCode': licenseTypeCode,
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: !isPracticed
+                                ? theme.SURFACE_VARIANT
+                                : isPassed ? theme.SUCCESS_COLOR : theme.ERROR_COLOR,
+                                borderRadius: BorderRadius.circular(borderRadius),
+                              ),
+                              padding: const EdgeInsets.all(contentPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    exam.name,
+                                    style: theme.textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  if (isPracticed) ...[
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          isPassed ? Icons.check_circle : Icons.cancel,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(width: subSectionSpacing),
+                                        Text(
+                                          isPassed ? 'Đạt' : 'Không đạt',
+                                          style: theme.textTheme.bodyMedium?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: sectionSpacing),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Đúng $totalCorrectQuizzes',
+                                            style: theme.textTheme.bodySmall?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white.withOpacity(0.8),
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            'Sai $totalIncorrectQuizzes',
+                                            style: theme.textTheme.bodySmall?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white.withOpacity(0.8),
+                                            ),
+                                            textAlign: TextAlign.right,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.22),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            exam.name,
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: contentColor,
-                            ),
-                          ),
-                          if (done) ...[
-                            Row(
-                              children: [
-                                Icon(
-                                  passed ? Icons.check_circle : Icons.cancel,
-                                  color: contentColor,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  passed ? 'Đạt' : 'Không đạt',
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: contentColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Đúng $correct',
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: contentColor,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Sai $incorrect',
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: contentColor,
-                                    ),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                  ),
             );
           },
         );

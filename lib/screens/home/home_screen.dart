@@ -25,9 +25,9 @@ import 'package:gplx_vn/constants/route_constants.dart';
 import 'package:gplx_vn/constants/quiz_constants.dart';
 
 class _HomeScreenConstants {
+  static const double appBarFontSize = 18.0;
   static const double contentPadding = 16.0;
   static const double sectionSpacing = 16.0;
-  static const double appBarFontSize = 18.0;
   static const String errorMessage = 'Lỗi khi tải dữ liệu: ';
 }
 
@@ -116,14 +116,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 48.0,
-        title: Align(
-          alignment: Alignment.center,
-          child: Text(
-            '${licenseType.name} - ${licenseType.code}',
-            style: const TextStyle(
-              fontSize: _HomeScreenConstants.appBarFontSize,
-              fontWeight: FontWeight.w600,
-            ),
+        title: Text(
+          '${licenseType.name} - ${licenseType.code}',
+          style: const TextStyle(
+            fontSize: _HomeScreenConstants.appBarFontSize,
+            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
