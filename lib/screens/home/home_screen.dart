@@ -15,21 +15,18 @@ import 'package:gplx_vn/providers/app_data_providers.dart';
 import 'package:gplx_vn/providers/license_type_provider.dart';
 import 'package:gplx_vn/providers/quizzes_progress_provider.dart';
 import 'package:gplx_vn/providers/reminder_provider.dart';
+import 'package:gplx_vn/providers/navigation_provider.dart';
+import 'package:gplx_vn/constants/navigation_constants.dart';
 import 'package:gplx_vn/services/hive_service.dart';
-import 'package:gplx_vn/utils/app_colors.dart';
+import 'package:gplx_vn/constants/app_colors.dart';
 import 'package:gplx_vn/widgets/exam_progress.dart';
 import 'package:gplx_vn/widgets/shortcuts_panel.dart';
 import 'package:gplx_vn/widgets/topics_progress.dart';
 import 'package:gplx_vn/widgets/total_quizzes_progress.dart';
 import 'package:gplx_vn/constants/route_constants.dart';
 import 'package:gplx_vn/constants/quiz_constants.dart';
-
-class _HomeScreenConstants {
-  static const double appBarFontSize = 18.0;
-  static const double contentPadding = 16.0;
-  static const double sectionSpacing = 16.0;
-  static const String errorMessage = 'Lỗi khi tải dữ liệu: ';
-}
+import 'package:gplx_vn/constants/ui_constants.dart';
+import 'package:gplx_vn/screens/quiz/quiz_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -48,17 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return licenseTypeCodeAsync.when(
       loading: () => const Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text(
-                'Đang tải dữ liệu...',
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
+          child: CircularProgressIndicator(),
         ),
       ),
       error: (err, stack) => const SizedBox.shrink(),
@@ -115,28 +102,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 48.0,
+        toolbarHeight: NAVIGATION_HEIGHT,
         title: Text(
           '${licenseType.name} - ${licenseType.code}',
           style: const TextStyle(
-            fontSize: _HomeScreenConstants.appBarFontSize,
+            fontSize: APP_BAR_FONT_SIZE,
             fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
-        backgroundColor: theme.appBarBackground,
-        foregroundColor: theme.appBarText,
+        backgroundColor: theme.APP_BAR_BG,
+        foregroundColor: theme.APP_BAR_FG,
         elevation: 0,
         leading: null,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: _HomeScreenConstants.contentPadding),
+        padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
         child: ListView(
           children: [
-            const SizedBox(height: _HomeScreenConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
             quizzesAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('${_HomeScreenConstants.errorMessage}$err')),
+              error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
               data: (quizzes) => TotalQuizzesProgress(
                 key: ValueKey(licenseType.code),
                 totalQuizzes: quizzes.length,
@@ -144,39 +131,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onTap: () => _onTotalQuizzesProgressTap(quizzes, quizzesProgress, licenseType.code),
               ),
             ),
-            const SizedBox(height: _HomeScreenConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
             examsAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('${_HomeScreenConstants.errorMessage}$err')),
+              error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
               data: (exams) => ExamsProgress(
                 key: ValueKey(licenseType.code),
                 totalExams: exams.length,
               ),
             ),
-            const SizedBox(height: _HomeScreenConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
             reminderSettingsAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('${_HomeScreenConstants.errorMessage}$err')),
+              error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
               data: (reminder) => ShortcutsPanel(
                 totalSavedQuizzes: totalQuizzesProgress.totalSavedQuizzes,
                 totalDifficultQuizzes: totalDifficultQuizzes,
                 totalIncorrectQuizzes: totalQuizzesProgress.totalIncorrectQuizzes,
                 reminderEnabled: reminder.enabled,
                 reminderTime: reminder.time24h,
+                onNavigateToSettings: () {
+                  ref.read(tabProvider.notifier).navigateToTab(MainNav.TAB_SETTINGS);
+                },
               ),
             ),
-            const SizedBox(height: _HomeScreenConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
             Builder(builder: (context) {
               return topicsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(child: Text('${_HomeScreenConstants.errorMessage}$err')),
+                error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
                 data: (topics) => TopicsProgress(
                     topics: topics,
                     topicQuizzesProgress: topicQuizzesProgress,
                 ),
               );
             }),
-            const SizedBox(height: _HomeScreenConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
           ],
         ),
       ),
@@ -198,9 +188,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _goToQuizScreen(int startIndex) {
-    context.push(RouteConstants.ROUTE_QUIZ, extra: {
-      'startIndex': startIndex,
-      'mode': QuizModes.TRAINING_MODE,
-    });
+    final params = QuizScreenParams(
+      startIndex: startIndex,
+      trainingMode: TrainingMode.TOTAL,
+    );
+    context.push(RouteConstants.ROUTE_QUIZ, extra: params);
   }
 }

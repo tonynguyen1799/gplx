@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_html/flutter_html.dart';
-import '../providers/app_data_providers.dart';
-import '../models/riverpod/data/road_diagram.dart';
-import '../utils/app_colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:core';
+
+import 'package:gplx_vn/constants/ui_constants.dart';
+
+import '../models/riverpod/data/road_diagram.dart';
+import '../providers/app_data_providers.dart';
+import '../constants/app_colors.dart';
 
 class RoadDiagramScreen extends ConsumerStatefulWidget {
   const RoadDiagramScreen({super.key});
@@ -15,7 +17,6 @@ class RoadDiagramScreen extends ConsumerStatefulWidget {
 }
 
 class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
-  // Replace the expanded sections map with a single index
   int? _expandedSectionIndex;
 
   void _toggleSection(int index) {
@@ -34,25 +35,30 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sa hình', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: theme.appBarText)),
+        toolbarHeight: NAVIGATION_HEIGHT,
+        title: Text('Sa hình',
+          style: const TextStyle(
+            fontSize: APP_BAR_FONT_SIZE,
+            fontWeight: FontWeight.w600,
+        )),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: theme.appBarBackground,
-        foregroundColor: theme.appBarText,
+        backgroundColor: theme.APP_BAR_BG,
+        foregroundColor: theme.APP_BAR_FG,
         elevation: 0,
       ),
-      backgroundColor: theme.scaffoldBackgroundColor,
       body: asyncDiagram.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(child: Text('Lỗi khi tải dữ liệu: $e', style: theme.textTheme.bodyLarge)),
+        error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
         data: (diagram) {
           final sectionColors = [
-            theme.brightness == Brightness.dark ? Colors.blue.withOpacity(0.8) : Colors.blue,
-            theme.brightness == Brightness.dark ? Colors.red.withOpacity(0.8) : Colors.red,
-            theme.brightness == Brightness.dark ? Colors.green.withOpacity(0.8) : Colors.green,
-            theme.brightness == Brightness.dark ? Colors.orange.withOpacity(0.8) : Colors.orange,
+            theme.BLUE_COLOR,
+            theme.ERROR_COLOR,
+            theme.SUCCESS_COLOR,
+            Colors.indigo,
           ];
           final sectionIcons = [
             Icons.info,
@@ -62,21 +68,15 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
           ];
           return ListView(
             children: [
-              // Header
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(CONTENT_PADDING),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: theme.brightness == Brightness.dark
-                        ? [
-                            Colors.blue.withOpacity(0.3),
-                            Colors.blue.withOpacity(0.15),
-                          ]
-                        : [
-                            theme.primaryColor.withOpacity(0.1),
-                            theme.primaryColor.withOpacity(0.05),
-                          ],
+                    colors: [
+                      theme.BLUE_COLOR.withValues(alpha: 0.2),
+                      theme.BLUE_COLOR.withValues(alpha: 0.1),
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -84,40 +84,31 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(CONTENT_PADDING),
                       decoration: BoxDecoration(
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.blue.withOpacity(0.4)
-                            : theme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: theme.BLUE_COLOR.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(BORDER_RADIUS),
                       ),
                       child: Icon(
                         Icons.directions_car,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.blue[100]!
-                            : theme.primaryColor,
-                        size: 28,
+                        color: theme.BLUE_COLOR,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: SECTION_SPACING),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             diagram.title,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: theme.primaryText,
-                            ),
+                            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: SUB_SECTION_SPACING),
                           Text(
                             'Hướng dẫn chi tiết các bài thi Sa hình B2',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: theme.secondaryText,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
                             ),
                           ),
                         ],
@@ -127,16 +118,17 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                 ),
               ),
               ...diagram.sections.asMap().entries.map((entry) => _buildSection(context, entry.value, theme, entry.key, sectionColors, sectionIcons)).toList(),
-              // const SizedBox(height: 20),
+              const SizedBox(height: SECTION_SPACING * 2),
               if (diagram.closingRemark.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(CONTENT_PADDING),
                   child: Text(
                     diagram.closingRemark,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: theme.primaryText),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                 ),
+              const SizedBox(height: SECTION_SPACING),
             ],
           );
         },
@@ -147,72 +139,58 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
   Widget _buildSection(BuildContext context, RoadDiagramSection section, ThemeData theme, int idx, List<Color> sectionColors, List<IconData> sectionIcons) {
     final isExpanded = _expandedSectionIndex == idx;
     return Container(
-      // Full width: no margin left/right, no border radius, no boxShadow
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.zero,
-        boxShadow: [
-          BoxShadow(
-            color: theme.brightness == Brightness.dark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: Column(
         children: [
-          InkWell(
-            onTap: () => _toggleSection(idx),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: sectionColors[idx].withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+          const SizedBox(height: SECTION_SPACING),
+          Container(
+            decoration: BoxDecoration(
+              color: theme.SURFACE_VARIANT,
+            ),
+            child: InkWell(
+              onTap: () => _toggleSection(idx),
+              child: Padding(
+                padding: const EdgeInsets.all(CONTENT_PADDING),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(CONTENT_PADDING),
+                      decoration: BoxDecoration(
+                        color: sectionColors[idx].withValues(alpha: theme.brightness == Brightness.dark ? 0.2 : 0.1),
+                        borderRadius: BorderRadius.circular(BORDER_RADIUS),
+                      ),
+                      child: Icon(sectionIcons[idx], color: sectionColors[idx]),
                     ),
-                    child: Icon(sectionIcons[idx], color: sectionColors[idx], size: 20),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          section.heading,
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: theme.primaryText),
-                        ),
-                        if (section.content != null && section.content!.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Text(
+                    const SizedBox(width: SECTION_SPACING),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            section.heading,
+                            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          if (section.content != null && section.content!.isNotEmpty)
+                            Text(
                               _stripHtmlTags(section.content!.split('\n').first),
-                              style: TextStyle(fontSize: 14, color: theme.secondaryText, height: 1.2),
-                              maxLines: 2,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
+                              ),
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Icon(isExpanded ? Icons.expand_less : Icons.expand_more, color: theme.secondaryText),
-                ],
+                    Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+                  ],
+                ),
               ),
             ),
           ),
           if (isExpanded)
             Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: theme.scaffoldBackgroundColor,
-                borderRadius: BorderRadius.zero,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING, vertical: SECTION_SPACING),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -221,29 +199,29 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                       data: section.content!,
                       style: {
                         "body": Style(
-                          fontSize: FontSize(15),
-                          color: theme.primaryText,
+                          fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+                          color: theme.textTheme.bodyLarge?.color,
                           lineHeight: LineHeight(1.5),
                           margin: Margins.zero,
                           padding: HtmlPaddings.zero,
                         ),
                         "ul": Style(
-                          margin: Margins.only(left: 16, top: 4, right: 0, bottom: 0),
+                          margin: Margins.only(left: CONTENT_PADDING, top: SUB_SECTION_SPACING, right: 0, bottom: 0),
                           padding: HtmlPaddings.only(left: 0),
                         ),
                         "li": Style(
-                          margin: Margins.only(bottom: 4),
+                          margin: Margins.only(bottom: SUB_SECTION_SPACING),
                           padding: HtmlPaddings.zero,
                         ),
                         "b": Style(
-                          fontWeight: FontWeight.bold,
-                          color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryColor,
+                          fontWeight: FontWeight.w600,
+                          color: theme.BLUE_COLOR,
                         ),
                       },
                     ),
                   if (section.youtube != null && section.youtube!.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(vertical: SECTION_SPACING),
                       child: InkWell(
                         onTap: () async {
                           final url = Uri.parse(section.youtube!);
@@ -252,17 +230,17 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                           }
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(CONTENT_PADDING),
                           decoration: BoxDecoration(
-                            color: theme.primaryColor.withOpacity(0.08),
-                            borderRadius: BorderRadius.circular(8),
+                            color: theme.BLUE_COLOR.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.play_circle_fill, color: Colors.red, size: 28),
-                              const SizedBox(width: 8),
-                              Text('Xem video hướng dẫn', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 15)),
+                              Icon(Icons.play_circle_fill, color: Colors.red, size: LARGE_ICON_SIZE),
+                              const SizedBox(width: SUB_SECTION_SPACING),
+                              Text('Xem video hướng dẫn', style: theme.textTheme.bodyLarge?.copyWith(color: theme.ERROR_COLOR, fontWeight: FontWeight.w600)),
                             ],
                           ),
                         ),
@@ -270,32 +248,27 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                     ),
                   if (section.subSections != null && section.subSections!.isNotEmpty)
                     ...section.subSections!.expand((sub) => [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12, left: 0, right: 0, bottom: 4),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: theme.primaryColor.withOpacity(0.08),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.label_important, color: theme.primaryText, size: 16),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  sub.subHeading,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                    color: theme.primaryText,
-                                  ),
-                                ),
+                      const SizedBox(height: SECTION_SPACING),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING, vertical: SUB_SECTION_SPACING),
+                        decoration: BoxDecoration(
+                          color: theme.BLUE_COLOR.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.label_important, color: theme.textTheme.bodyLarge?.color, size: SMALL_ICON_SIZE),
+                            const SizedBox(width: SUB_SECTION_SPACING),
+                            Expanded(
+                              child: Text(
+                                sub.subHeading,
+                                style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
+                      const SizedBox(height: SUB_SECTION_SPACING),
                       ...sub.listItems.map((item) => Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -304,15 +277,15 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                               data: item,
                               style: {
                                 "body": Style(
-                                  fontSize: FontSize(15),
-                                  color: theme.primaryText,
+                                  fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+                                  color: theme.textTheme.bodyLarge?.color,
                                   lineHeight: LineHeight(1.5),
-                                  margin: Margins.only(left: 4, top: 8, right: 4, bottom: 8),
+                                  margin: Margins.zero,
                                   padding: HtmlPaddings.zero,
                                 ),
                                 "b": Style(
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryColor,
+                                  fontWeight: FontWeight.w600,
+                                  color: theme.BLUE_COLOR,
                                 ),
                               },
                             ),
@@ -321,10 +294,7 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                       )),
                     ]),
                   if (section.lessons != null && section.lessons!.isNotEmpty)
-                    ...section.lessons!.map((lesson) => Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: _buildLessonTile(context, lesson, theme),
-                    )),
+                    ...section.lessons!.map((lesson) => _buildLessonTile(context, lesson, theme)),
                   if (section.listItems != null && section.listItems!.isNotEmpty)
                     ...section.listItems!.asMap().entries.map((entry) {
                       final isLast = entry.key == section.listItems!.length - 1;
@@ -333,37 +303,37 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Center(child: Icon(Icons.tips_and_updates, color: theme.warningColor, size: 18)),
-                              const SizedBox(width: 6),
+                              Center(child: Icon(Icons.tips_and_updates, color: theme.WARNING_COLOR, size: SMALL_ICON_SIZE)),
+                              const SizedBox(width: SUB_SECTION_SPACING),
                               Expanded(
                                 child: Html(
                                   data: entry.value,
                                   style: {
                                     "body": Style(
-                                      fontSize: FontSize(15),
-                                      color: theme.primaryText,
+                                      fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+                                      color: theme.BLUE_COLOR,
                                       lineHeight: LineHeight(1.5),
                                       margin: Margins.zero,
                                       padding: HtmlPaddings.zero,
                                     ),
                                     "ul": Style(
-                                      margin: Margins.only(left: 16, top: 4, right: 0, bottom: 0),
+                                      margin: Margins.only(left: CONTENT_PADDING, top: SUB_SECTION_SPACING, right: 0, bottom: 0),
                                       padding: HtmlPaddings.only(left: 0),
                                     ),
                                     "li": Style(
-                                      margin: Margins.only(bottom: 4),
+                                      margin: Margins.only(bottom: SUB_SECTION_SPACING),
                                       padding: HtmlPaddings.zero,
                                     ),
                                     "b": Style(
                                       fontWeight: FontWeight.bold,
-                                      color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryColor,
+                                      color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.BLUE_COLOR,
                                     ),
                                   },
                                 ),
                               ),
                             ],
                           ),
-                          if (!isLast) const SizedBox(height: 8),
+                          if (!isLast) const SizedBox(height: SUB_SECTION_SPACING),
                         ],
                       );
                     }).toList(),
@@ -376,108 +346,97 @@ class _RoadDiagramScreenState extends ConsumerState<RoadDiagramScreen> {
   }
 
   Widget _buildLessonTile(BuildContext context, RoadDiagramLesson lesson, ThemeData theme) {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 0),
-        childrenPadding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: theme.primaryColor.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            lesson.lessonNumber.replaceAll('Bài ', ''),
-            style: TextStyle(fontWeight: FontWeight.bold, color: theme.primaryText, fontSize: 15),
+    return ExpansionTile(
+      leading: Container(
+        padding: const EdgeInsets.all(SUB_SECTION_SPACING),
+        decoration: BoxDecoration(
+          color: theme.BLUE_COLOR.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
+        ),
+        child: Text(
+          lesson.lessonNumber,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.BLUE_COLOR,
           ),
         ),
-        title: Text(
-          lesson.title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: theme.primaryText),
+      ),
+      title: Text(
+        lesson.title,
+        style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Text(
+        'Mục tiêu: ${lesson.objective}',
+        style: theme.textTheme.bodyMedium?.copyWith(
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w600,
+          color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
         ),
-        subtitle: Text(
-          'Mục tiêu: ${lesson.objective}',
-          style: TextStyle(
-            fontSize: 14,
-            fontStyle: FontStyle.italic,
-            color: theme.secondaryText,
-          ),
-        ),
-        children: [
-          if (lesson.howToDo.isNotEmpty) ...[
-            const SizedBox(height: 4),
-            // Text('Cách thực hiện:', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: theme.primaryText)),
-            ...lesson.howToDo.map((step) => Row(
+      ),
+      children: [
+        if (lesson.howToDo.isNotEmpty) ...[
+          ...lesson.howToDo.map((step) => Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('– ', style: theme.textTheme.bodyLarge),
+              Expanded(
+                child: Html(
+                  data: step,
+                  style: {
+                    "body": Style(
+                      fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+                      color: theme.textTheme.bodyLarge?.color,
+                      lineHeight: LineHeight(1.5),
+                      margin: Margins.zero,
+                      padding: HtmlPaddings.zero,
+                    ),
+                    "b": Style(
+                      fontWeight: FontWeight.w600,
+                      color: theme.BLUE_COLOR,
+                    ),
+                  },
+                ),
+              ),
+            ],
+          )),
+        ],
+        if (lesson.tips.isNotEmpty) ...[
+          const SizedBox(height: SUB_SECTION_SPACING),
+          Container(
+            padding: const EdgeInsets.all(CONTENT_PADDING),
+            decoration: BoxDecoration(
+              color: theme.WARNING_COLOR.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
+            ),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('– ', style: TextStyle(fontSize: 15)),
+                Icon(Icons.lightbulb, color: theme.WARNING_COLOR, size: MEDIUM_ICON_SIZE),
+                const SizedBox(width: SUB_SECTION_SPACING),
                 Expanded(
                   child: Html(
-                    data: step,
+                    data: '<b>Mẹo:</b> ${lesson.tips}',
                     style: {
                       "body": Style(
-                        fontSize: FontSize(15),
-                        color: theme.primaryText,
+                        fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+                        color: theme.textTheme.bodyLarge?.color,
                         lineHeight: LineHeight(1.5),
                         margin: Margins.zero,
                         padding: HtmlPaddings.zero,
                       ),
                       "b": Style(
-                        fontWeight: FontWeight.bold,
-                        color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryText,
+                        fontWeight: FontWeight.w600,
+                        color: theme.BLUE_COLOR,
                       ),
                     },
                   ),
                 ),
               ],
-            )),
-          ],
-          if (lesson.tips.isNotEmpty) ...[
-            const SizedBox(height: 4),
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: theme.brightness == Brightness.dark
-                    ? Colors.yellow.withOpacity(0.28)
-                    : Colors.yellow[100],
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.lightbulb, color: theme.warningColor, size: 20),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Html(
-                      data: '<b>Mẹo:</b> ${lesson.tips}',
-                      style: {
-                        "body": Style(
-                          fontSize: FontSize(15),
-                          color: theme.primaryText,
-                          lineHeight: LineHeight(1.5),
-                          margin: Margins.zero,
-                          padding: HtmlPaddings.zero,
-                        ),
-                        "b": Style(
-                          fontWeight: FontWeight.bold,
-                          color: theme.brightness == Brightness.dark ? Colors.blue[100]! : theme.primaryColor,
-                        ),
-                      },
-                    ),
-                  ),
-                ],
-              ),
             ),
-          ],
-          // Expanded lesson background for dark mode consistency
-          Container(
-            color: theme.scaffoldBackgroundColor,
-            height: 0.1, // Just to ensure background is set if needed
           ),
+          const SizedBox(height: SECTION_SPACING),
         ],
-      ),
+      ],
     );
   }
 }

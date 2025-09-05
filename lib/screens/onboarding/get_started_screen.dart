@@ -5,52 +5,9 @@ import '../../models/riverpod/data/license_type.dart';
 import '../../providers/app_data_providers.dart';
 import '../../services/hive_service.dart';
 import '../../constants/route_constants.dart';
-
-IconData getLicenseTypeIcon(String code) {
-  switch (code) {
-    case 'A1':
-      return Icons.two_wheeler;
-    case 'A2':
-      return Icons.motorcycle;
-    case 'B1':
-      return Icons.directions_car;
-    case 'B2':
-      return Icons.directions_car_filled;
-    case 'C':
-      return Icons.local_shipping;
-    case 'D':
-      return Icons.directions_bus;
-    case 'E':
-      return Icons.airport_shuttle;
-    case 'F':
-      return Icons.emoji_transportation;
-    default:
-      return Icons.drive_eta;
-  }
-}
-
-Color getLicenseTypeColor(String code) {
-  switch (code) {
-    case 'A1':
-      return Colors.orange;
-    case 'A2':
-      return Colors.deepOrange;
-    case 'B1':
-      return Colors.blue;
-    case 'B2':
-      return Colors.indigo;
-    case 'C':
-      return Colors.green;
-    case 'D':
-      return Colors.teal;
-    case 'E':
-      return Colors.purple;
-    case 'F':
-      return Colors.brown;
-    default:
-      return Colors.grey;
-  }
-}
+import '../../utils/icon_color_utils.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/ui_constants.dart';
 
 class GetStartedScreen extends ConsumerStatefulWidget {
   const GetStartedScreen({super.key});
@@ -60,84 +17,74 @@ class GetStartedScreen extends ConsumerStatefulWidget {
 }
 
 class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
-  LicenseType? selectedType;
+  LicenseType? licenseType;
 
   @override
   Widget build(BuildContext context) {
     final licenseTypes = ref.watch(licenseTypesProvider);
-    if (licenseTypes.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text('Không có dữ liệu loại bằng lái.')),
-      );
-    }
-    selectedType ??= licenseTypes.firstWhere((e) => e.isDefault, orElse: () => licenseTypes.first);
+    licenseType ??= licenseTypes.firstWhere((e) => e.isDefault, orElse: () => licenseTypes.first);
+
+    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            const SizedBox(height: SECTION_SPACING * 2),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
               child: Text(
                 'Chọn loại bằng lái bạn muốn ôn luyện',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: CONTENT_PADDING),
             Expanded(
               child: ListView.builder(
                 itemCount: licenseTypes.length,
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 itemBuilder: (context, index) {
                   final type = licenseTypes[index];
-                  final isSelected = selectedType?.code == type.code;
+                  final isSelected = licenseType?.code == type.code;
                   final theme = Theme.of(context);
                   return InkWell(
                     onTap: () {
                       setState(() {
-                        selectedType = type;
+                        licenseType = type;
                       });
                     },
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      padding: const EdgeInsets.all(CONTENT_PADDING),
                       decoration: BoxDecoration(
-                        color: isSelected ? theme.colorScheme.primary.withOpacity(0.15) : Colors.transparent,
-                        border: Border(
-                          bottom: BorderSide(color: theme.dividerColor),
-                        ),
+                        color: isSelected ? theme.BLUE_COLOR.withValues(alpha: 0.2) : Colors.transparent,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(getLicenseTypeIcon(type.code), color: getLicenseTypeColor(type.code), size: 32),
-                          const SizedBox(width: 16),
+                          Icon(getLicenseTypeIcon(type.code), color: getLicenseTypeColor(type.code), size: LARGE_ICON_SIZE),
+                          const SizedBox(width: CONTENT_PADDING),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   '${type.code} - ${type.name}',
-                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                  style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: SUB_SECTION_SPACING),
                                 Text(
                                   type.description,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600, 
+                                    color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5)
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           if (isSelected)
-                            Icon(Icons.check, color: theme.colorScheme.primary, size: 24),
+                            Icon(Icons.check, color: theme.BLUE_COLOR),
                         ],
                       ),
                     ),
@@ -149,24 +96,25 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
               width: double.infinity,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: theme.NAVIGATION_FG,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: CONTENT_PADDING),
                 ),
-                onPressed: selectedType != null
+                onPressed: licenseType != null
                     ? () async {
-                        if (selectedType != null) {
-                          await setLicenseType(selectedType!.code);
+                        if (licenseType != null) {
+                          await setLicenseType(licenseType!.code);
                         }
                         if (mounted) context.go(RouteConstants.ROUTE_ONBOARDING_REMINDER);
                       }
                     : null,
-                child: const Text(
+                child: Text(
                   'Tiếp tục',
-                  style: TextStyle(
-                    color: Colors.white,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.NAVIGATION_BG
                   ),
                 ),
               ),
@@ -174,7 +122,6 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
           ],
         ),
       ),
-      // Remove bottomNavigationBar
     );
   }
 }

@@ -1,93 +1,48 @@
 import 'package:flutter/material.dart';
 import '../models/riverpod/data/quiz.dart';
-import '../utils/app_colors.dart';
+import '../constants/app_colors.dart';
+import '../constants/ui_constants.dart';
+import 'quiz_header.dart';
 
 class QuizShortcut extends StatelessWidget {
   final Quiz quiz;
-  final int index;
-  final bool selected;
-  final VoidCallback onTap;
-  final EdgeInsetsGeometry contentPadding;
-  final Color tileColor;
+  final int quizIndex;
   final int totalQuizzes;
-  final int originalIndex;
-  final bool practiced;
+  final bool isPracticed;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Color? tileColor;
 
   const QuizShortcut({
     Key? key,
     required this.quiz,
-    required this.index,
-    required this.selected,
-    required this.onTap,
+    required this.quizIndex,
     required this.totalQuizzes,
-    required this.originalIndex,
-    required this.practiced,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    this.tileColor = Colors.white,
+    required this.isPracticed,
+    required this.isSelected,
+    required this.onTap,
+    this.tileColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      decoration: selected ? BoxDecoration(
-        color: theme.brightness == Brightness.dark ? Colors.blue.shade900 : Colors.blue.shade50,
-        border: Border.all(
-          color: theme.brightness == Brightness.dark ? Colors.blue.shade400 : Colors.blue.shade200,
-          width: 1
-        ),
+
+    return ListTile(
+      onTap: onTap,
+      contentPadding: const EdgeInsets.all(CONTENT_PADDING),
+      tileColor: tileColor ?? Colors.transparent,
+      selectedTileColor: theme.BLUE_COLOR.withValues(alpha: 0.2),
+      shape: isSelected ? RoundedRectangleBorder(
+        side: BorderSide(color: theme.BLUE_COLOR, width: 1),
+        borderRadius: BorderRadius.zero,
       ) : null,
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: contentPadding,
-        tileColor: selected ? Colors.transparent : tileColor,
-      title: Row(
-        children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Câu ${index + 1}/${totalQuizzes} ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: theme.primaryText,
-                  ),
-                ),
-                TextSpan(
-                  text: '[${quiz.licenseTypeCode}.${originalIndex + 1}]',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: theme.secondaryText,
-                  ),
-                ),
-                if (practiced) ...[
-                  TextSpan(
-                    text: ' | ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: theme.secondaryText,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'đã học',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: theme.secondaryText,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          if (practiced) ...[
-            SizedBox(width: 4),
-            Icon(Icons.check_circle, color: theme.successColor, size: 18),
-          ],
-        ],
+      title: QuizHeader(
+        quizIndex: quizIndex,
+        totalQuizzes: totalQuizzes,
+        licenseTypeCode: quiz.licenseTypeCode,
+        quizIdx: quiz.index,
+        isPracticed: isPracticed,
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,33 +53,32 @@ class QuizShortcut extends StatelessWidget {
               Expanded(
                 child: Text(
                   quiz.text,
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: theme.secondaryText,
+                    color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: SUB_SECTION_SPACING),
               if (quiz.imageUrl != null && quiz.imageUrl!.isNotEmpty)
                 SizedBox(
-                  height: 60,
+                  height: SECTION_SPACING * 5,
                   child: Image.asset(
-                    'assets/images/quizzes/' + quiz.imageUrl!,
-                    fit: BoxFit.fitHeight, // Height is fixed, width scales with aspect ratio
+                    'assets/images/quizzes/${quiz.imageUrl!}',
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
             ],
           ),
           if (quiz.topicIds.any((id) => id.endsWith('-fatal')))
             Padding(
-              padding: const EdgeInsets.only(top: 4.0),
+              padding: const EdgeInsets.only(top: SUB_SECTION_SPACING),
               child: Text(
                 'Câu điểm liệt',
-                style: TextStyle(
-                  color: theme.errorColor,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.FALTA_COLOR,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -132,9 +86,7 @@ class QuizShortcut extends StatelessWidget {
         ],
       ),
       trailing: null,
-      selected: selected,
-      selectedTileColor: Colors.transparent,
-      ),
+      selected: isSelected,
     );
   }
 } 

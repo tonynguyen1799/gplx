@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../utils/app_colors.dart';
-
-class _ExamsProgressConstants {
-  static const double contentPadding = 16.0;
-  static const double borderRadius = 12.0;
-  static const double sectionSpacing = 12.0;
-  static const double subSectionSpacing = 6.0;
-
-  static const String title = 'Thi thử mô phỏng';
-  static const String description = 'Bộ %d đề thi, thời gian và cách thức làm bài như thực tế';
-  static const String routePath = '/exams';
-}
+import '../constants/app_colors.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
+import 'package:gplx_vn/constants/route_constants.dart';
 
 class ExamsProgress extends StatelessWidget {
   final int totalExams;
-  const ExamsProgress({super.key, this.totalExams = 0});
+  const ExamsProgress({super.key, required this.totalExams});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        context.push(_ExamsProgressConstants.routePath);
+        context.push(RouteConstants.ROUTE_EXAMS);
       },
       child: Container(
-        padding: const EdgeInsets.all(_ExamsProgressConstants.contentPadding),
+        padding: const EdgeInsets.all(CONTENT_PADDING),
         decoration: BoxDecoration(
           color: theme.EXAM_WIDGET_BG,
-          borderRadius: BorderRadius.circular(_ExamsProgressConstants.borderRadius),
+          borderRadius: BorderRadius.circular(BORDER_RADIUS),
         ),
         child: Row(
           children: [
@@ -37,20 +28,20 @@ class ExamsProgress extends StatelessWidget {
               size: 32.0,
               color: theme.EXAM_WIDGET_ICON,
             ),
-            const SizedBox(width: _ExamsProgressConstants.sectionSpacing),
+            const SizedBox(width: SECTION_SPACING),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _ExamsProgressConstants.title,
+                    'Thi thử mô phỏng',
                     style: theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: _ExamsProgressConstants.subSectionSpacing),
+                  const SizedBox(height: SUB_SECTION_SPACING),
                   Text(
-                    _ExamsProgressConstants.description.replaceAll('%d', '$totalExams'),
+                    'Bộ $totalExams đề thi, thời gian và cách thức làm bài như thực tế',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                           color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),

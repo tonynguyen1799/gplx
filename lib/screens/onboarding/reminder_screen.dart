@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../utils/dialog_utils.dart';
+import '../../utils/dialog_utils.dart' as dialog_utils;
 import '../../constants/route_constants.dart';
 import '../../services/hive_service.dart';
 import '../../services/notification_service.dart';
+import '../../constants/app_colors.dart';
+import 'package:gplx_vn/constants/navigation_constants.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 
 class ReminderScreen extends ConsumerStatefulWidget {
   const ReminderScreen({super.key});
@@ -28,30 +31,28 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     final reminderTime = await getReminderTime();
     setState(() {
       isReminderOn = reminderEnabled;
-      // Use the time string directly, with fallback
       selectedTime = reminderTime.isNotEmpty ? reminderTime : "20:30";
     });
   }
 
   void _selectTime() async {
     if (!isReminderOn) return;
-    final picked = await showSpinnerTimePicker(
+
+    final picked = await dialog_utils.showTimePicker(
       context: context,
       initialTime: selectedTime,
       title: 'Chọn thời gian',
     );
+
     if (picked != null) {
-                    setState(() {
+      setState(() {
         selectedTime = picked;
       });
     }
   }
 
-
-
   Future<void> _onNext() async {
     await setReminderEnabled(isReminderOn);
-    // Time is already properly formatted string
     await setReminderTime(selectedTime);
     if (isReminderOn) {
       final message = NotificationService.getRandomDailyMessage();
@@ -59,7 +60,8 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     } else {
       await NotificationService.cancelReminder();
     }
-    context.push(RouteConstants.ROUTE_ONBOARDING_FINISH);
+    await setOnboardingComplete(true);
+    context.go('/main', extra: {'initialIndex': MainNav.TAB_HOME});
   }
 
   @override
@@ -70,9 +72,9 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: SECTION_SPACING * 2),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,33 +83,37 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                     style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: SECTION_SPACING * 2),
                   Text(
                     'Ứng dụng sẽ gửi thông báo nhắc nhở bạn học tập mỗi ngày.',
-                    style: theme.textTheme.bodyMedium,
-                    textAlign: TextAlign.left,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: SECTION_SPACING),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              margin: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+              padding: const EdgeInsets.all(CONTENT_PADDING),
               decoration: BoxDecoration(
-                border: Border.all(color: theme.dividerColor),
+                border: Border.all(color: theme.DARK_SURFACE_VARIANT, width: 1),
+                borderRadius: BorderRadius.circular(BORDER_RADIUS),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.notifications_active, color: theme.colorScheme.primary, size: 28),
-                      const SizedBox(width: 8),
+                      Icon(Icons.notifications_active, color: theme.BLUE_COLOR, size: LARGE_ICON_SIZE),
+                      const SizedBox(width: CONTENT_PADDING),
                       Text('Bật nhắc nhở hàng ngày', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
                     ],
                   ),
                   Switch(
+                    activeColor: theme.BLUE_COLOR,
                     value: isReminderOn,
                     onChanged: (value) {
                       setState(() {
@@ -118,27 +124,31 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: SECTION_SPACING),
             GestureDetector(
               onTap: isReminderOn ? _selectTime : null,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                margin: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+                padding: const EdgeInsets.all(CONTENT_PADDING),
                 decoration: BoxDecoration(
-                  border: Border.all(color: theme.dividerColor),
+                  border: Border.all(color: theme.DARK_SURFACE_VARIANT, width: 1),
+                  borderRadius: BorderRadius.circular(BORDER_RADIUS),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.access_time, color: theme.colorScheme.primary, size: 28),
-                        const SizedBox(width: 8),
-                        Text('Thời gian nhắc mỗi ngày', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                        Icon(Icons.access_time, color: theme.BLUE_COLOR, size: LARGE_ICON_SIZE),
+                        const SizedBox(width: CONTENT_PADDING),
+                        Text(
+                          'Thời gian nhắc mỗi ngày',
+                          style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                        ),
                       ],
                     ),
                     Text(
-                        selectedTime,
+                      selectedTime,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: isReminderOn ? theme.textTheme.bodyMedium?.color : theme.disabledColor,
@@ -155,11 +165,17 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                 onPressed: _onNext,
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: theme.colorScheme.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: theme.NAVIGATION_FG,
+                  padding: const EdgeInsets.symmetric(vertical: CONTENT_PADDING),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 ),
-                child: const Text('Tiếp tục'),
+                child: Text(
+                  'Tiếp tục',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.NAVIGATION_BG,
+                  ),
+                ),
               ),
             ),
           ],

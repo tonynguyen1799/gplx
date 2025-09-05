@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 
 class AnimatedShortcutWidget extends StatefulWidget {
   final String title;
@@ -15,8 +16,8 @@ class AnimatedShortcutWidget extends StatefulWidget {
     this.badgeText,
   });
 
-  static const double subSectionSpacing = 6.0;
-  static const double borderRadius = 12.0;
+  static const double subSectionSpacing = SUB_SECTION_SPACING;
+  static const double borderRadius = BORDER_RADIUS;
 
   static const double _padding = 12.0;
   static const Duration _pulseDuration = Duration(milliseconds: 600);

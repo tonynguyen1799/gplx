@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:go_router/go_router.dart';
 
-import 'package:gplx_vn/constants/navigation_constants.dart';
+
 import 'package:gplx_vn/constants/quiz_constants.dart';
 import 'package:gplx_vn/constants/route_constants.dart';
 
 import 'package:gplx_vn/widgets/shortcut_widget.dart';
 import 'package:gplx_vn/widgets/animated_shortcut_widget.dart';
-import 'package:gplx_vn/screens/main_navigation_screen.dart';
-import '../utils/app_colors.dart';
+import '../constants/app_colors.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
+import 'package:gplx_vn/screens/quiz/quiz_screen.dart';
 
 class ShortcutsPanel extends StatelessWidget {
   final int totalSavedQuizzes;
@@ -17,6 +17,7 @@ class ShortcutsPanel extends StatelessWidget {
   final int totalIncorrectQuizzes;
   final bool reminderEnabled;
   final String reminderTime;
+  final VoidCallback? onNavigateToSettings;
   
   const ShortcutsPanel({
     super.key, 
@@ -24,12 +25,13 @@ class ShortcutsPanel extends StatelessWidget {
     required this.totalDifficultQuizzes, 
     required this.totalIncorrectQuizzes, 
     this.reminderEnabled = false,
-    this.reminderTime = '',
+    this.reminderTime = '21:00',
+    this.onNavigateToSettings,
   });
 
-  static const double containerPadding = 16.0;
-  static const double borderRadius = 12.0;
-  static const double subSectionSpacing = 12.0;
+  static const double containerPadding = CONTENT_PADDING;
+  static const double borderRadius = BORDER_RADIUS;
+  static const double subSectionSpacing = SECTION_SPACING;
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +43,12 @@ class ShortcutsPanel extends StatelessWidget {
         badgeText: totalSavedQuizzes > 0 ? '$totalSavedQuizzes' : null,
         color: Colors.amber.shade600,
         onTap: () {
-          context.push(RouteConstants.ROUTE_QUIZ, extra: {
-            'mode': QuizModes.TRAINING_MODE,
-            'startIndex': 0,
-            'filter': QuizConstants.QUIZ_FILTER_SAVED,
-          });
+          final params = QuizScreenParams(
+            trainingMode: TrainingMode.TOTAL,
+            startIndex: 0,
+                          filter: QuizFilterConstants.QUIZ_FILTER_SAVED,
+          );
+          context.push(RouteConstants.ROUTE_QUIZ, extra: params);
         },
       ),
       ShortcutWidget(
@@ -54,11 +57,12 @@ class ShortcutsPanel extends StatelessWidget {
         badgeText: totalIncorrectQuizzes > 0 ? '$totalIncorrectQuizzes' : null,
         color: Colors.red.shade400,
         onTap: () {
-          context.push(RouteConstants.ROUTE_QUIZ, extra: {
-            'mode': QuizModes.TRAINING_MODE,
-            'startIndex': 0,
-            'filter': QuizConstants.QUIZ_FILTER_INCORRECT,
-          });
+          final params = QuizScreenParams(
+            trainingMode: TrainingMode.TOTAL,
+            startIndex: 0,
+                          filter: QuizFilterConstants.QUIZ_FILTER_INCORRECT,
+          );
+          context.push(RouteConstants.ROUTE_QUIZ, extra: params);
         },
       ),
       ShortcutWidget(
@@ -67,11 +71,12 @@ class ShortcutsPanel extends StatelessWidget {
         badgeText: totalDifficultQuizzes > 0 ? '$totalDifficultQuizzes' : null,
         color: Colors.deepPurple.shade400,
         onTap: () {
-          context.push(RouteConstants.ROUTE_QUIZ, extra: {
-            'mode': QuizModes.TRAINING_MODE,
-            'startIndex': 0,
-            'filter': QuizConstants.QUIZ_FILTER_DIFFICULT,
-          });
+          final params = QuizScreenParams(
+            trainingMode: TrainingMode.TOTAL,
+            startIndex: 0,
+                          filter: QuizFilterConstants.QUIZ_FILTER_DIFFICULT,
+          );
+          context.push(RouteConstants.ROUTE_QUIZ, extra: params);
         },
       ),
       ShortcutWidget(
@@ -102,10 +107,8 @@ class ShortcutsPanel extends StatelessWidget {
         title: 'Nhắc nhở',
         icon: reminderEnabled ? Icons.notifications_active : Icons.notifications_off,
         badgeText: reminderEnabled && reminderTime.isNotEmpty ? reminderTime : null,
-        color: Colors.green.shade400,
-        onTap: () {
-          MainNavigationScreen.switchToTab(MainNav.TAB_SETTINGS);
-        },
+        color: Colors.green.shade800,
+        onTap: onNavigateToSettings ?? () {},
       ),
       AnimatedShortcutWidget(
         title: 'Ủng hộ',

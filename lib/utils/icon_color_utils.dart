@@ -33,4 +33,50 @@ Color colorFromHex(String? hex) {
   if (hex.length == 6 || hex.length == 7) buffer.write('ff');
   buffer.write(hex.replaceFirst('#', ''));
   return Color(int.parse(buffer.toString(), radix: 16));
+}
+
+IconData getLicenseTypeIcon(String code) {
+  switch (code) {
+    case 'A1':
+      return Icons.two_wheeler;
+    case 'A2':
+      return Icons.motorcycle;
+    case 'B1':
+      return Icons.directions_car;
+    case 'B2':
+      return Icons.directions_car_filled;
+    case 'C':
+      return Icons.local_shipping;
+    case 'D':
+      return Icons.directions_bus;
+    case 'E':
+      return Icons.airport_shuttle;
+    case 'F':
+      return Icons.emoji_transportation;
+    default:
+      return Icons.drive_eta;
+  }
+}
+
+Color getLicenseTypeColor(String code) {
+  switch (code) {
+    case 'A1':
+      return Colors.orange;
+    case 'A2':
+      return Colors.deepOrange;
+    case 'B1':
+      return Colors.blue;
+    case 'B2':
+      return Colors.indigo;
+    case 'C':
+      return Colors.green;
+    case 'D':
+      return Colors.teal;
+    case 'E':
+      return Colors.purple;
+    case 'F':
+      return Colors.brown;
+    default:
+      return Colors.grey;
+  }
 } 

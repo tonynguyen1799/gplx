@@ -4,15 +4,9 @@ import '../constants/quiz_constants.dart';
 import '../constants/route_constants.dart';
 import '../models/riverpod/topic_progress.dart';
 import '../models/riverpod/data/topic.dart';
-import '../utils/app_colors.dart';
-
-class _TopicsProgressConstants {
-  static const double contentPadding = 16.0;
-  static const double sectionSpacing = 12.0;
-  static const double subSectionSpacing = 6.0;
-  static const double smallBorderRadius = 6.0;
-  static const double progressBarHeight = 8.0;
-}
+import '../constants/app_colors.dart';
+import '../constants/ui_constants.dart';
+import '../screens/quiz/quiz_screen.dart';
 
 class _TopicIcons {
   static const Map<String, IconData> icons = {
@@ -46,7 +40,7 @@ class TopicsProgress extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: _TopicsProgressConstants.sectionSpacing),
+          padding: const EdgeInsets.only(bottom: SECTION_SPACING),
           child: Text(
             'Tiến độ theo chủ đề',
             style: theme.textTheme.bodyLarge?.copyWith(
@@ -59,7 +53,7 @@ class TopicsProgress extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: topics.length,
           itemBuilder: (context, index) => _buildTopicProgress(context, topics[index]),
-          separatorBuilder: (context, index) => SizedBox(height: _TopicsProgressConstants.sectionSpacing),
+          separatorBuilder: (context, index) => SizedBox(height: SECTION_SPACING),
         ),
       ],
     );
@@ -73,18 +67,19 @@ class TopicsProgress extends StatelessWidget {
     
     return GestureDetector(
       onTap: () {
-        context.push(RouteConstants.ROUTE_QUIZ, extra: {
-          'mode': QuizModes.TRAINING_BY_TOPIC_MODE,
-          'topicId': topic.id,
-          'filter': QuizConstants.QUIZ_FILTER_ALL,
-          'startIndex': 0,
-        });
+        final params = QuizScreenParams(
+          trainingMode: TrainingMode.BY_TOPIC,
+          topicId: topic.id,
+                        filter: QuizFilterConstants.QUIZ_FILTER_ALL,
+          startIndex: 0,
+        );
+        context.push(RouteConstants.ROUTE_QUIZ, extra: params);
       },
       child: Container(
-          padding: const EdgeInsets.all(_TopicsProgressConstants.contentPadding),
+        padding: const EdgeInsets.all(CONTENT_PADDING),
         decoration: BoxDecoration(
           color: theme.LIGHT_SURFACE_VARIANT,
-          borderRadius: BorderRadius.circular(_TopicsProgressConstants.smallBorderRadius),
+          borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +91,7 @@ class TopicsProgress extends StatelessWidget {
                   color: topic.color != null ? Color(int.parse(topic.color!)) : Colors.grey,
                   size: 32.0,
                 ),
-                const SizedBox(width: _TopicsProgressConstants.sectionSpacing),
+                const SizedBox(width: SECTION_SPACING),
                 Expanded(
                   child: Text(
                     topic.name,
@@ -115,12 +110,12 @@ class TopicsProgress extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: _TopicsProgressConstants.subSectionSpacing),
+            const SizedBox(height: SUB_SECTION_SPACING),
             ClipRRect(
-              borderRadius: BorderRadius.circular(_TopicsProgressConstants.smallBorderRadius),
+              borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
               child: LinearProgressIndicator(
                 value: totalTopicQuizzes == 0 ? 0 : totalTopicPracticedQuizzes / totalTopicQuizzes,
-                minHeight: _TopicsProgressConstants.progressBarHeight,
+                minHeight: 4.0,
                 backgroundColor: theme.PROGRESS_BAR_BG,
                 valueColor: AlwaysStoppedAnimation(
                   theme.PROGRESS_BAR_FG,
@@ -128,7 +123,7 @@ class TopicsProgress extends StatelessWidget {
               ),
             ),
             if (topicQuizzesProgress != null && topicQuizzesProgress![topic.id] != null) ...[
-              const SizedBox(height: _TopicsProgressConstants.subSectionSpacing),
+              const SizedBox(height: SUB_SECTION_SPACING),
               Row(
                 children: [
                   Text(
@@ -138,7 +133,7 @@ class TopicsProgress extends StatelessWidget {
                       color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
                     ),
                   ),
-                  const SizedBox(width: _TopicsProgressConstants.sectionSpacing * 2),
+                  const SizedBox(width: SECTION_SPACING * 2),
                   Text(
                     'Sai ${topicQuizzesProgress![topic.id]!.totalIncorrectQuizzes}',
                     style: theme.textTheme.bodySmall?.copyWith(

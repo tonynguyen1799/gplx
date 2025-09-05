@@ -1,22 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gplx_vn/models/hive/quiz_progress.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 import 'package:gplx_vn/models/riverpod/quizzes_progress.dart';
-import 'package:gplx_vn/utils/app_colors.dart';
-
-class _TotalQuizzesProgressConstants {
-  static const double contentPadding = 16.0;
-  static const double borderRadius = 12.0;
-  static const double smallBorderRadius = 6.0;
-  static const double leftBorderWidth = 6.0;
-  static const double sectionSpacing = 12.0;
-  static const double subSectionSpacing = 6.0;
-  static const double progressBarHeight = 8.0;
-
-  static const String title = 'Tiến độ học tập';
-  static const String progressText = 'câu đã luyện';
-  static const String correctText = 'Đúng';
-  static const String incorrectText = 'Sai';
-}
+import 'package:gplx_vn/constants/app_colors.dart';
 
 class TotalQuizzesProgress extends StatelessWidget {
   final int totalQuizzes;
@@ -35,14 +21,14 @@ class TotalQuizzesProgress extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(_TotalQuizzesProgressConstants.contentPadding),
+        padding: const EdgeInsets.all(CONTENT_PADDING),
         decoration: BoxDecoration(
           color: theme.SURFACE_VARIANT,
-          borderRadius: BorderRadius.circular(_TotalQuizzesProgressConstants.borderRadius),
+          borderRadius: BorderRadius.circular(BORDER_RADIUS),
           border: Border(
             left: BorderSide(
               color: Colors.amber,
-              width: _TotalQuizzesProgressConstants.leftBorderWidth,
+              width: 4.0,
             ),
           ),
         ),
@@ -50,12 +36,12 @@ class TotalQuizzesProgress extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _TotalQuizzesProgressConstants.title,
+              'Tiến hành ôn luyện',
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: _TotalQuizzesProgressConstants.sectionSpacing),
+            const SizedBox(height: SECTION_SPACING),
             Row(
               children: [
                 Expanded(
@@ -64,37 +50,37 @@ class TotalQuizzesProgress extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${quizzesProgress.totalPracticedQuizzes} / $totalQuizzes ${_TotalQuizzesProgressConstants.progressText}',
+                        '${quizzesProgress.totalPracticedQuizzes} / $totalQuizzes câu đã luyện',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
                         ),
                       ),
-                      const SizedBox(height: _TotalQuizzesProgressConstants.subSectionSpacing),
+                      const SizedBox(height: SUB_SECTION_SPACING),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(_TotalQuizzesProgressConstants.smallBorderRadius),
+                        borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
                         child: LinearProgressIndicator(
                           value: totalQuizzes == 0 ? 0 : quizzesProgress.totalPracticedQuizzes / totalQuizzes,
-                          minHeight: _TotalQuizzesProgressConstants.progressBarHeight,
+                          minHeight: 6.0,
                           backgroundColor: theme.PROGRESS_BAR_BG,
                           valueColor: AlwaysStoppedAnimation(
                             theme.PROGRESS_BAR_FG,
                           ),
                         ),
                       ),
-                      const SizedBox(height: _TotalQuizzesProgressConstants.subSectionSpacing),
+                      const SizedBox(height: SUB_SECTION_SPACING),
                       Row(
                         children: [
                           Text(
-                            '${_TotalQuizzesProgressConstants.correctText} ${quizzesProgress.totalCorrectQuizzes}',
+                            'Đúng ${quizzesProgress.totalCorrectQuizzes}',
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
                             ),
                           ),
-                          const SizedBox(width: _TotalQuizzesProgressConstants.sectionSpacing * 2),
+                          const SizedBox(width: SECTION_SPACING * 2),
                           Text(
-                            '${_TotalQuizzesProgressConstants.incorrectText} ${quizzesProgress.totalIncorrectQuizzes}',
+                            'Sai ${quizzesProgress.totalIncorrectQuizzes}',
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
@@ -106,7 +92,7 @@ class TotalQuizzesProgress extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: _TotalQuizzesProgressConstants.sectionSpacing),
+                  margin: const EdgeInsets.symmetric(horizontal: SECTION_SPACING),
                   width: 1,
                   height: 60,
                   color: theme.dividerColor,
@@ -116,7 +102,7 @@ class TotalQuizzesProgress extends StatelessWidget {
                   child: Column(
                     children: [
                       Icon(Icons.insights, color: Colors.blue),
-                      const SizedBox(height: _TotalQuizzesProgressConstants.subSectionSpacing),
+                      const SizedBox(height: SUB_SECTION_SPACING),
                       Text(
                         totalQuizzes == 0 ? '0%' : '${((quizzesProgress.totalPracticedQuizzes / totalQuizzes) * 100).round()}%',
                         style: theme.textTheme.titleLarge?.copyWith(

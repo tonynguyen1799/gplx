@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/foundation.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -62,9 +63,27 @@ class NotificationService {
 
   static Future<void> init() async {
     if (_initialized) return;
+    // On web we do not use local notifications or timezone packages
+    if (kIsWeb) {
+      _initialized = true;
+      return;
+    }
     initializeTimeZones();
-    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    String timeZoneName;
+    try {
+      timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    } catch (_) {
+      timeZoneName = 'UTC';
+    }
+    // Normalize legacy/alias timezone names
+    if (timeZoneName == 'Asia/Saigon') {
+      timeZoneName = 'Asia/Ho_Chi_Minh';
+    }
+    try {
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+    } catch (_) {
+      tz.setLocalLocation(tz.getLocation('UTC'));
+    }
     const AndroidInitializationSettings androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const DarwinInitializationSettings iosInit = DarwinInitializationSettings();
     final InitializationSettings settings = InitializationSettings(
@@ -83,6 +102,9 @@ class NotificationService {
   }
 
   static Future<void> scheduleDailyReminder(String time24h, String message) async {
+    if (kIsWeb) {
+      return;
+    }
     await init();
     await cancelReminder();
     final now = tz.TZDateTime.now(tz.local);
@@ -122,6 +144,9 @@ class NotificationService {
   }
 
   static Future<void> cancelReminder() async {
+    if (kIsWeb) {
+      return;
+    }
     await init();
     await _plugin.cancel(_reminderNotificationId);
   }

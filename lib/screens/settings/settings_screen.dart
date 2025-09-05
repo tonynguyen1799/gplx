@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../services/hive_service.dart';
-import '../../utils/app_colors.dart';
+import 'package:go_router/go_router.dart';
+import '../../models/reminder_settings.dart';
+import '../../models/theme_settings.dart';
 import '../../models/riverpod/data/license_type.dart';
 import '../../providers/app_data_providers.dart';
 import '../../providers/license_type_provider.dart';
-import '../../utils/dialog_utils.dart';
-import 'package:go_router/go_router.dart';
-import '../../services/notification_service.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import '../../providers/theme_mode_provider.dart';
 import 'package:gplx_vn/providers/reminder_provider.dart';
-
-enum AppThemeMode { system, light, dark }
-
-final themeModeProvider = StateProvider<AppThemeMode>((ref) => AppThemeMode.system);
+import '../../services/hive_service.dart' show cleanUp;
+import '../../services/notification_service.dart';
+import '../../constants/app_colors.dart';
+import '../../utils/dialog_utils.dart' as dialog_utils;
+import 'package:gplx_vn/constants/ui_constants.dart';
+import '../../widgets/license_types_bottom_sheet.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -23,507 +23,401 @@ class SettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
-  bool _reminderEnabled = true;
-  String _reminderTime = "21:00";
-  AppThemeMode _themeMode = AppThemeMode.system;
-  bool _loading = true;
-  final ScrollController _scrollController = ScrollController();
-  final GlobalKey _reminderKey = GlobalKey();
-
   @override
-  void initState() {
-    super.initState();
-    _loadSettings();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final extra = GoRouterState.of(context).extra;
-      if (extra is Map && extra['scrollTo'] == 'reminder') {
-        _scrollToReminder();
-      }
-    });
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final licenseTypes = ref.watch(licenseTypesProvider);
+    final licenseTypeAsync = ref.watch(licenseTypeProvider);
+    final reminderSettingsAsync = ref.watch(reminderSettingsProvider);
+    final themeSettingsAsync = ref.watch(themeModeProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: NAVIGATION_HEIGHT,
+        title: const Text(
+          'Cài đặt',
+          style: TextStyle(
+            fontSize: APP_BAR_FONT_SIZE,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: theme.APP_BAR_BG,
+        foregroundColor: theme.APP_BAR_FG,
+        elevation: 0,
+        leading: null,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+        children: [
+          const SizedBox(height: SECTION_SPACING),
+          _buildLicenseTypeSection(theme, licenseTypes, licenseTypeAsync),
+          const SizedBox(height: SECTION_SPACING * 2),
+          _buildReminderSection(theme, reminderSettingsAsync),
+          const SizedBox(height: SECTION_SPACING * 2),
+          _buildThemeSection(theme, themeSettingsAsync),
+          const SizedBox(height: SECTION_SPACING * 2),
+          _buildDataSection(theme),
+          const SizedBox(height: SECTION_SPACING),
+        ],
+      ),
+    );
   }
 
-  void _scrollToReminder() {
-    final ctx = _reminderKey.currentContext;
-    if (ctx != null) {
-      Scrollable.ensureVisible(ctx, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
-    }
+  Widget _buildLicenseTypeSection(ThemeData theme, List<LicenseType> licenseTypes, AsyncValue<String?> licenseTypeAsync) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'LOẠI BẰNG LÁI',
+          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: SUB_SECTION_SPACING),
+        Container(
+          decoration: BoxDecoration(
+            color: theme.SURFACE_VARIANT,
+            borderRadius: BorderRadius.circular(BORDER_RADIUS),
+          ),
+          child: licenseTypeAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+            data: (licenseTypeCode) {
+              LicenseType? selected;
+              if (licenseTypeCode != null && licenseTypes.isNotEmpty) {
+                selected = licenseTypes.firstWhere(
+                  (lt) => lt.code == licenseTypeCode,
+                  orElse: () => licenseTypes.first,
+                );
+              } else {
+                selected = null;
+              }
+              return ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: CONTENT_PADDING, vertical: SUB_SECTION_SPACING),
+                leading: Container(
+                  alignment: Alignment.center,
+                  height: NAVIGATION_HEIGHT,
+                  width: NAVIGATION_HEIGHT,
+                  child: Icon(Icons.badge, color: theme.BLUE_COLOR),
+                ),
+                title: Text(
+                  selected != null ? '${selected.name} - ${selected.code}' : 'Chưa chọn',
+                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                ),
+                subtitle: Text(
+                  (selected != null ? selected.description : '') + '\nNhấn để thay đổi loại bằng lái',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                  ),
+                ),
+                trailing: Container(
+                  alignment: Alignment.center,
+                  height: NAVIGATION_HEIGHT,
+                  width: NAVIGATION_HEIGHT,
+                  child: Icon(Icons.keyboard_arrow_down, color: theme.BLUE_COLOR),
+                ),
+                onTap: () async {
+                  final newType = await LicenseTypesBottomSheet.show(
+                    context,
+                    licenseTypes: licenseTypes,
+                    selectedType: selected,
+                  );
+                  if (newType != null && newType.code != selected?.code) {
+                    await ref.read(licenseTypeProvider.notifier).setLicenseType(newType.code);
+                  }
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
-  Future<void> _loadSettings() async {
-    final enabled = await getReminderEnabled();
-    final timeStr = await getReminderTime();
-    final themeStr = await getThemeMode();
-    setState(() {
-      _reminderEnabled = enabled;
-      // Use the time string directly
-      _reminderTime = timeStr.isNotEmpty ? timeStr : "21:00";
-      _themeMode = _parseThemeMode(themeStr);
-      _loading = false;
-    });
+  Widget _buildReminderSection(ThemeData theme, AsyncValue<ReminderSettings> reminderSettingsAsync) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'NHẮC NHỞ HỌC TẬP',
+          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: SUB_SECTION_SPACING),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: SUB_SECTION_SPACING),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: theme.SURFACE_VARIANT,
+            borderRadius: BorderRadius.circular(BORDER_RADIUS),
+          ),
+          child: reminderSettingsAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+            data: (reminderSettings) => Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: NAVIGATION_HEIGHT,
+                        height: NAVIGATION_HEIGHT,
+                        child: Center(
+                          child: Icon(Icons.notifications_active, color: theme.WARNING_COLOR),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Bật nhắc nhở hàng ngày',
+                              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              'Nhận thông báo nhắc nhở học tập mỗi ngày',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Switch.adaptive(
+                        value: reminderSettings.enabled,
+                        onChanged: (v) async {
+                          await ref.read(reminderSettingsProvider.notifier).setReminderEnabled(v);
+                          await NotificationService.cancelReminder();
+                          if (v) {
+                            final message = NotificationService.getRandomDailyMessage();
+                            await NotificationService.scheduleDailyReminder(reminderSettings.time24h, message);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: SUB_SECTION_SPACING),
+                InkWell(
+                  onTap: reminderSettings.enabled
+                      ? () async {
+                          final picked = await dialog_utils.showTimePicker(
+                            context: context,
+                            initialTime: reminderSettings.time24h,
+                          );
+                          if (picked != null) {
+                            await ref.read(reminderSettingsProvider.notifier).setReminderTime(picked);
+                            final message = NotificationService.getRandomDailyMessage();
+                            await NotificationService.scheduleDailyReminder(picked, message);
+                          }
+                        }
+                      : null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: Center(
+                            child: Icon(
+                              Icons.access_time,
+                              color: reminderSettings.enabled ? theme.WARNING_COLOR : theme.WARNING_COLOR.withValues(alpha: 0.3),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Thời gian nhắc nhở',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: reminderSettings.enabled ? null : theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
+                                ),
+                              ),
+                              Text(
+                                reminderSettings.time24h,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: reminderSettings.enabled ? null : theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
-  Future<void> _saveReminder() async {
-    // Time is already properly formatted string
-    await ref.read(reminderSettingsProvider.notifier).setReminderEnabled(_reminderEnabled);
-    await ref.read(reminderSettingsProvider.notifier).setReminderTime(_reminderTime);
-    await NotificationService.cancelReminder();
-    if (_reminderEnabled) {
-      final message = NotificationService.getRandomDailyMessage();
-      await NotificationService.scheduleDailyReminder(_reminderTime, message);
-    }
-  }
-
-  Future<void> _saveThemeMode(AppThemeMode mode) async {
-    await setThemeMode(mode.name);
-    setState(() => _themeMode = mode);
-    ref.read(themeModeProvider.notifier).state = mode;
-  }
-
-  static AppThemeMode _parseThemeMode(String? value) {
-    switch (value) {
-      case 'light':
-        return AppThemeMode.light;
-      case 'dark':
-        return AppThemeMode.dark;
-      default:
-        return AppThemeMode.system;
-    }
-  }
-
-  Widget _buildThemeChoice(BuildContext context, AppThemeMode mode, String label, IconData icon) {
-    final isSelected = _themeMode == mode;
+  Widget _buildThemeChoice(BuildContext context, ThemeMode currentMode, ThemeMode mode, String label, IconData icon) {
+    final isSelected = currentMode == mode;
     final theme = Theme.of(context);
     return ChoiceChip(
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: isSelected ? theme.colorScheme.primary : theme.iconTheme.color),
+          Icon(icon, size: 18, color: isSelected ? theme.BLUE_COLOR : null),
           const SizedBox(width: 6),
-          Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          Text(label, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
         ],
       ),
       selected: isSelected,
-      onSelected: (selected) {
-        if (selected) _saveThemeMode(mode);
+      onSelected: (selected) async {
+        if (selected) {
+          await ref.read(themeModeProvider.notifier).setThemeMode(mode);
+        }
       },
-      selectedColor: theme.colorScheme.primary.withOpacity(0.15),
-      backgroundColor: theme.cardColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      selectedColor: theme.BLUE_COLOR.withValues(alpha: 0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS)),
       elevation: 0,
-      labelPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
     );
   }
 
-  IconData _getLicenseTypeIcon(String code) {
-    switch (code) {
-      case 'A1':
-        return Icons.two_wheeler;
-      case 'A2':
-        return Icons.motorcycle;
-      case 'B1':
-        return Icons.directions_car;
-      case 'B2':
-        return Icons.directions_car_filled;
-      case 'C':
-        return Icons.local_shipping;
-      case 'D':
-        return Icons.directions_bus;
-      case 'E':
-        return Icons.airport_shuttle;
-      case 'F':
-        return Icons.emoji_transportation;
-      default:
-        return Icons.drive_eta;
-    }
-  }
-
-  Color _getLicenseTypeColor(String code) {
-    switch (code) {
-      case 'A1':
-        return Colors.orange;
-      case 'A2':
-        return Colors.deepOrange;
-      case 'B1':
-        return Colors.blue;
-      case 'B2':
-        return Colors.indigo;
-      case 'C':
-        return Colors.green;
-      case 'D':
-        return Colors.teal;
-      case 'E':
-        return Colors.purple;
-      case 'F':
-        return Colors.brown;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  Widget _buildAppVersionTile(ThemeData theme) {
-    return FutureBuilder<PackageInfo>(
-      future: PackageInfo.fromPlatform(),
-      builder: (context, snapshot) {
-        final version = snapshot.hasData ? snapshot.data!.version : '';
-        return ListTile(
-          leading: SizedBox(
-            width: 40,
-            height: 40,
-            child: Center(
-              child: Icon(Icons.info_outline, color: theme.colorScheme.primary),
-            ),
+  Widget _buildThemeSection(ThemeData theme, AsyncValue<ThemeSettings> themeSettingsAsync) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'GIAO DIỆN',
+          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: SUB_SECTION_SPACING),
+        Container(
+          decoration: BoxDecoration(
+            color: theme.SURFACE_VARIANT,
+            borderRadius: BorderRadius.circular(BORDER_RADIUS),
           ),
-          title: const Text('GPLX Việt Nam', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-          subtitle: Text('Phiên bản $version', style: const TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
-          onTap: () {},
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final licenseTypes = ref.watch(licenseTypesProvider);
-    final selectedLicenseTypeAsync = ref.watch(licenseTypeProvider);
-    if (_loading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cài đặt', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        backgroundColor: theme.appBarBackground,
-        foregroundColor: theme.appBarText,
-      ),
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: ListView(
-        controller: _scrollController,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        children: [
-            // Section: License Type
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                // 'Loại bằng lái đang ôn luyện',
-                'LOẠI BẰNG LÁI',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-            ),
-            // const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: selectedLicenseTypeAsync.when(
-                data: (selectedCode) {
-                  LicenseType? selected;
-                  if (licenseTypes.isNotEmpty) {
-                    selected = licenseTypes.firstWhere(
-                      (lt) => lt.code == selectedCode,
-                      orElse: () => licenseTypes.first,
-                    );
-                  } else {
-                    selected = null;
-                  }
-                  return ListTile(
-                    leading: Container(
-                      alignment: Alignment.center,
-                      height: 40,
-                      width: 40,
-                      child: Icon(Icons.badge, size: 24, color: theme.colorScheme.primary),
-                    ),
-                    title: Text(
-                      selected != null ? '${selected.name} - ${selected.code}' : 'Chưa chọn',
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Text(
-                      (selected != null ? selected.description : '') + '\nNhấn để thay đổi loại bằng lái',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey),
-                    ),
-                    isThreeLine: true,
-                    trailing: Container(
-                      alignment: Alignment.center,
-                      height: 40,
-                      width: 40,
-                      child: Icon(Icons.keyboard_arrow_down, size: 24, color: theme.colorScheme.primary),
-                    ),
-                    onTap: () async {
-                      final newType = await showModalBottomSheet<LicenseType>(
-                        context: context,
-                        builder: (ctx) => SafeArea(
-                          child: SizedBox(
-                            height: MediaQuery.of(ctx).size.height * 0.6,
-                            child: CustomScrollView(
-                              shrinkWrap: true,
-                              slivers: [
-                                SliverPersistentHeader(
-                                  pinned: true,
-                                  delegate: _StickyHeaderDelegate(
-                                    child: Container(
-                                      color: Theme.of(ctx).scaffoldBackgroundColor,
-                                      padding: const EdgeInsets.symmetric(vertical: 12),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Chọn loại bằng lái',
-                                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SliverList(
-                                  delegate: SliverChildListDelegate([
-                                    ...licenseTypes.map((type) {
-                                      final isSelected = selected?.code == type.code;
-                                      final isDark = Theme.of(ctx).brightness == Brightness.dark;
-                                      final selectedBg = isDark ? Colors.blue.shade900 : Colors.blue.shade50;
-                                      final selectedBorder = isDark ? Colors.blue.shade400 : Colors.blue.shade200;
-                                      final tile = ListTile(
-                                        leading: Icon(
-                                          _getLicenseTypeIcon(type.code),
-                                          color: isSelected ? Theme.of(ctx).colorScheme.primary : _getLicenseTypeColor(type.code),
-                                          size: 32,
-                                        ),
-                                        title: Text('${type.code} - ${type.name}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                                        subtitle: Text(type.description, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey)),
-                                        tileColor: Colors.transparent,
-                                        onTap: () => Navigator.of(ctx).pop(type),
-                                      );
-                                      if (isSelected) {
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            color: selectedBg,
-                                            border: Border.all(color: selectedBorder, width: 1),
-                                            borderRadius: BorderRadius.zero,
-                                          ),
-                                          child: tile,
-                                        );
-                                      } else {
-                                        return tile;
-                                      }
-                                    }),
-                                  ]),
-              ),
-            ],
-          ),
-                          ),
-                        ),
-                      );
-                      if (newType != null && newType.code != selected?.code) {
-                        await ref.read(licenseTypeProvider.notifier).setLicenseType(newType.code);
-                        setState(() {});
-                      }
-                    },
-                  );
-                },
-                loading: () => const ListTile(
-                  leading: CircularProgressIndicator(),
-                  title: Text('Đang tải...', style: TextStyle(fontSize: 15)),
-                ),
-                error: (_, __) => const ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text('Không thể tải loại bằng lái', style: TextStyle(fontSize: 15)),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Section: Reminder
-            Padding(
-              key: _reminderKey,
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                // 'Nhắc nhở học tập',
-                'NHẮC NHỞ HỌC TẬP',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-            ),
-            // const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
-                child: Column(
-                  children: [
-                    SwitchListTile.adaptive(
-                      value: _reminderEnabled,
-                      onChanged: (v) async {
-                        setState(() => _reminderEnabled = v);
-                        await _saveReminder();
-                      },
-                      title: const Text('Bật nhắc nhở hàng ngày', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                      subtitle: const Text('Nhận thông báo nhắc nhở học tập mỗi ngày', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey)),
-                      secondary: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: Center(
-                          child: Icon(Icons.notifications_active, color: theme.warningColor),
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    ListTile(
-                      enabled: _reminderEnabled,
-                      leading: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: Center(
-                          child: Icon(Icons.access_time, color: theme.warningColor),
-                        ),
-                      ),
-                      title: const Text('Thời gian nhắc nhở', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                      subtitle: Text(_reminderTime, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            onTap: _reminderEnabled
-                ? () async {
-                              final picked = await showSpinnerTimePicker(
-                      context: context,
-                      initialTime: _reminderTime,
-                    );
-                    if (picked != null) {
-                      setState(() => _reminderTime = picked);
-                                await _saveReminder();
-                    }
-                  }
-                : null,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      minVerticalPadding: 0,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Section: Theme
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                // 'Giao diện',
-                'GIAO DIỆN',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-            ),
-            // const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          child: themeSettingsAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+            data: (themeSettings) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                    _buildThemeChoice(context, AppThemeMode.system, 'Tự động', Icons.brightness_auto),
-                    _buildThemeChoice(context, AppThemeMode.light, 'Sáng', Icons.light_mode),
-                    _buildThemeChoice(context, AppThemeMode.dark, 'Tối', Icons.dark_mode),
+                  _buildThemeChoice(context, themeSettings.mode, ThemeMode.system, 'Tự động', Icons.brightness_auto),
+                  _buildThemeChoice(context, themeSettings.mode, ThemeMode.light, 'Sáng', Icons.light_mode),
+                  _buildThemeChoice(context, themeSettings.mode, ThemeMode.dark, 'Tối', Icons.dark_mode),
                 ],
               ),
             ),
           ),
-            const SizedBox(height: 12),
-            // Section: Data
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text(
-                // 'Dữ liệu',
-                'DỮ LIỆU',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDataSection(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'DỮ LIỆU',
+          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: SUB_SECTION_SPACING),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: SUB_SECTION_SPACING),
+          decoration: BoxDecoration(
+            color: theme.SURFACE_VARIANT,
+            borderRadius: BorderRadius.circular(BORDER_RADIUS),
           ),
-            ),
-            // const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
+          child: Column(
             children: [
-                  ListTile(
-                    leading: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: Center(
-                        child: Icon(Icons.delete, color: theme.colorScheme.error),
+              InkWell(
+                onTap: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text('Xác nhận', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600)),
+                      content: Text(
+                        'Bạn có chắc chắn muốn xóa toàn bộ dữ liệu và đặt lại ứng dụng?',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+                        )
                       ),
+                      actionsPadding: const EdgeInsets.all(CONTENT_PADDING),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(ctx).pop(false),
+                          child: Text('Hủy', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(ctx).pop(true),
+                          child: Text(
+                            'Xoá và đặt lại',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.ERROR_COLOR,
+                            )
+                          ),
+                        ),
+                      ],
                     ),
-                    title: Text('Xóa toàn bộ dữ liệu và đặt lại ứng dụng', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: theme.colorScheme.error)),
-                    subtitle: const Text('Tất cả tiến trình, cài đặt sẽ bị xóa', style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600)),
-                    onTap: () async {
-                      final confirm = await showDialog<bool>(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text('Xác nhận'),
-                          content: const Text('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu và đặt lại ứng dụng?', style: TextStyle(fontSize: 15)),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(ctx).pop(false),
-                              child: const Text('Hủy', style: TextStyle(fontSize: 15)),
+                  );
+                  if (confirm == true) {
+                    await cleanUp();
+                    if (mounted) {
+                      context.go('/');
+                    }
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: NAVIGATION_HEIGHT,
+                        height: NAVIGATION_HEIGHT,
+                        child: Center(
+                          child: Icon(Icons.delete, color: theme.ERROR_COLOR),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Xóa toàn bộ dữ liệu và đặt lại ứng dụng',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.ERROR_COLOR,
+                              ),
                             ),
-                            TextButton(
-                              onPressed: () => Navigator.of(ctx).pop(true),
-                              child: Text('Xoá và đặt lại', style: TextStyle(fontSize: 15, color: Theme.of(ctx).colorScheme.error)),
+                            Text(
+                              'Tất cả tiến trình, cài đặt sẽ bị xóa',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                              ),
                             ),
                           ],
                         ),
-                      );
-                      if (confirm == true) {
-                        await cleanUp();
-                        if (mounted) {
-                          context.go('/');
-                        }
-                      }
-                    },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
-              ),
           ),
-            const SizedBox(height: 12),
-            // Section: About
-            Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4, top: 8, bottom: 4),
-              child: Text(
-                // 'Thông tin',
-                'THÔNG TIN',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-            ),
-            // const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(12),
-            ),
-              child: _buildAppVersionTile(theme),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
-    
   }
-} 
-
-class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final Widget child;
-  _StickyHeaderDelegate({required this.child});
-  @override
-  double get minExtent => kMinInteractiveDimension;
-  @override
-  double get maxExtent => kMinInteractiveDimension;
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return child;
-  }
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
-} 
+}

@@ -1,238 +1,171 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 import '../models/riverpod/data/tip.dart';
 import '../providers/app_data_providers.dart';
-import '../utils/app_colors.dart';
-import 'package:flutter_html/flutter_html.dart';
+import '../constants/app_colors.dart';
 
-class TipsScreen extends ConsumerWidget {
+class TipsScreen extends ConsumerStatefulWidget {
   const TipsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final asyncTips = ref.watch(tipsProvider);
-
-    return asyncTips.when(
-      loading: () => Scaffold(
-        appBar: AppBar(
-          title: const Text('Mẹo thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: theme.appBarBackground,
-          foregroundColor: theme.appBarText,
-          elevation: 0,
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      ),
-      error: (e, st) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Mẹo thi', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: theme.appBarBackground,
-          foregroundColor: theme.appBarText,
-          elevation: 0,
-        ),
-        body: Center(child: Text('Lỗi khi tải dữ liệu: $e')),
-      ),
-      data: (tips) => _TipsScreenContent(tips: tips, theme: theme),
-    );
-  }
+  ConsumerState<TipsScreen> createState() => _TipsScreenState();
 }
 
-class _TipsScreenContent extends StatefulWidget {
-  final Tips tips;
-  final ThemeData theme;
-
-  const _TipsScreenContent({required this.tips, required this.theme});
-
-  @override
-  State<_TipsScreenContent> createState() => _TipsScreenContentState();
-}
-
-class _TipsScreenContentState extends State<_TipsScreenContent> {
+class _TipsScreenState extends ConsumerState<TipsScreen> {
   final Map<String, bool> _expandedTopics = {};
-
-  void _toggleTopic(String topicId) {
-    setState(() {
-      _expandedTopics[topicId] = !(_expandedTopics[topicId] ?? false);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme;
-    final tips = widget.tips;
+    final theme = Theme.of(context);
+    final tipsAsync = ref.watch(tipsProvider);
 
+    return tipsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Lỗi khi tải dữ liệu: $err')),
+      data: (tips) => _buildContent(tips, theme),
+    );
+  }
+
+  Widget _buildContent(Tips tips, ThemeData theme) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: NAVIGATION_HEIGHT,
         title: Text(
           'Mẹo thi',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: theme.appBarText),
+          style: const TextStyle(
+            fontSize: APP_BAR_FONT_SIZE,
+            fontWeight: FontWeight.w600,
+          ),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: theme.appBarBackground,
-        foregroundColor: theme.appBarText,
+        backgroundColor: theme.APP_BAR_BG,
+        foregroundColor: theme.APP_BAR_FG,
         elevation: 0,
       ),
-      backgroundColor: theme.scaffoldBackgroundColor,
       body: ListView(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(CONTENT_PADDING),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  theme.BLUE_COLOR.withValues(alpha: 0.2),
+                  theme.BLUE_COLOR.withValues(alpha: 0.1),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Row(
               children: [
-                // Header section
+                const SizedBox(height: SECTION_SPACING),
                 Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(CONTENT_PADDING),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: theme.brightness == Brightness.dark
-                          ? [
-                              Colors.blue.withValues(alpha: 0.3),
-                              Colors.blue.withValues(alpha: 0.15),
-                            ]
-                          : [
-                              theme.primaryColor.withValues(alpha: 0.1),
-                              theme.primaryColor.withValues(alpha: 0.05),
-                            ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: theme.BLUE_COLOR.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(BORDER_RADIUS),
                   ),
-                  child: Row(
+                  child: Icon(
+                    Icons.lightbulb_outline,
+                    color: theme.BLUE_COLOR,
+                  ),
+                ),
+                const SizedBox(width: SECTION_SPACING),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: theme.brightness == Brightness.dark
-                              ? Colors.blue.withValues(alpha: 0.4)
-                              : theme.primaryColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          Icons.lightbulb_outline,
-                          color: theme.brightness == Brightness.dark
-                              ? Colors.blue[100]!
-                              : theme.primaryColor,
-                          size: 24,
-                        ),
+                      Text(
+                        'Mẹo thi hiệu quả',
+                        style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Mẹo thi hiệu quả',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: theme.primaryText,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Học thuộc các mẹo này để tăng khả năng đỗ thi',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: theme.secondaryText,
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: SUB_SECTION_SPACING),
+                      Text(
+                        'Học thuộc các mẹo này để tăng khả năng đỗ thi',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // Topics list
-                ...tips.examTips.map((topic) => _buildTopicCard(topic, theme)),
-                const SizedBox(height: 20),
               ],
             ),
+          ),
+          ...tips.examTips.map((topic) => _buildTopicTips(topic, theme)).toList(),
+          const SizedBox(height: SECTION_SPACING),
+        ],
+      ),
     );
   }
 
-  Widget _buildTopicCard(TipTopic topic, ThemeData theme) {
+  Widget _buildTopicTips(TipTopic topic, ThemeData theme) {
     final isExpanded = _expandedTopics[topic.topicId] ?? false;
     
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        boxShadow: [
-          BoxShadow(
-            color: theme.brightness == Brightness.dark 
-                ? Colors.black.withValues(alpha: 0.3)
-                : Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: Column(
         children: [
-          InkWell(
-            onTap: () => _toggleTopic(topic.topicId),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: _getTopicColor(topic.topicId, theme).withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+          const SizedBox(height: SECTION_SPACING),
+          Container(
+            decoration: BoxDecoration(
+              color: theme.SURFACE_VARIANT,
+            ),
+            child: InkWell(
+              onTap: () => _toggleTopic(topic.topicId),
+              child: Padding(
+                padding: const EdgeInsets.all(CONTENT_PADDING),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(CONTENT_PADDING),
+                      decoration: BoxDecoration(
+                        color: _getTopicColor(topic.topicId, theme).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(BORDER_RADIUS),
+                      ),
+                      child: Icon(
+                        _getTopicIcon(topic.topicId),
+                        color: _getTopicColor(topic.topicId, theme),
+                      ),
                     ),
-                    child: Icon(
-                      _getTopicIcon(topic.topicId),
-                      color: _getTopicColor(topic.topicId, theme),
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          topic.topicName,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: theme.primaryText,
+                    const SizedBox(width: SECTION_SPACING),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            topic.topicName,
+                            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                           ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          topic.topicDescription,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: theme.secondaryText,
-                            height: 1.2,
+                          const SizedBox(height: SUB_SECTION_SPACING),
+                          Text(
+                            topic.topicDescription,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Icon(
-                    isExpanded ? Icons.expand_less : Icons.expand_more,
-                    color: theme.secondaryText,
-                  ),
-                ],
+                    Icon(
+                      isExpanded ? Icons.expand_less : Icons.expand_more,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           if (isExpanded) ...[
             Container(
-              decoration: BoxDecoration(
-                color: theme.scaffoldBackgroundColor,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Column(
                 children: topic.tips.asMap().entries.map((entry) {
                   final index = entry.key;
@@ -248,125 +181,111 @@ class _TipsScreenContentState extends State<_TipsScreenContent> {
   }
 
   Widget _buildTipTile(Tip tip, ThemeData theme, int index) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING / 2, vertical: SUB_SECTION_SPACING),
+              decoration: BoxDecoration(
+                color: theme.brightness == Brightness.dark ? theme.BLUE_COLOR.withValues(alpha: 0.4) : theme.BLUE_COLOR.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                'Mẹo ${index + 1}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.BLUE_COLOR,
+                ),
+              ),
+            ),
+            const Spacer(),
+            if (tip.relatedQuestions.isNotEmpty)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING / 2, vertical: SUB_SECTION_SPACING),
                 decoration: BoxDecoration(
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.blue.withValues(alpha: 0.3)
-                      : theme.primaryColor.withValues(alpha: 0.1),
+                  color: theme.WARNING_COLOR.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(6),
                 ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.question_answer,
+                      size: 12,
+                      color: theme.WARNING_COLOR,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${tip.relatedQuestions.length} câu',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.WARNING_COLOR,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: SECTION_SPACING),
+        Text(
+          tip.tipTitle,
+          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: SUB_SECTION_SPACING),
+        Html(
+          data: tip.tipContent,
+          style: {
+            "body": Style(
+              fontSize: FontSize(theme.textTheme.bodyLarge?.fontSize ?? 15),
+              color: theme.textTheme.bodyLarge?.color,
+              margin: Margins.zero,
+              padding: HtmlPaddings.zero,
+              lineHeight: LineHeight(1.5),
+            ),
+            "b": Style(
+              fontWeight: FontWeight.w600,
+              color: theme.BLUE_COLOR,
+            ),
+            "br": Style(
+              margin: Margins.zero,
+            ),
+          },
+        ),
+        if (tip.relatedQuestions.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.link,
+                size: 18,
+                color: theme.WARNING_COLOR,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
                 child: Text(
-                  'Mẹo ${index + 1}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.blue[100]!
-                        : theme.primaryColor,
+                  'Câu hỏi liên quan: ${tip.relatedQuestions.join(", ")}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: theme.WARNING_COLOR,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              const Spacer(),
-              if (tip.relatedQuestions.isNotEmpty)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.orange.withValues(alpha: 0.3)
-                        : theme.warningColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.question_answer,
-                        size: 12,
-                        color: theme.brightness == Brightness.dark
-                            ? Colors.orange[100]!
-                            : theme.warningColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${tip.relatedQuestions.length} câu',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: theme.brightness == Brightness.dark
-                              ? Colors.orange[100]!
-                              : theme.warningColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            tip.tipTitle,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: theme.primaryText,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Html(
-            data: tip.tipContent,
-            style: {
-              "body": Style(
-                fontSize: FontSize(15),
-                color: theme.primaryText,
-                margin: Margins.zero,
-                padding: HtmlPaddings.zero,
-                lineHeight: LineHeight(1.5),
-              ),
-              "b": Style(
-                fontWeight: FontWeight.bold,
-                color: theme.brightness == Brightness.dark
-                    ? Colors.blue[100]!
-                    : theme.primaryColor,
-              ),
-              "br": Style(
-                margin: Margins.zero,
-              ),
-            },
-          ),
-          if (tip.relatedQuestions.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(
-                  Icons.link,
-                  size: 14,
-                  color: theme.warningColor,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    'Câu hỏi liên quan: ${tip.relatedQuestions.join(", ")}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: theme.warningColor,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
         ],
-      ),
+        const SizedBox(height: SECTION_SPACING),
+      ],
     );
+  }
+
+  void _toggleTopic(String topicId) {
+    setState(() {
+      _expandedTopics[topicId] = !(_expandedTopics[topicId] ?? false);
+    });
   }
 
   Color _getTopicColor(String topicId, ThemeData theme) {

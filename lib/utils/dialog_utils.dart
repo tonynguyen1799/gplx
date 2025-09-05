@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:time_picker_spinner/time_picker_spinner.dart';
-import 'package:gplx_vn/utils/app_colors.dart';
+import 'package:gplx_vn/constants/app_colors.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 
-Future<String?> showSpinnerTimePicker({
+Future<String?> showTimePicker({
   required BuildContext context,
   required String initialTime,
   String? title,
 }) async {
-  // Parse initial time string to DateTime for the spinner
   final parts = initialTime.split(':');
   final hour = int.tryParse(parts[0]) ?? 21;
   final minute = int.tryParse(parts[1]) ?? 0;
@@ -19,44 +19,41 @@ Future<String?> showSpinnerTimePicker({
     isDismissible: true,
     enableDrag: false,
     builder: (ctx) {
-      final isDark = Theme.of(ctx).brightness == Brightness.dark;
+      final theme = Theme.of(ctx);
       return SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header with Cancel and Select buttons
             Container(
-              color: Theme.of(ctx).scaffoldBackgroundColor,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              padding: const EdgeInsets.all(CONTENT_PADDING),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(ctx),
-                    child: const Text('Hủy', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                    child: Text('Hủy', style: TextStyle(fontSize: theme.textTheme.bodyLarge?.fontSize, fontWeight: FontWeight.w600)),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      minimumSize: Size(32, 32),
+                      minimumSize: Size(LARGE_ICON_SIZE, LARGE_ICON_SIZE),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
                     ),
                   ),
                   Text(
                     title ?? 'Chọn thời gian',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   TextButton(
                     onPressed: () {
-                      // Return formatted time string in 24-hour format
                       final hh = selectedDateTime.hour.toString().padLeft(2, '0');
                       final mm = selectedDateTime.minute.toString().padLeft(2, '0');
                       Navigator.pop(ctx, '$hh:$mm');
                     },
-                    child: const Text('Chọn', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                    child: Text('Chọn', style: TextStyle(fontSize: theme.textTheme.bodyLarge?.fontSize, fontWeight: FontWeight.w600)),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      minimumSize: Size(32, 32),
+                      minimumSize: Size(LARGE_ICON_SIZE, LARGE_ICON_SIZE),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
                     ),
@@ -64,9 +61,8 @@ Future<String?> showSpinnerTimePicker({
                 ],
               ),
             ),
-            // Body with padding
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: CONTENT_PADDING * 5, horizontal: CONTENT_PADDING),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -77,14 +73,8 @@ Future<String?> showSpinnerTimePicker({
                       children: [
                         TimePickerSpinner(
                           is24HourMode: true,
-                          normalTextStyle: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(ctx).textTheme.bodyLarge?.color,
-                          ),
-                          highlightedTextStyle: TextStyle(
-                            fontSize: 24,
-                            color: isDark ? Theme.of(ctx).colorScheme.primary : Colors.blue,
-                          ),
+                          normalTextStyle: theme.textTheme.titleLarge,
+                          highlightedTextStyle: theme.textTheme.headlineSmall?.copyWith(color: theme.BLUE_COLOR, fontWeight: FontWeight.w600),
                           time: selectedDateTime,
                           spacing: 30,
                           itemHeight: 40,
@@ -98,25 +88,15 @@ Future<String?> showSpinnerTimePicker({
                         ),
                         Text(
                           ':',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Theme.of(ctx).primaryText,
-                          ),
+                          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                        // Overlay labels on the same line as the spinner
                         Positioned.fill(
                           child: IgnorePointer(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 4),
-                                  child: Text('Giờ', style: TextStyle(fontSize: 14, color: Theme.of(ctx).primaryText)),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 4),
-                                  child: Text('Phút', style: TextStyle(fontSize: 14, color: Theme.of(ctx).primaryText)),
-                                ),
+                                Text('Giờ', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                                Text('Phút', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
                               ],
                             ),
                           ),

@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../models/riverpod/data/license_type.dart';
-import '../../models/riverpod/data/traffic_sign_category.dart';
 import '../../providers/app_data_providers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/hive_service.dart';
@@ -34,12 +30,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     try {
       final start = DateTime.now();
       setState(() => _progress = 0.05);
-      // 1. Load license types
-      final licenseTypesJson = await rootBundle.loadString('assets/license_types.json');
+      // 1. Load license types via StateNotifier once
+      await ref.read(licenseTypesProvider.notifier).loadFromAssets();
+      final licenseTypes = ref.read(licenseTypesProvider);
       setState(() => _progress = 0.15);
-      final licenseTypesList = json.decode(licenseTypesJson) as List;
-      final licenseTypes = licenseTypesList.map((e) => LicenseType.fromJson(e)).toList();
-      ref.read(licenseTypesProvider.notifier).state = licenseTypes;
       // Load all quiz statuses into memory at startup
       final licenseTypeCodes = licenseTypes.map((lt) => lt.code).toList();
       await ref.read(quizzesProgressProvider.notifier).loadQuizzesProgress(licenseTypeCodes);
@@ -47,18 +41,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
       // Prepare maps for topics, quizzes, exams, configs
 
-      // 2. Load traffic signs in their organized structure
-      final String trafficSignsJson = await rootBundle.loadString('assets/traffic_signs.json');
-      final Map<String, dynamic> trafficSignsMap = json.decode(trafficSignsJson);
-      final List<TrafficSignCategory> categories = [];
-      
-      for (final entry in trafficSignsMap.entries) {
-        final key = entry.key;
-        final category = TrafficSignCategory.fromJson(entry.value, key);
-        categories.add(category);
-      }
-
-      ref.read(trafficSignCategoriesProvider.notifier).state = categories;
+      // 2. Pre-load traffic signs (handled by FutureProvider)
+      await ref.read(trafficSignCategoriesProvider.future);
       setState(() => _progress = 0.8);
       final currentCode = await getLicenseType();
       if (currentCode != null) {
@@ -69,13 +53,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       // 3. Navigate to home or onboarding
       final completed = await isOnboardingComplete();
       final elapsed = DateTime.now().difference(start);
-      if (elapsed.inMilliseconds < 2000) {
-        await Future.delayed(Duration(milliseconds: 3000 - elapsed.inMilliseconds));
+      const minSplashMs = 1000;
+      if (elapsed.inMilliseconds < minSplashMs) {
+        await Future.delayed(Duration(milliseconds: minSplashMs - elapsed.inMilliseconds));
       }
       if (mounted) {
-                  if (completed) {
+        if (completed) {
             context.go('/main', extra: {'initialIndex': MainNav.TAB_HOME});
-          } else {
+        } else {
           context.go(RouteConstants.ROUTE_ONBOARDING_GET_STARTED);
         }
       }
@@ -123,7 +108,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               child: LinearProgressIndicator(
                 value: _progress,
                 minHeight: 6,
-                backgroundColor: Colors.white.withOpacity(0.3),
+                backgroundColor: Colors.white.withValues(alpha: 0.3),
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
             ),

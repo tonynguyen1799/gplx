@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ImageKeyButton extends StatefulWidget {
+class ExamKeyButton extends StatefulWidget {
   final String notPressedAssetPath;
   final String pressedAssetPath;
   final double size;
@@ -12,7 +12,7 @@ class ImageKeyButton extends StatefulWidget {
   final double bleedScale; // slightly scale image to overlap neighbors and remove seams
   final double bleedPx; // extend image beyond bounds horizontally to cover seams
 
-  const ImageKeyButton({
+  const ExamKeyButton({
     super.key,
     required this.notPressedAssetPath,
     required this.pressedAssetPath,
@@ -27,10 +27,10 @@ class ImageKeyButton extends StatefulWidget {
   });
 
   @override
-  State<ImageKeyButton> createState() => _ImageKeyButtonState();
+  State<ExamKeyButton> createState() => _ExamKeyButtonState();
 }
 
-class _ImageKeyButtonState extends State<ImageKeyButton> {
+class _ExamKeyButtonState extends State<ExamKeyButton> {
   static const int _animationMs = 60; // fast switch
   static const int _holdAfterTapUpMs = 70; // brief hold for visibility
 

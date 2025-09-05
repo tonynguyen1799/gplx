@@ -12,8 +12,25 @@ import '../models/riverpod/data/config.dart';
 import '../models/riverpod/data/traffic_sign_category.dart';
 import 'license_type_provider.dart';
 
-final licenseTypesProvider = StateProvider<List<LicenseType>>((ref) => []);
-final trafficSignCategoriesProvider = StateProvider<List<TrafficSignCategory>>((ref) => []);
+class LicenseTypesNotifier extends StateNotifier<List<LicenseType>> {
+  LicenseTypesNotifier() : super(const []);
+
+  Future<void> loadFromAssets() async {
+    try {
+      final jsonStr = await rootBundle.loadString('assets/license_types.json');
+      final list = (json.decode(jsonStr) as List)
+          .map((e) => LicenseType.fromJson((e as Map).cast<String, dynamic>()))
+          .toList();
+      state = list;
+    } catch (_) {
+      state = const <LicenseType>[];
+    }
+  }
+}
+
+final licenseTypesProvider = StateNotifierProvider<LicenseTypesNotifier, List<LicenseType>>(
+  (ref) => LicenseTypesNotifier(),
+);
 
 final topicsProvider = FutureProvider<List<Topic>>((ref) async {
   return _loadForLicense<List<Topic>>(
@@ -40,6 +57,19 @@ final examsProvider = FutureProvider<List<Exam>>((ref) async {
     (json) => (json as List).map((e) => Exam.fromJson((e as Map).cast<String, dynamic>())).toList(),
     <Exam>[]
   );
+});
+
+final examQuizzesProvider = FutureProvider.family<List<Quiz>, String>((ref, examId) async {
+  final quizzes = await ref.watch(quizzesProvider.future);
+  final exams = await ref.watch(examsProvider.future);
+
+  final exam = exams.where((e) => e.id == examId).isNotEmpty == true
+      ? exams.firstWhere((e) => e.id == examId)
+      : null;
+  if (exam == null) return <Quiz>[];
+
+  final examQuizIds = exam.quizIds.toSet();
+  return quizzes.where((q) => examQuizIds.contains(q.id)).toList();
 });
 
 final configProvider = FutureProvider<Config>((ref) async {
@@ -79,6 +109,10 @@ final totalDifficultQuizzesProvider = Provider.family<int, String>((ref, license
   return quizzes.where((quiz) => quiz.isDifficult == true).length;
 });
 
+final trafficSignCategoriesProvider = FutureProvider<List<TrafficSignCategory>>((ref) async {
+  return _loadTrafficSigns();
+});
+
 Future<R> _loadForLicense<R>(Ref ref, String assetPrefix, R Function(dynamic) fromJson, R defaultValue) async {
   final asyncLicenseType = ref.watch(licenseTypeProvider);
   final licenseType = asyncLicenseType.asData?.value?.toLowerCase();
@@ -91,5 +125,23 @@ Future<R> _loadForLicense<R>(Ref ref, String assetPrefix, R Function(dynamic) fr
     return fromJson(json);
   } catch (_) {
     return defaultValue;
+  }
+}
+
+Future<List<TrafficSignCategory>> _loadTrafficSigns() async {
+  try {
+    final String trafficSignsJson = await rootBundle.loadString('assets/traffic_signs.json');
+    final Map<String, dynamic> trafficSignsMap = json.decode(trafficSignsJson);
+    final List<TrafficSignCategory> categories = [];
+    
+    for (final entry in trafficSignsMap.entries) {
+      final key = entry.key;
+      final category = TrafficSignCategory.fromJson(entry.value, key);
+      categories.add(category);
+    }
+    
+    return categories;
+  } catch (e) {
+    return [];
   }
 }

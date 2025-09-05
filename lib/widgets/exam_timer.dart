@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import '../utils/app_colors.dart';
+import '../constants/ui_constants.dart';
+import '../constants/app_colors.dart';
 
 class ExamTimer extends StatefulWidget {
   final int durationSeconds;
@@ -19,27 +20,48 @@ class _ExamTimerState extends State<ExamTimer> {
   void initState() {
     super.initState();
     _remainingSeconds = widget.durationSeconds;
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 0) {
-        setState(() {
-          _remainingSeconds--;
-        });
-      } else {
-        timer.cancel();
-        if (widget.onTimeout != null) widget.onTimeout!();
-      }
-    });
+    _startTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant ExamTimer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.durationSeconds != widget.durationSeconds) {
+      _timer?.cancel();
+      _timer = null;
+      _remainingSeconds = widget.durationSeconds;
+      _startTimer();
+    }
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _timer = null; // Ensure timer is set to null after cancellation
     super.dispose();
   }
 
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        if (mounted) {
+          setState(() {
+            _remainingSeconds--;
+          });
+        }
+      } else {
+        timer.cancel();
+        _timer = null;
+        if (widget.onTimeout != null && mounted) widget.onTimeout!();
+      }
+    });
+  }
+
+  static const int _secondsPerMinute = 60;
+  
   String _formatTime(int seconds) {
-    final m = (seconds ~/ 60).toString().padLeft(2, '0');
-    final s = (seconds % 60).toString().padLeft(2, '0');
+    final m = (seconds ~/ _secondsPerMinute).toString().padLeft(2, '0');
+    final s = (seconds % _secondsPerMinute).toString().padLeft(2, '0');
     return '$m:$s';
   }
 
@@ -49,11 +71,14 @@ class _ExamTimerState extends State<ExamTimer> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.timer_rounded, color: theme.errorColor, size: 20),
-        const SizedBox(width: 4),
+        Icon(Icons.timer_rounded, color: theme.ERROR_COLOR),
+        const SizedBox(width: SUB_SECTION_SPACING),
         Text(
           _formatTime(_remainingSeconds),
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.errorColor),
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: theme.ERROR_COLOR,
+          ),
         ),
       ],
     );

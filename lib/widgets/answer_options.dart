@@ -1,159 +1,66 @@
 import 'package:flutter/material.dart';
-import '../../constants/quiz_constants.dart';
-import '../../utils/app_colors.dart';
+import '../../constants/ui_constants.dart';
+import '../../constants/app_colors.dart';
+import '../../models/riverpod/data/quiz.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class AnswerOptions extends StatelessWidget {
-  final List<String> answers;
-  final int correctIndex;
-  final Future<void> Function(int index) onSelect;
-  final bool showExplanation;
-  final String? explanation;
-  final String? tip;
-  final int mode;
-  final bool lockAnswer;
+  final Quiz quiz;
   final int? selectedIdx;
-  final bool isFatalQuiz;
-  final String examMode;
-
+  final bool isViewed;
+  final bool lockAnswer;
+  final void Function(int index)? onSelect;
   const AnswerOptions({
     Key? key,
-    required this.answers,
-    required this.correctIndex,
-    required this.onSelect,
-    this.showExplanation = false,
-    this.explanation,
-    this.tip,
-    required this.mode,
-    this.lockAnswer = false,
+    required this.quiz,
     this.selectedIdx,
-    required this.isFatalQuiz,
-    required this.examMode,
+    this.isViewed = false,
+    this.lockAnswer = false,
+    this.onSelect,
   }) : super(key: key);
-
-  Color _getAnswerOptionColor(ThemeData theme, int index, int? selectedIdx, bool isTrainingMode, bool showExplanation, int correctIndex) {
-    if (selectedIdx == null) {
-      return theme.answerOptionBackground;
-    }
-    
-    if (isTrainingMode || showExplanation) {
-      if (index == correctIndex) {
-        return theme.answerOptionCorrect;
-      } else if (selectedIdx == index) {
-        return theme.answerOptionIncorrect;
-      } else {
-        return theme.answerOptionBackground;
-      }
-    } else {
-      if (selectedIdx == index) {
-        return theme.answerOptionSelected;
-      } else {
-        return theme.answerOptionBackground;
-      }
-    }
-  }
-
-  Color _getAnswerOptionIconColor(ThemeData theme, int index, int? selectedIdx, bool isTrainingMode, bool showExplanation, int correctIndex) {
-    if (isTrainingMode || showExplanation) {
-      if (selectedIdx == index) {
-        if (index == correctIndex) {
-          return theme.answerOptionIconCorrect;
-        } else {
-          return theme.answerOptionIconIncorrect;
-        }
-      } else {
-        return theme.answerOptionIcon;
-      }
-    } else {
-      return theme.answerOptionIcon;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isTrainingMode = mode == QuizModes.TRAINING_MODE || mode == QuizModes.TRAINING_BY_TOPIC_MODE;
-    final isQuickExamMode = mode == QuizModes.EXAM_MODE && examMode == ExamModes.EXAM_QUICK_MODE;
+    final isFatalQuiz = quiz.topicIds.any((id) => id.endsWith('-fatal'));
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (int i = 0; i < answers.length; i++)
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: ((isTrainingMode || isQuickExamMode)
-                      ? (selectedIdx == null ? () => onSelect(i) : null)
-                      : (!lockAnswer ? () => onSelect(i) : null)),
-            child: Container(
-                width: double.infinity,
-                color: _getAnswerOptionColor(theme, i, selectedIdx, isTrainingMode, showExplanation, correctIndex),
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IgnorePointer(
-                    child: Icon(
-                        selectedIdx == i
-                            ? (isTrainingMode || showExplanation
-                                ? (i == correctIndex ? Icons.check_circle : Icons.cancel)
-                              : Icons.radio_button_checked)
-                            : (isTrainingMode || showExplanation
-                                ? Icons.circle_outlined
-                                : Icons.radio_button_unchecked),
-                        color: _getAnswerOptionIconColor(theme, i, selectedIdx, isTrainingMode, showExplanation, correctIndex),
-                      size: 30,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(child: Text(
-                      '${i + 1}. ${answers[i]}',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: theme.answerOptionText,
-                    ),
-                  )),
-                ],
-              ),
-            ),
-          ),
-          ),
-        if (selectedIdx != null && explanation != null && showExplanation) ...[
-          const SizedBox(height: 24),
+        _buildAnswerOptions(theme),
+        if (selectedIdx != null && quiz.explanation != null && isViewed) ...[
+          const SizedBox(height: SECTION_SPACING),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(CONTENT_PADDING),
               decoration: BoxDecoration(
-                color: theme.answerExplanationBackground,
-                borderRadius: BorderRadius.circular(8),
+                color: theme.SURFACE_VARIANT,
+                borderRadius: BorderRadius.circular(SMALL_BORDER_RADIUS),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isFatalQuiz)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        'Đây là câu điểm liệt',
-                        style: TextStyle(
-                          color: theme.errorColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                  if (isFatalQuiz) ...[
+                    Text(
+                      'Đây là câu điểm liệt',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.ERROR_COLOR,
                       ),
                     ),
+                    const SizedBox(height: SECTION_SPACING),
+                  ],
                   if (selectedIdx == -1) ...[
                     Row(
                       children: [
-                        Icon(Icons.help_outline, color: theme.warningColor),
-                        const SizedBox(width: 8),
+                        Icon(Icons.help_outline, color: theme.WARNING_COLOR),
+                        const SizedBox(width: SUB_SECTION_SPACING),
                         Text(
                           'Bạn không làm câu này',
-                          style: TextStyle(
-                            color: theme.warningColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.WARNING_COLOR,
                           ),
                         ),
                       ],
@@ -162,68 +69,65 @@ class AnswerOptions extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          selectedIdx == correctIndex ? Icons.check_circle : Icons.cancel,
-                          color: selectedIdx == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
+                          selectedIdx == quiz.correctIndex ? Icons.check_circle : Icons.cancel,
+                          color: selectedIdx == quiz.correctIndex ? theme.SUCCESS_COLOR : theme.ERROR_COLOR,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: SUB_SECTION_SPACING),
                         Text(
-                          selectedIdx == correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
-                          style: TextStyle(
-                            color: selectedIdx == correctIndex ? theme.answerOptionIconCorrect : theme.answerOptionIconIncorrect,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                          selectedIdx == quiz.correctIndex ? 'Bạn đã chọn đúng' : 'Bạn đã chọn sai',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: selectedIdx == quiz.correctIndex ? theme.SUCCESS_COLOR : theme.ERROR_COLOR,
                           ),
                         ),
                       ],
                     ),
                   ],
-                  const SizedBox(height: 8),
+                  const SizedBox(height: SUB_SECTION_SPACING),
                   Text(
-                    'Đáp án đúng: số  ${correctIndex + 1}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                    'Đáp án đúng: số  ${quiz.correctIndex + 1}',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: SUB_SECTION_SPACING),
                   Text(
-                    explanation!,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: theme.answerExplanationText,
+                    quiz.explanation!,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
                     ),
                   ),
-                  if (tip != null && tip!.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                  if (quiz.tip != null && quiz.tip!.isNotEmpty) ...[
+                    const SizedBox(height: SECTION_SPACING),
                     Row(
                       children: [
                         Icon(
                           Icons.lightbulb_outline,
-                          color: theme.warningColor,
-                          size: 18,
+                          color: theme.WARNING_COLOR,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: SUB_SECTION_SPACING),
                         Text(
                           'Mẹo ghi nhớ',
-                          style: TextStyle(
-                            color: theme.warningColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.WARNING_COLOR,
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
+                                            ),
+                        const SizedBox(height: SUB_SECTION_SPACING),
+                        Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Html(
-                            data: tip!,
+                            data: quiz.tip!,
                             style: {
                               "body": Style(
-                                fontSize: FontSize(15),
-                                color: theme.answerExplanationText,
+                                fontSize: FontSize(theme.textTheme.bodyMedium?.fontSize ?? 14),
+                                fontWeight: FontWeight.w600,
+                                color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
                                 margin: Margins.zero,
                                 padding: HtmlPaddings.zero,
                               ),
@@ -245,6 +149,68 @@ class AnswerOptions extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+
+  Widget _buildAnswerOptions(ThemeData theme) {
+    return Column(
+      children: [
+        for (int i = 0; i < quiz.answers.length; i++)
+          InkWell(
+            onTap: (onSelect == null || lockAnswer) ? null : () => onSelect!(i),
+            child: Container(
+              color: _getAnswerOptionColor(theme, i),
+              padding: const EdgeInsets.symmetric(vertical: SUB_SECTION_SPACING, horizontal: CONTENT_PADDING),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IgnorePointer(
+                    child: _buildAnswerOptionIcon(theme, i),
+                  ),
+                  const SizedBox(width: SUB_SECTION_SPACING),
+                  Expanded(
+                    child: Text(
+                      '${i + 1}. ${quiz.answers[i]}',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Color _getAnswerOptionColor(ThemeData theme, int answerIdx) {
+    if (isViewed) {
+      if (answerIdx == quiz.correctIndex) return theme.SUCCESS_COLOR.withValues(alpha: 0.4);
+      if (selectedIdx == answerIdx) return theme.ERROR_COLOR.withValues(alpha: 0.4);
+      return Colors.transparent;
+    }
+
+    if (selectedIdx == answerIdx) return theme.DARK_SURFACE_VARIANT;
+    return Colors.transparent;
+  }
+
+  Widget _buildAnswerOptionIcon(ThemeData theme, int answerIdx) {
+    if (isViewed) {
+      if (selectedIdx == answerIdx) {
+        return Icon(
+          answerIdx == quiz.correctIndex ? Icons.check_circle : Icons.cancel, 
+          color: answerIdx == quiz.correctIndex ? theme.SUCCESS_COLOR : theme.ERROR_COLOR,
+          size: 24,
+        );
+      }
+      return Icon(Icons.circle_outlined, size: 24);
+    }
+    return Icon(
+      (selectedIdx == answerIdx)
+          ? Icons.radio_button_checked
+          : Icons.radio_button_unchecked,
+      size: 24,
     );
   }
 } 

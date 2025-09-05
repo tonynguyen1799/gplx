@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/hive_service.dart';
+import '../../constants/app_colors.dart';
 import 'package:gplx_vn/constants/navigation_constants.dart';
+import 'package:gplx_vn/constants/ui_constants.dart';
 
 class OnboardingFinishScreen extends ConsumerWidget {
   const OnboardingFinishScreen({super.key});
@@ -20,9 +22,9 @@ class OnboardingFinishScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: SECTION_SPACING * 2),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -33,24 +35,25 @@ class OnboardingFinishScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                   Text(
                     'Bạn muốn học từng phần hay làm bài thi mô phỏng ngay?',
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: SECTION_SPACING),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: CONTENT_PADDING),
                 child: Column(
                   children: [
                     GestureDetector(
                       onTap: () => _completeOnboarding(context, ref),
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                        padding: const EdgeInsets.all(CONTENT_PADDING),
                         decoration: BoxDecoration(
-                          border: Border.all(color: theme.dividerColor),
+                          border: Border.all(color: theme.DARK_SURFACE_VARIANT, width: 1),
+                          borderRadius: BorderRadius.circular(BORDER_RADIUS),
                         ),
                         child: Row(
                           children: [

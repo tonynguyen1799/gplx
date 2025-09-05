@@ -24,7 +24,7 @@
     "text": "Làn đường là gì?",
     "answers": [
       "Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, sử dụng cho xe chạy.",
-      "Là một phần của phần đường xe chay được chia theo chiều dọc của đường, có đủ chiều rộng cho xe chạy an toàn.",
+      "Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ chiều rộng cho xe chạy an toàn.",
       "Là đường cho xe ô tô chạy, dừng, đỗ an toàn."
     ],
     "correctIndex": 1,
@@ -62,7 +62,7 @@
     "text": "Dải phân cách được lắp đặt để làm gì?",
     "answers": [
       "Để phân chia các làn đường dành cho xe cơ giới và xe thô sơ trên đường cao tốc.",
-      "Để phân chia phần đường xe chạy thành hai chiều riêng biệt hoặc để phân chia phần đường dành cho xe cơ giới và xe thô sơ hoặc của nhiều loai xe khác nhau trên cùng một chiều đường.",
+      "Để phân chia phần đường xe chạy thành hai chiều riêng biệt hoặc để phân chia phần đường dành cho xe cơ giới và xe thô sơ hoặc của nhiều loại xe khác nhau trên cùng một chiều đường.",
       "Để phân tách phần đường xe chạy và hành lang an toàn giao thông."
     ],
     "correctIndex": 1,
@@ -139,7 +139,7 @@
     "text": "Trong nhóm các phương tiện giao thông đường bộ dưới đây, nhóm phương tiện nào là xe cơ giới?",
     "answers": [
       "Xe ô tô; máy kéo; xe mô tô hai bánh; xe mô tô ba bánh; xe gắn máy; xe cơ giới dùng cho người khuyết tật và xe máy chuyên dùng; xe đạp, xe đạp máy, xe đạp điện.",
-      "Xe ô tô; rơ moóc được kéo bởi xe ô tô; sơ mi rơ moóc được kéo bởi ô tô đầu kéo; xe chở người bốn bánh có gắn động cơ; xe chở hàng bốn bánh có gắn đông cơ; xe mô tô, xe gắn máy và các loại xe tương tư."
+      "Xe ô tô; rơ moóc được kéo bởi xe ô tô; sơ mi rơ moóc được kéo bởi ô tô đầu kéo; xe chở người bốn bánh có gắn động cơ; xe chở hàng bốn bánh có gắn động cơ; xe mô tô, xe gắn máy và các loại xe tương tự."
     ],
     "correctIndex": 1,
     "isDifficult": false,
@@ -800,7 +800,7 @@
     "index": 42,
     "text": "Khi chở trẻ em dưới 10 tuổi và chiều cao dưới 1,35 mét trên xe ô tô, người lái xe phải thực hiện quy tắc nào dưới đây để bảo đảm an toàn?",
     "answers": [
-      "Không được cho trẻ em ngồi cùng hàng ghế với người lái xe, trừ loai xe ô tô chỉ có một hàng ghế; người lái xe phải sử dung, hướng dẫn sử dung thiết bị an toàn phù hợp cho trẻ em.",
+      "Không được cho trẻ em ngồi cùng hàng ghế với người lái xe, trừ loại xe ô tô chỉ có một hàng ghế; người lái xe phải sử dung, hướng dẫn sử dung thiết bị an toàn phù hợp cho trẻ em.",
       "Cho trẻ em ngồi cùng hàng ghế với người lái xe, người lái xe phải sử dụng, hướng dẫn sử dụng thiết bị an toàn phù hợp cho trẻ em."
     ],
     "correctIndex": 0,

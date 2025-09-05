@@ -1,6 +1,6 @@
 class RouteConstants {
   // Main navigation routes
-  static const String ROUTE_HOME = '/home';
+  static const String ROUTE_HOME = '/main';
   static const String ROUTE_SETTINGS = '/settings';
   static const String ROUTE_INFO = '/info';
   
@@ -21,6 +21,5 @@ class RouteConstants {
   // Onboarding routes
   static const String ROUTE_ONBOARDING_GET_STARTED = '/onboarding/get-started';
   static const String ROUTE_ONBOARDING_REMINDER = '/onboarding/reminder';
-  static const String ROUTE_ONBOARDING_FINISH = '/onboarding/finish';
   static const String ROUTE_ONBOARDING_SPLASH = '/onboarding/splash';
 } 

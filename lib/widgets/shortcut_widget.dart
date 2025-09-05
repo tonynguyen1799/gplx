@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/ui_constants.dart';
+
 class ShortcutWidget extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -18,8 +20,6 @@ class ShortcutWidget extends StatelessWidget {
 
   static const double _padding = 12.0;
   static const double _badgeTextFontSize = 12.0;
-  static const double subSectionSpacing = 6.0;
-  static const double borderRadius = 12.0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ShortcutWidget extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(ShortcutWidget.borderRadius),
+        borderRadius: BorderRadius.circular(BORDER_RADIUS),
         child: Padding(
           padding: const EdgeInsets.only(top: 0),
           child: Column(
@@ -56,7 +56,7 @@ class ShortcutWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
                           color: color,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Text(
                           badgeText!,
@@ -70,7 +70,7 @@ class ShortcutWidget extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: ShortcutWidget.subSectionSpacing),
+              const SizedBox(height: SUB_SECTION_SPACING),
               Text(
                 title,
                 textAlign: TextAlign.center,
